@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible"/>
+<title>Sonatype Nexus Repository（Nexus3） 私服文件下载至本地 - (使用进阶篇 一) - 「Leafy'John」PlayGround</title>
+<meta content="webkit" name="renderer"/>
+<meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport"/>
+<meta content="no-transform" http-equiv="Cache-Control"/>
+<meta content="no-siteapp" http-equiv="Cache-Control"/>
+<meta content="#f8f5ec" name="theme-color"/>
+<meta content="#f8f5ec" name="msapplication-navbutton-color"/>
+<meta content="yes" name="apple-mobile-web-app-capable"/>
+<meta content="#f8f5ec" name="apple-mobile-web-app-status-bar-style"/>
+<meta content="Leafy'John" name="author"/><meta content="Sonatype Nexus Repository (Nexus3) Private Server File Download to Local - Advanced Usage. Sonatype Nexus Repository（Nexus3） 私服文件下载至本地 - ( 使用进阶篇 )" name="description"/><meta content="Nexus3, Nexus, 下载, Sonatype, 下载, 至本地" name="keywords"/>
+<meta content="Hugo 0.92.0 with theme even" name="generator"/>
+<link href="https://cdryzun.github.io/post/nexus-browse-directory-download/" rel="canonical"/>
+<link href="/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/>
+<link href="/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png"/>
+<link href="/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png"/>
+<link href="/manifest.json" rel="manifest"/>
+<link color="#5bbad5" href="/safari-pinned-tab.svg" rel="mask-icon"/>
+<link href="/sass/main.min.404b35997075abed13fc31198c48ccfa115c0855fc6e525128eac767d84fdcd2.css" rel="stylesheet"/>
+<link crossorigin="anonymous" href="https://cdn.treesir.pub/blog-css/jquery.fancybox.min.css" rel="stylesheet"/>
+<link href="/css/custom.css" rel="stylesheet"/>
+<meta content="Sonatype Nexus Repository（Nexus3） 私服文件下载至本地 - (使用进阶篇 一)" property="og:title"/>
+<meta content="Sonatype Nexus Repository (Nexus3) Private Server File Download to Local - Advanced Usage. Sonatype Nexus Repository（Nexus3） 私服文件下载至本地 - ( 使用进阶篇 )" property="og:description"/>
+<meta content="article" property="og:type"/>
+<meta content="https://cdryzun.github.io/post/nexus-browse-directory-download/" property="og:url"/><meta content="post" property="article:section"/>
+<meta content="2023-07-25T20:47:22+08:00" property="article:published_time"/>
+<meta content="2023-07-25T20:47:22+08:00" property="article:modified_time"/>
+<meta content="Sonatype Nexus Repository（Nexus3） 私服文件下载至本地 - (使用进阶篇 一)" itemprop="name"/>
+<meta content="Sonatype Nexus Repository (Nexus3) Private Server File Download to Local - Advanced Usage. Sonatype Nexus Repository（Nexus3） 私服文件下载至本地 - ( 使用进阶篇 )" itemprop="description"/><meta content="2023-07-25T20:47:22+08:00" itemprop="datePublished"/>
+<meta content="2023-07-25T20:47:22+08:00" itemprop="dateModified"/>
+<meta content="775" itemprop="wordCount"/>
+<meta content="Nexus3,DevOps," itemprop="keywords"/><meta content="summary" name="twitter:card"/>
+<meta content="Sonatype Nexus Repository（Nexus3） 私服文件下载至本地 - (使用进阶篇 一)" name="twitter:title"/>
+<meta content="Sonatype Nexus Repository (Nexus3) Private Server File Download to Local - Advanced Usage. Sonatype Nexus Repository（Nexus3） 私服文件下载至本地 - ( 使用进阶篇 )" name="twitter:description"/>
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+<!--[if lt IE 9]>
+  <script src="https://cdn.treesir.pub/blog-js/html5shiv.min.js"></script>
+  <script src="https://cdn.treesir.pub/blog-js/respond.min.js"></script>
+<![endif]-->
+<link href="https://cdn.treesir.pub/blog-css/docsearch.min.css" rel="stylesheet"/>
+</head>
+<body>
+<header class="header" id="header">
+<div class="logo-wrapper">
+<a class="logo" href="/">Leafy'John」PlayGround</a>
+</div>
+<nav class="site-navbar">
+<ul class="menu" id="menu">
+<li class="menu-item">
+<a class="menu-item-link" href="/">主页</a>
+</li><li class="menu-item">
+<a class="menu-item-link" href="/post/">归档</a>
+</li><li class="menu-item">
+<a class="menu-item-link" href="/tags/">标签</a>
+</li><li class="menu-item">
+<a class="menu-item-link" href="/categories/">分类</a>
+</li>
+</ul><li style="display:inline-block;margin-right:10px;">
+<input class="docsearch-input" placeholder="Search" type="search"/>
+</li></nav>
+</header>
+<div class="mobile-navbar" id="mobile-navbar">
+<div class="mobile-header-logo">
+<a class="logo" href="/">Leafy'John」PlayGround</a>
+</div>
+<div class="mobile-navbar-icon">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+<nav class="mobile-menu slideout-menu" id="mobile-menu">
+<ul class="mobile-menu-list">
+<a href="/">
+<li class="mobile-menu-item">主页</li>
+</a><a href="/post/">
+<li class="mobile-menu-item">归档</li>
+</a><a href="/tags/">
+<li class="mobile-menu-item">标签</li>
+</a><a href="/categories/">
+<li class="mobile-menu-item">分类</li>
+</a>
+</ul>
+</nav>
+<div class="container" id="mobile-panel">
+<main class="main" id="main">
+<div class="content-wrapper">
+<div class="content" id="content">
+<article class="post">
+<header class="post-header">
+<h1 class="post-title">Sonatype Nexus Repository（Nexus3） 私服文件下载至本地 - (使用进阶篇 一)</h1>
+<div class="post-meta">
+<span class="post-time"> 2023-07-25 </span>
+<div class="post-category">
+<a href="/categories/sre/"> SRE </a>
+</div>
+<span class="more-meta"> 约 775 字 </span>
+<span class="more-meta"> 预计阅读 2 分钟 </span>
+</div>
+</header>
+<div class="post-toc" id="post-toc">
+<h2 class="post-toc-title">文章目录</h2>
+<div class="post-toc-content always-active">
+<nav id="TableOfContents">
+<ul>
+<li><a href="#说明">说明</a>
+<ul>
+<li><a href="#sonatype-nexus-repository-是什么">Sonatype Nexus Repository 是什么？</a></li>
+<li><a href="#nexus3-私服文件下载至本地的用途是什么">Nexus3 私服文件下载至本地的用途是什么？</a></li>
+</ul>
+</li>
+<li><a href="#文件下载至本地">文件下载至本地</a>
+<ul>
+<li><a href="#脚本如下">脚本如下</a></li>
+<li><a href="#使用效果展示">使用效果展示</a></li>
+</ul>
+</li>
+<li><a href="#总结">总结</a></li>
+</ul>
+</nav>
+</div>
+</div>
+<div class="post-content">
+<h1 id="说明">说明</h1>
+<h2 id="sonatype-nexus-repository-是什么">Sonatype Nexus Repository 是什么？</h2>
+<blockquote>
+<ul>
+<li>Sonatype Nexus Repository 是一个用于管理和分发软件组件的开源仓库管理系统。它提供了一个集中化的平台，使开发人员能够有效地存储、共享和发布各种类型的软件包。Nexus Repository 支持多种主流技术栈，并具有强大的安全性和可扩展性。通过使用 Sonatype Nexus Repository，团队可以更好地控制其软件构建过程，并确保高质量和稳定性的交付。<code> by ChatCPT</code></li>
+</ul>
+</blockquote>
+<h2 id="nexus3-私服文件下载至本地的用途是什么">Nexus3 私服文件下载至本地的用途是什么？</h2>
+<blockquote>
+<ol>
+<li>比如我们要将 <code>Nexus3</code> 私服中的依赖包制品，<code>进行迁移</code>，因 Nexus3 基于 <a href="https://help.sonatype.com/repomanager3/planning-your-implementation/storage-guide">BlobStore</a> 技术实现对文件的落盘存储，无法在对应节点中直接看到制品文件，此时则需要通过一些手段进行转换取出，虽然可以通过网页一个一个点击下载，但如果下载制品数量过多，则不会是个过于明智的选择。迁移的场景也有很多种，如:
+<ul>
+<li>迁移至其他实例，或离线环境</li>
+<li>需要更换到其他类型的存储库如:  <code>JFrog</code></li>
+</ul>
+</li>
+</ol>
+</blockquote>
+<h1 id="文件下载至本地">文件下载至本地</h1>
+<blockquote>
+<p>下面所展示的方法，使用到了 Nexus3 的API 进行实现，具体可参考如下文档：</p>
+<ul>
+<li><a href="https://help.sonatype.com/repomanager3/integrations/rest-and-integration-api">https://help.sonatype.com/repomanager3/integrations/rest-and-integration-api</a></li>
+</ul>
+<p>下述脚本，对特殊类私服未做测试如 <code>Docker</code>, 目前已测试支持,<code>且通过</code>的私服类型有: <code>Maven</code>、<code>NPM</code>、<code>PYPI</code>、<code>RAW</code>。</p>
+</blockquote>
+<h2 id="脚本如下">脚本如下</h2>
+<blockquote>
+<p>使用说明，更改如下变量为你实际的</p>
+<ul>
+<li>NEXUS_USER:  实例用户名</li>
+<li>NEXUS_PASS: 实例密码</li>
+<li>NEXUS_URL: 实例URL</li>
+<li>NEXUS_REPO: 需要下载至本地的私服地址</li>
+</ul>
+<p>使用前还需确保已经安装了 <a href="https://www.linode.com/docs/guides/using-jq-to-process-json-on-the-command-line/">jq</a></p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-bash" data-lang="bash"><span class="cp">#!/bin/bash
+</span><span class="cp"></span>
+<span class="nv">NEXUS_USER</span><span class="o">=</span><span class="s1">'admin'</span>
+<span class="nv">NEXUS_PASS</span><span class="o">=</span><span class="s1">'xxxx'</span>
+<span class="nv">NEXUS_URL</span><span class="o">=</span><span class="s2">"https://</span><span class="nv">$NEXUS_USER</span><span class="s2">:</span><span class="nv">$NEXUS_PASS</span><span class="s2">@nexus.treesir.pub"</span>
+<span class="nv">NEXUS_REPO</span><span class="o">=</span><span class="s1">'static-file'</span>
+
+<span class="c1"># ---</span>
+<span class="nv">cToken</span><span class="o">=</span><span class="s1">''</span>
+<span class="nv">count</span><span class="o">=</span><span class="m">0</span>
+<span class="nv">DOWNLOAD_PATH</span><span class="o">=</span><span class="si">${</span><span class="nv">NEXUS_REPO</span><span class="si">}</span>
+<span class="nv">NEXUS_HTTP_URL</span><span class="o">=</span><span class="k">$(</span><span class="nb">echo</span> <span class="nv">$NEXUS_URL</span><span class="p">|</span>sed <span class="s2">"s|</span><span class="nv">$NEXUS_USER</span><span class="s2">:</span><span class="nv">$NEXUS_PASS</span><span class="s2">@||g"</span><span class="k">)</span>
+
+<span class="k">function</span> assetsPage<span class="o">(){</span>
+    <span class="k">if</span> <span class="o">[</span> <span class="s2">"</span><span class="si">${</span><span class="nv">count</span><span class="si">}</span><span class="s2">"</span> -eq <span class="m">0</span> <span class="o">]</span><span class="p">;</span><span class="k">then</span>
+        <span class="nv">JSON</span><span class="o">=</span><span class="sb">`</span>curl -X <span class="s1">'GET'</span>  <span class="s2">"</span><span class="si">${</span><span class="nv">NEXUS_URL</span><span class="si">}</span><span class="s2">/service/rest/v1/assets?repository=</span><span class="si">${</span><span class="nv">NEXUS_REPO</span><span class="si">}</span><span class="s2">"</span>  -H <span class="s1">'accept: application/json'</span> 2&gt;/dev/null<span class="sb">`</span>
+    <span class="k">else</span>
+        <span class="nv">JSON</span><span class="o">=</span><span class="sb">`</span>curl -X <span class="s1">'GET'</span>  <span class="s2">"</span><span class="si">${</span><span class="nv">NEXUS_URL</span><span class="si">}</span><span class="s2">/service/rest/v1/assets?repository=</span><span class="si">${</span><span class="nv">NEXUS_REPO</span><span class="si">}</span><span class="s2">&amp;continuationToken=</span><span class="si">${</span><span class="nv">cToken</span><span class="si">}</span><span class="s2">"</span>  -H <span class="s1">'accept: application/json'</span> 2&gt;/dev/null<span class="sb">`</span>
+        <span class="c1"># cToken=''</span>
+    <span class="k">fi</span>
+
+    <span class="k">if</span> <span class="o">[</span> -n <span class="s2">"</span><span class="si">${</span><span class="nv">JSON</span><span class="si">}</span><span class="s2">"</span> <span class="o">]</span><span class="p">;</span><span class="k">then</span>
+    	<span class="nv">cToken</span><span class="o">=</span><span class="sb">`</span><span class="nb">echo</span> <span class="s2">"</span><span class="si">${</span><span class="nv">JSON</span><span class="si">}</span><span class="s2">"</span><span class="p">|</span> jq .continuationToken <span class="p">|</span>sed <span class="s2">"s|\"||g"</span><span class="sb">`</span>
+    <span class="k">else</span> 
+	<span class="nb">exit</span> <span class="m">1</span>
+    <span class="k">fi</span>
+
+    <span class="k">if</span> <span class="o">[</span> -n <span class="si">${</span><span class="nv">cToken</span><span class="si">}</span> <span class="o">]</span><span class="p">;</span><span class="k">then</span>
+        <span class="nb">echo</span> <span class="s2">"</span><span class="si">${</span><span class="nv">JSON</span><span class="si">}</span><span class="s2">"</span><span class="p">|</span> jq .items<span class="o">[]</span>.downloadUrl <span class="p">|</span> sed <span class="s2">"s|\"||g"</span>
+        <span class="nb">let</span> count++
+        assetsPage
+    <span class="k">elif</span> <span class="o">[</span> <span class="s2">"</span><span class="si">${</span><span class="nv">cToken</span><span class="si">}</span><span class="s2">"</span> <span class="o">==</span> <span class="s1">'null'</span> <span class="o">]</span><span class="p">;</span><span class="k">then</span>
+	<span class="nb">echo</span> <span class="s2">"</span><span class="si">${</span><span class="nv">JSON</span><span class="si">}</span><span class="s2">"</span><span class="p">|</span> jq .items<span class="o">[]</span>.downloadUrl <span class="p">|</span> sed <span class="s2">"s|\"||g"</span>
+    <span class="k">fi</span>
+<span class="o">}</span>
+
+<span class="k">function</span> downAssetsUploadAssets<span class="o">(){</span>
+    <span class="k">for</span> URL in <span class="k">$(</span>assetsPage<span class="k">)</span><span class="p">;</span><span class="k">do</span>
+        <span class="nv">UPLOAD_URL</span><span class="o">=</span><span class="k">$(</span><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$URL</span><span class="s2">"</span><span class="p">|</span>sed <span class="s2">"s|</span><span class="si">${</span><span class="nv">NEXUS_HTTP_URL</span><span class="si">}</span><span class="s2">/repository/</span><span class="si">${</span><span class="nv">NEXUS_REPO</span><span class="si">}</span><span class="s2">/||g"</span><span class="k">)</span>
+        <span class="k">if</span> <span class="o">[</span> ! <span class="k">$(</span><span class="nb">echo</span> <span class="s2">"</span><span class="si">${</span><span class="nv">UPLOAD_URL</span><span class="si">}</span><span class="s2">"</span><span class="p">|</span>grep <span class="s1">'/'</span><span class="p">|</span>wc -l<span class="k">)</span> -eq <span class="m">0</span> <span class="o">]</span><span class="p">;</span><span class="k">then</span>
+            mkdir -p  ./<span class="si">${</span><span class="nv">DOWNLOAD_PATH</span><span class="si">}</span>/<span class="s2">"</span><span class="si">${</span><span class="nv">UPLOAD_URL</span><span class="p">%/*</span><span class="si">}</span><span class="s2">"</span>
+            wget --no-check-certificate -O <span class="s2">"./</span><span class="si">${</span><span class="nv">DOWNLOAD_PATH</span><span class="si">}</span><span class="s2">/</span><span class="si">${</span><span class="nv">UPLOAD_URL</span><span class="si">}</span><span class="s2">"</span> <span class="s2">"</span><span class="si">${</span><span class="nv">URL</span><span class="si">}</span><span class="s2">"</span> &gt;&gt; download.log 2&gt;<span class="p">&amp;</span><span class="m">1</span>
+        <span class="k">else</span>
+            mkdir -p <span class="s2">"</span><span class="si">${</span><span class="nv">SOURCE_REPO</span><span class="si">}</span><span class="s2">"</span>
+            wget --no-check-certificate -O <span class="s2">"./</span><span class="si">${</span><span class="nv">DOWNLOAD_PATH</span><span class="si">}</span><span class="s2">/</span><span class="si">${</span><span class="nv">UPLOAD_URL</span><span class="si">}</span><span class="s2">"</span> <span class="s2">"</span><span class="si">${</span><span class="nv">URL</span><span class="si">}</span><span class="s2">"</span> &gt;&gt; download.log 2&gt;<span class="p">&amp;</span><span class="m">1</span>
+        <span class="k">fi</span>
+    <span class="k">done</span>
+<span class="o">}</span>
+
+
+<span class="c1"># assetsPage</span>
+downAssetsUploadAssets
+
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="使用效果展示">使用效果展示</h2>
+<p><img alt="image-20230725213915222" src="https://cdn.treesir.pub/img/image-20230725213915222.png"/></p>
+<p><img alt="image-20230725214858445" src="https://cdn.treesir.pub/img/image-20230725214858445.png"/></p>
+<h1 id="总结">总结</h1>
+<blockquote>
+<p>通过上面这个脚本就可以轻松一键的将文件转储下载至本地了，后面我再更新一下如何将 <code>Maven</code>、<code>NPM</code>、<code>PYPI</code>、<code>RAW</code> 这类私服制品文件，<code>迁移</code> 上传至其他<code>实例</code>或平台中，比如: <code>JForg</code>。</p>
+</blockquote>
+</div>
+<div class="post-copyright">
+<p class="copyright-item">
+<span class="item-title">文章作者</span>
+<span class="item-content">Leafy'John</span>
+</p>
+<p class="copyright-item">
+<span class="item-title">上次更新</span>
+<span class="item-content">
+        2023-07-25
+        
+    </span>
+</p>
+<p class="copyright-item">
+<span class="item-title">许可协议</span>
+<span class="item-content"><a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license noopener" target="_blank">CC BY-NC-ND 4.0</a></span>
+</p>
+</div>
+<footer class="post-footer">
+<div class="post-tags">
+<a href="/tags/nexus3/">Nexus3</a>
+<a href="/tags/devops/">DevOps</a>
+</div>
+<nav class="post-nav">
+<a class="prev" href="/post/gitea-actrunner-systemd-deployment/">
+<i class="iconfont icon-left"></i>
+<span class="prev-text nav-default">Gitea Actions ActRunner 基于 Systemd 部署安装</span>
+<span class="prev-text nav-mobile">上一篇</span>
+</a>
+<a class="next" href="/post/k8s-cronjob-backup-mysql/">
+<span class="next-text nav-default">K8S 使用 CronJob 备份 MySQL 数据至 MInIO</span>
+<span class="next-text nav-mobile">下一篇</span>
+<i class="iconfont icon-right"></i>
+</a>
+</nav>
+</footer>
+</article>
+</div>
+<div id="vcomments"></div>
+<script src="https://cdn.jsdelivr.net/npm/leancloud-storage@3/dist/av-min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js"></script>
+<script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'wS5tU9o2RILlBpQiEfIDgPwI-gzGzoHsz',
+        appKey: 'siSAWI3rzA6Ow8Tmiv7V4GO4',
+        notify:  true ,
+        verify:  true ,
+        avatar:'',
+        placeholder: '来留下点什么吧~',
+        visitor:  false 
+    });
+  </script>
+</div>
+</main>
+<footer class="footer" id="footer">
+<div class="social-links">
+<a class="iconfont icon-email" href="mailto:yangzun@treesir.pub" title="email"></a>
+<a class="iconfont icon-github" href="https://github.com/cdryzun" title="github"></a>
+<a class="iconfont icon-rss" href="https://cdryzun.github.io/index.xml" title="rss" type="application/rss+xml"></a>
+</div>
+<div class="copyright">
+<span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+</span>
+<span class="division">|</span>
+<span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+</span>
+<span class="copyright-year">
+<a class="busuanzi-footer" href="https://beian.miit.gov.cn/">湘ICP备2021002157号-1</a> <img alt="upai" class="ls-is-cached lazyloaded" height="28" src="https://cdn.treesir.pub/img/icp.png" style="margin: -25px 2px" width="23"/> <a href="https://www.upyun.com/?utm_source=lianmeng&amp;utm_medium=referral" rel="nofollow" target="_blank"><img alt="upai" class="ls-is-cached lazyloaded" height="28" src="https://cdn.treesir.pub/img/upyun.png" style="margin: -25px 2px" width="56"/></a>
+    © 
+    2019 - 
+    2023<span class="heart"><i class="iconfont icon-heart"></i></span><span>Leafy'John </span>
+</span>
+</div>
+</footer>
+<div class="back-to-top" id="back-to-top">
+<i class="iconfont icon-up"></i>
+</div>
+</div>
+<script crossorigin="anonymous" src="https://cdn.treesir.pub/blog-js/jquery.min.js"></script>
+<script crossorigin="anonymous" src="https://cdn.treesir.pub/blog-js/slideout.min.js"></script>
+<script crossorigin="anonymous" src="https://cdn.treesir.pub/blog-js/jquery.fancybox.min.js"></script>
+<script src="/js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js" type="text/javascript"></script>
+<script src="/js/copy-to-clipboard.js"></script>
+<script src="https://cdn.treesir.pub/blog-js/docsearch.min.js"></script>
+<script>
+    docsearch({
+    apiKey: "17388eec628e676a77d6235068b458df",
+    indexName: "blog",
+    appId: "KEECS2XKBV",
+    inputSelector: '.docsearch-input',
+    debug: false,
+    });
+</script>
+</body>
+</html>

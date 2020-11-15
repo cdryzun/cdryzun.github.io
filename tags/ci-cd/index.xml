@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>ci-cd on 「Leafy&#39;John」PlayGround</title>
+    <link>https://cdryzun.github.io/tags/ci-cd/</link>
+    <description>Recent content in ci-cd on 「Leafy&#39;John」PlayGround</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 01 Jun 2021 10:13:29 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/tags/ci-cd/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>在 Kubernetes 中使用 localPv 部署 Gitlab</title>
+      <link>https://cdryzun.github.io/post/kubernetes-deploy-gitlab/</link>
+      <pubDate>Tue, 01 Jun 2021 10:13:29 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/kubernetes-deploy-gitlab/</guid>
+      <description>环境说明 Kubernetes Version: v1.20.4 Postgres Version: 12.7 Redis Version: 5.0.9 因在官方提供的 gitlab-ce 镜像中，内置了 Postgres &amp;amp; Redis 的安装，在实际生产使用过程中，想让其连接使用外部统一的服务进行使用，来合理统一</description>
+    </item>
+    
+    <item>
+      <title>使用 Helm 部署 Spinnaker 持续部署(CD)平台</title>
+      <link>https://cdryzun.github.io/post/spinnaker-helm-installd/</link>
+      <pubDate>Mon, 24 May 2021 16:33:49 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/spinnaker-helm-installd/</guid>
+      <description>环境说明 Kubernetes Version: v1.17.9 操作系统: CentOS 7.8.2003 Helm Version: v3.2.1 Spinnaker Version: 1.26.3 spinnaker 版本说明 spinnaker 组件说明 Deck：前端web页面 端口9000 Gate：API网关，所有程序通过gate与</description>
+    </item>
+    
+    <item>
+      <title>Maven ReleasePlugin 的使用记录</title>
+      <link>https://cdryzun.github.io/post/maven-release-plugin/</link>
+      <pubDate>Sun, 16 May 2021 17:52:05 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/maven-release-plugin/</guid>
+      <description>maven settings.xml 配置使用展示 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62</description>
+    </item>
+    
+    <item>
+      <title>Centos 7 Yum 安装 Jenkins 及常用配置的说明</title>
+      <link>https://cdryzun.github.io/post/jenkins-install/</link>
+      <pubDate>Tue, 02 Mar 2021 19:31:09 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/jenkins-install/</guid>
+      <description>环境说明 操作系统: CentOS Linux release 7.9.2009 (Core) jdk 使用说明: openjdk 1.8.0_282 jenkins 版本： 最新 长期支持版本 Jenkins 安装 这里 Jenkins 的安装方式为使用 yum 包管理进行安装，文档参考。 安装 jdk 1 2 3 4 5</description>
+    </item>
+    
+  </channel>
+</rss>

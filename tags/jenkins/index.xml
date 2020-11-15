@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>jenkins on 「Leafy&#39;John」PlayGround</title>
+    <link>https://cdryzun.github.io/tags/jenkins/</link>
+    <description>Recent content in jenkins on 「Leafy&#39;John」PlayGround</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 22 Jul 2021 15:38:00 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/tags/jenkins/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>记录一次 Nexus3 Pypi 私服 Blob Storage 异常的修复</title>
+      <link>https://cdryzun.github.io/post/nexus3-pypi-blob-storage-fix/</link>
+      <pubDate>Thu, 22 Jul 2021 15:38:00 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/nexus3-pypi-blob-storage-fix/</guid>
+      <description>说明 在 devops 集成环境中的 测试环境 中，今天发现有几条 pipeline 一直是在构建超时状态。初步查看了一下，以为是哪个 依赖版本的兼容性有些问题, 导致 pip 一直是找不到</description>
+    </item>
+    
+    <item>
+      <title>记录一次 JupyterLab 插件打包问题的修复</title>
+      <link>https://cdryzun.github.io/post/pipeline-jupyter-labextension-build-fix/</link>
+      <pubDate>Tue, 20 Jul 2021 17:04:26 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/pipeline-jupyter-labextension-build-fix/</guid>
+      <description>背景 在所关联项目 的 jenkins pipeline ci 流水线中，开发告诉我 生成的 pip 包中未有生成相关的 labextension 依赖文件夹，导致 pip 包虽然是安装成功了，但仍是一个不可用的状态。开发人</description>
+    </item>
+    
+    <item>
+      <title>Centos 7 Yum 安装 Jenkins 及常用配置的说明</title>
+      <link>https://cdryzun.github.io/post/jenkins-install/</link>
+      <pubDate>Tue, 02 Mar 2021 19:31:09 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/jenkins-install/</guid>
+      <description>环境说明 操作系统: CentOS Linux release 7.9.2009 (Core) jdk 使用说明: openjdk 1.8.0_282 jenkins 版本： 最新 长期支持版本 Jenkins 安装 这里 Jenkins 的安装方式为使用 yum 包管理进行安装，文档参考。 安装 jdk 1 2 3 4 5</description>
+    </item>
+    
+  </channel>
+</rss>

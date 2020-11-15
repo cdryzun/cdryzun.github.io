@@ -1,0 +1,1616 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible"/>
+<title>Rke 集群集成 Kube-Vip 实现 Loadbalance Service 资源的使用 - 「Leafy'John」PlayGround</title>
+<meta content="webkit" name="renderer"/>
+<meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport"/>
+<meta content="no-transform" http-equiv="Cache-Control"/>
+<meta content="no-siteapp" http-equiv="Cache-Control"/>
+<meta content="#f8f5ec" name="theme-color"/>
+<meta content="#f8f5ec" name="msapplication-navbutton-color"/>
+<meta content="yes" name="apple-mobile-web-app-capable"/>
+<meta content="#f8f5ec" name="apple-mobile-web-app-status-bar-style"/>
+<meta content="Leafy'John" name="author"/><meta content="Rke 集群，使用静态 Pod 集成 Kube-Vip 实现 Loadbalance Service 资源的使用" name="description"/><meta content="kube-vip, rke, Loadbalance, devops, k8s, kubernetes" name="keywords"/>
+<meta content="Hugo 0.92.0 with theme even" name="generator"/>
+<link href="https://cdryzun.github.io/post/rke-kubevip-loadbalance/" rel="canonical"/>
+<link href="/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/>
+<link href="/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png"/>
+<link href="/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png"/>
+<link href="/manifest.json" rel="manifest"/>
+<link color="#5bbad5" href="/safari-pinned-tab.svg" rel="mask-icon"/>
+<link href="/sass/main.min.404b35997075abed13fc31198c48ccfa115c0855fc6e525128eac767d84fdcd2.css" rel="stylesheet"/>
+<link crossorigin="anonymous" href="https://cdn.treesir.pub/blog-css/jquery.fancybox.min.css" rel="stylesheet"/>
+<link href="/css/custom.css" rel="stylesheet"/>
+<meta content="Rke 集群集成 Kube-Vip 实现 Loadbalance Service 资源的使用" property="og:title"/>
+<meta content="Rke 集群，使用静态 Pod 集成 Kube-Vip 实现 Loadbalance Service 资源的使用" property="og:description"/>
+<meta content="article" property="og:type"/>
+<meta content="https://cdryzun.github.io/post/rke-kubevip-loadbalance/" property="og:url"/><meta content="post" property="article:section"/>
+<meta content="2021-10-12T13:44:45+08:00" property="article:published_time"/>
+<meta content="2021-10-12T13:44:45+08:00" property="article:modified_time"/>
+<meta content="Rke 集群集成 Kube-Vip 实现 Loadbalance Service 资源的使用" itemprop="name"/>
+<meta content="Rke 集群，使用静态 Pod 集成 Kube-Vip 实现 Loadbalance Service 资源的使用" itemprop="description"/><meta content="2021-10-12T13:44:45+08:00" itemprop="datePublished"/>
+<meta content="2021-10-12T13:44:45+08:00" itemprop="dateModified"/>
+<meta content="6531" itemprop="wordCount"/>
+<meta content="rke,kube-vip,Loadbalance ," itemprop="keywords"/><meta content="summary" name="twitter:card"/>
+<meta content="Rke 集群集成 Kube-Vip 实现 Loadbalance Service 资源的使用" name="twitter:title"/>
+<meta content="Rke 集群，使用静态 Pod 集成 Kube-Vip 实现 Loadbalance Service 资源的使用" name="twitter:description"/>
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+<!--[if lt IE 9]>
+  <script src="https://cdn.treesir.pub/blog-js/html5shiv.min.js"></script>
+  <script src="https://cdn.treesir.pub/blog-js/respond.min.js"></script>
+<![endif]-->
+<link href="https://cdn.treesir.pub/blog-css/docsearch.min.css" rel="stylesheet"/>
+</head>
+<body>
+<header class="header" id="header">
+<div class="logo-wrapper">
+<a class="logo" href="/">Leafy'John」PlayGround</a>
+</div>
+<nav class="site-navbar">
+<ul class="menu" id="menu">
+<li class="menu-item">
+<a class="menu-item-link" href="/">主页</a>
+</li><li class="menu-item">
+<a class="menu-item-link" href="/post/">归档</a>
+</li><li class="menu-item">
+<a class="menu-item-link" href="/tags/">标签</a>
+</li><li class="menu-item">
+<a class="menu-item-link" href="/categories/">分类</a>
+</li>
+</ul><li style="display:inline-block;margin-right:10px;">
+<input class="docsearch-input" placeholder="Search" type="search"/>
+</li></nav>
+</header>
+<div class="mobile-navbar" id="mobile-navbar">
+<div class="mobile-header-logo">
+<a class="logo" href="/">Leafy'John」PlayGround</a>
+</div>
+<div class="mobile-navbar-icon">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+<nav class="mobile-menu slideout-menu" id="mobile-menu">
+<ul class="mobile-menu-list">
+<a href="/">
+<li class="mobile-menu-item">主页</li>
+</a><a href="/post/">
+<li class="mobile-menu-item">归档</li>
+</a><a href="/tags/">
+<li class="mobile-menu-item">标签</li>
+</a><a href="/categories/">
+<li class="mobile-menu-item">分类</li>
+</a>
+</ul>
+</nav>
+<div class="container" id="mobile-panel">
+<main class="main" id="main">
+<div class="content-wrapper">
+<div class="content" id="content">
+<article class="post">
+<header class="post-header">
+<h1 class="post-title">Rke 集群集成 Kube-Vip 实现 Loadbalance Service 资源的使用</h1>
+<div class="post-meta">
+<span class="post-time"> 2021-10-12 </span>
+<div class="post-category">
+<a href="/categories/devops/"> devops </a>
+<a href="/categories/k8s/"> k8s </a>
+</div>
+<span class="more-meta"> 约 6531 字 </span>
+<span class="more-meta"> 预计阅读 14 分钟 </span>
+</div>
+</header>
+<div class="post-toc" id="post-toc">
+<h2 class="post-toc-title">文章目录</h2>
+<div class="post-toc-content always-active">
+<nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#背景">背景</a></li>
+<li><a href="#集群角色说明">集群角色说明</a></li>
+<li><a href="#使用-rke-部署集群">使用 <code>RKE</code> 部署集群</a>
+<ul>
+<li><a href="#部署前各主机的优化工作">部署前各主机的优化工作</a></li>
+<li><a href="#部署-rke-集群">部署 rke 集群</a></li>
+</ul>
+</li>
+<li><a href="#集群添加-kube-vip-组件">集群添加 Kube-Vip 组件</a>
+<ul>
+<li><a href="#kube-vip-与客户端-kubectl--集成">Kube-Vip 与客户端 <code>kubectl</code>  集成</a></li>
+<li><a href="#测试-kube-vip-的高可用性">测试 Kube-Vip 的高可用性</a></li>
+</ul>
+</li>
+<li><a href="#kube-vip-作为-loadbalance">Kube-Vip 作为 Loadbalance</a>
+<ul>
+<li><a href="#验证-kube-vip-loadbalancer-流量特征">验证 kube-vip LoadBalancer 流量特征</a></li>
+</ul>
+</li>
+<li><a href="#参考文档">参考文档</a></li>
+</ul>
+</li>
+<li><a href="#总结">总结</a></li>
+</ul>
+</nav>
+</div>
+</div>
+<div class="post-content">
+<h2 id="背景">背景</h2>
+<blockquote>
+<p><code>Kube-Vip</code> 最初是为 Kubernetes 控制平面提供 HA 解决方案而创建的，随着时间的推移，它已经发展为将相同的功能合并到 Kubernetes 的 LoadBalancer 类型的 Service 中。Kube-Vip <code>特点</code> 如下：</p>
+<ul>
+<li>VIP 地址可以是 IPv4 或 IPv6</li>
+<li>带有 ARP（第2层）或 BGP（第3层）的控制平面</li>
+<li>使用领导选举或 <code>raft</code> 控制平面</li>
+<li>带有 kubeadm（静态 Pod）的控制平面 HA</li>
+<li>带有 K3s/和其他（DaemonSets）的控制平面 HA</li>
+<li>使用 ARP 领导者选举的 Service LoadBalancer（第 2 层）</li>
+<li>通过 BGP 使用多个节点的 Service LoadBalancer</li>
+<li>每个命名空间或全局的 Service LoadBalancer 地址池</li>
+<li>Service LoadBalancer 地址通过 UPNP 暴露给网关</li>
+</ul>
+</blockquote>
+<p>集群 master 节点一般不会很多，kube-vip 只需在 k8s 中的控制平面部署。这里使用方法采用 <code>静态 pod</code> + <code>ARP  </code>来简单实现。在大规模的场景下可以尝试使用 BGP ，这需要相应的 BGP 服务来做支撑。</p>
+<h2 id="集群角色说明">集群角色说明</h2>
+<table>
+<thead>
+<tr>
+<th>IP地址</th>
+<th>主机名称</th>
+<th>集群角色</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>192.168.66.90</td>
+<td>master01</td>
+<td>controlplane、worker、etcd、kube-vip</td>
+</tr>
+<tr>
+<td>192.168.66.91</td>
+<td>master02</td>
+<td>controlplane、worker、etcd、kube-vip</td>
+</tr>
+<tr>
+<td>192.168.66.92</td>
+<td>master03</td>
+<td>controlplane、worker、etcd、kube-vip</td>
+</tr>
+<tr>
+<td>192.168.66.93</td>
+<td>node01</td>
+<td>worker</td>
+</tr>
+<tr>
+<td>192.168.66.101</td>
+<td>kube-vip.treesir.pub</td>
+<td>kube-vip 虚拟 ip 地址</td>
+</tr>
+</tbody>
+</table>
+<h2 id="使用-rke-部署集群">使用 <code>RKE</code> 部署集群</h2>
+<h3 id="部署前各主机的优化工作">部署前各主机的优化工作</h3>
+<ul>
+<li>
+<p>节点初始化，基础优化</p>
+<blockquote>
+<p><a href="https://www.treesir.pub/post/centos-init-config/">参考链接</a></p>
+</blockquote>
+</li>
+<li>
+<p>更改主机名称，（<code>各节点执行</code>）</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-bash" data-lang="bash">hostnamectl set-hostname xxxx
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>将各主机名称写入至各 <code>/etc/hosts</code> 文件中 （<code>各节点执行</code>）</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-bash" data-lang="bash"><span class="nb">echo</span> <span class="s2">"192.168.66.90 master01
+</span><span class="s2">192.168.66.91 master02
+</span><span class="s2">192.168.66.92 master03
+</span><span class="s2">192.168.66.93 node01"</span> &gt;&gt; /etc/hosts
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>安装 <code>rke</code> &amp; <code>kubectl</code>  （<code>主控节点执行</code>）</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-bash" data-lang="bash">wget -O  /usr/local/bin/rke https://github.com/rancher/rke/releases/download/v1.3.1/rke_linux-amd64
+wget -O /usr/local/bin/kubectl <span class="s2">"https://dl.k8s.io/release/`curl -L -s https://dl.k8s.io/release/stable.txt`/bin/linux/amd64/kubectl"</span>
+
+chmod a+x /usr/local/bin/*   <span class="c1"># 添加可执行权限</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>rke 集群所需用户 （<code>各节点执行</code>）</p>
+<blockquote>
+<p>因 Centos/Redhat 发行版本下，rke 不支持使用 <code>rook</code>，这里需要单独创建一个 rke 用户，并加入至 docker 组，让其可以执行 docker 命令。</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-bash" data-lang="bash">useradd rke -G docker
+
+<span class="nb">echo</span> <span class="s1">'123456'</span><span class="p">|</span>passwd  rke --stdin  <span class="c1"># 初始化 rke 用户密码为 123456</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>配置 rke 支持使用免密钥管理（<code>主控节点执行</code>）</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-bash" data-lang="bash">yum install -y sshpass
+
+
+su - rke <span class="c1"># 切换至 rke 用户，生成公私钥</span>
+
+ssh-keygen <span class="c1"># 一路回车，生成</span>
+
+
+<span class="k">for</span> i in <span class="sb">`</span>seq <span class="m">1</span> 3<span class="sb">`</span><span class="p">;</span><span class="k">do</span> sshpass -p <span class="s1">'123456'</span> ssh-copy-id -o <span class="nv">StrictHostKeyChecking</span><span class="o">=</span>no master0<span class="s2">"</span><span class="nv">$i</span><span class="s2">"</span><span class="p">;</span><span class="k">done</span> <span class="se">\
+</span><span class="se"></span><span class="o">&amp;&amp;</span> sshpass -p <span class="s1">'123456'</span> ssh-copy-id -o <span class="nv">StrictHostKeyChecking</span><span class="o">=</span>no node01
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>配置 kubectl 命令补全功能（<code>主控节点执行</code>）</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-bash" data-lang="bash"><span class="nb">echo</span> <span class="s1">'source &lt;(kubectl completion bash)'</span> &gt;&gt; /etc/profile
+
+<span class="nb">source</span> /etc/profile
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+<h3 id="部署-rke-集群">部署 rke 集群</h3>
+<ul>
+<li>
+<p>创建存放 静态 pod 文件夹 <code>/etc/kubernetes/manifest/</code>  ;（<code>各节点执行</code>）</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-bash" data-lang="bash">mkdir -p /etc/kubernetes/manifest/
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>创建 rke 集群配置文件 （<code>主控节点执行</code>）</p>
+<blockquote>
+<p>在 <code>192.168.66.90</code> 节点中切换至 <code>rke</code> 用户，生成集群描述配置文件 <code>cluster.yml</code>。</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span><span class="lnt">109
+</span><span class="lnt">110
+</span><span class="lnt">111
+</span><span class="lnt">112
+</span><span class="lnt">113
+</span><span class="lnt">114
+</span><span class="lnt">115
+</span><span class="lnt">116
+</span><span class="lnt">117
+</span><span class="lnt">118
+</span><span class="lnt">119
+</span><span class="lnt">120
+</span><span class="lnt">121
+</span><span class="lnt">122
+</span><span class="lnt">123
+</span><span class="lnt">124
+</span><span class="lnt">125
+</span><span class="lnt">126
+</span><span class="lnt">127
+</span><span class="lnt">128
+</span><span class="lnt">129
+</span><span class="lnt">130
+</span><span class="lnt">131
+</span><span class="lnt">132
+</span><span class="lnt">133
+</span><span class="lnt">134
+</span><span class="lnt">135
+</span><span class="lnt">136
+</span><span class="lnt">137
+</span><span class="lnt">138
+</span><span class="lnt">139
+</span><span class="lnt">140
+</span><span class="lnt">141
+</span><span class="lnt">142
+</span><span class="lnt">143
+</span><span class="lnt">144
+</span><span class="lnt">145
+</span><span class="lnt">146
+</span><span class="lnt">147
+</span><span class="lnt">148
+</span><span class="lnt">149
+</span><span class="lnt">150
+</span><span class="lnt">151
+</span><span class="lnt">152
+</span><span class="lnt">153
+</span><span class="lnt">154
+</span><span class="lnt">155
+</span><span class="lnt">156
+</span><span class="lnt">157
+</span><span class="lnt">158
+</span><span class="lnt">159
+</span><span class="lnt">160
+</span><span class="lnt">161
+</span><span class="lnt">162
+</span><span class="lnt">163
+</span><span class="lnt">164
+</span><span class="lnt">165
+</span><span class="lnt">166
+</span><span class="lnt">167
+</span><span class="lnt">168
+</span><span class="lnt">169
+</span><span class="lnt">170
+</span><span class="lnt">171
+</span><span class="lnt">172
+</span><span class="lnt">173
+</span><span class="lnt">174
+</span><span class="lnt">175
+</span><span class="lnt">176
+</span><span class="lnt">177
+</span><span class="lnt">178
+</span><span class="lnt">179
+</span><span class="lnt">180
+</span><span class="lnt">181
+</span><span class="lnt">182
+</span><span class="lnt">183
+</span><span class="lnt">184
+</span><span class="lnt">185
+</span><span class="lnt">186
+</span><span class="lnt">187
+</span><span class="lnt">188
+</span><span class="lnt">189
+</span><span class="lnt">190
+</span><span class="lnt">191
+</span><span class="lnt">192
+</span><span class="lnt">193
+</span><span class="lnt">194
+</span><span class="lnt">195
+</span><span class="lnt">196
+</span><span class="lnt">197
+</span><span class="lnt">198
+</span><span class="lnt">199
+</span><span class="lnt">200
+</span><span class="lnt">201
+</span><span class="lnt">202
+</span><span class="lnt">203
+</span><span class="lnt">204
+</span><span class="lnt">205
+</span><span class="lnt">206
+</span><span class="lnt">207
+</span><span class="lnt">208
+</span><span class="lnt">209
+</span><span class="lnt">210
+</span><span class="lnt">211
+</span><span class="lnt">212
+</span><span class="lnt">213
+</span><span class="lnt">214
+</span><span class="lnt">215
+</span><span class="lnt">216
+</span><span class="lnt">217
+</span><span class="lnt">218
+</span><span class="lnt">219
+</span><span class="lnt">220
+</span><span class="lnt">221
+</span><span class="lnt">222
+</span><span class="lnt">223
+</span><span class="lnt">224
+</span><span class="lnt">225
+</span><span class="lnt">226
+</span><span class="lnt">227
+</span><span class="lnt">228
+</span><span class="lnt">229
+</span><span class="lnt">230
+</span><span class="lnt">231
+</span><span class="lnt">232
+</span><span class="lnt">233
+</span><span class="lnt">234
+</span><span class="lnt">235
+</span><span class="lnt">236
+</span><span class="lnt">237
+</span><span class="lnt">238
+</span><span class="lnt">239
+</span><span class="lnt">240
+</span><span class="lnt">241
+</span><span class="lnt">242
+</span><span class="lnt">243
+</span><span class="lnt">244
+</span><span class="lnt">245
+</span><span class="lnt">246
+</span><span class="lnt">247
+</span><span class="lnt">248
+</span><span class="lnt">249
+</span><span class="lnt">250
+</span><span class="lnt">251
+</span><span class="lnt">252
+</span><span class="lnt">253
+</span><span class="lnt">254
+</span><span class="lnt">255
+</span><span class="lnt">256
+</span><span class="lnt">257
+</span><span class="lnt">258
+</span><span class="lnt">259
+</span><span class="lnt">260
+</span><span class="lnt">261
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-bash" data-lang="bash"><span class="c1">####</span>
+<span class="c1">####  RKE Kubernetes 安装模板 </span>
+<span class="c1">####</span>
+
+nodes:
+<span class="c1"># master01 配置</span>
+  - address: 192.168.66.90
+    user: rke
+    role:
+      - controlplane
+      - etcd
+      - worker
+    ssh_key_path: ~/.ssh/id_rsa
+    hostname_override: master01
+    port: <span class="m">22</span>
+
+<span class="c1"># master02 配置</span>
+  - address: 192.168.66.91
+    user: rke
+    role:
+      - worker
+      - etcd 
+      - controlplane
+    ssh_key_path: ~/.ssh/id_rsa
+    hostname_override: master02
+    port: <span class="m">22</span>
+
+<span class="c1"># master03 配置</span>
+  - address: 192.168.66.92
+    user: rke
+    role:
+      - worker
+      - etcd 
+      - controlplane
+    hostname_override: master03
+    ssh_key_path: ~/.ssh/id_rsa
+
+<span class="c1"># node01 配置</span>
+  - address: 192.168.66.93
+    user: rke
+    role:
+      - worker
+    ssh_key_path: ~/.ssh/id_rsa
+    hostname_override: node01
+    port: <span class="m">22</span>
+
+kubernetes_version: v1.21.5-rancher1-1
+
+<span class="c1"># 私有仓库</span>
+<span class="c1">## 当设置`is_default: true`后，构建集群时会自动在配置的私有仓库中拉取镜像</span>
+<span class="c1">## 如果使用的是DockerHub镜像仓库，则可以省略`url`或将其设置为`docker.io`</span>
+<span class="c1">## 如果使用内部公开仓库，则可以不用设置用户名和密码</span>
+private_registries:
+  - url: idocker.io
+    user: admin
+    password: <span class="m">123456</span>
+    is_default: <span class="nb">true</span>
+
+services:
+  etcd:
+    <span class="c1"># 开启自动备份</span>
+    <span class="c1">## rke版本小于0.2.x或rancher版本小于v2.2.0时使用</span>
+    snapshot: <span class="nb">true</span>
+    creation: 5m0s
+    retention: 24h
+    <span class="c1"># 扩展参数</span>
+    extra_args:
+      auto-compaction-retention: <span class="m">240</span> <span class="c1">#(单位小时)</span>
+      quota-backend-bytes: <span class="s1">'6442450944'</span>
+  kube-api:
+    <span class="c1"># cluster_ip范围</span>
+    <span class="c1">## 这必须与kube-controller中的service_cluster_ip_range匹配</span>
+    service_cluster_ip_range: 10.43.0.0/16
+    <span class="c1"># NodePort映射的端口范围</span>
+    service_node_port_range: 30000-32767
+    <span class="c1"># Pod安全策略</span>
+    pod_security_policy: <span class="nb">false</span>
+    <span class="c1"># kubernetes API server扩展参数</span>
+    <span class="c1">## 这些参数将会替换默认值</span>
+    extra_args:
+      watch-cache: <span class="nb">true</span>
+      default-watch-cache-size: <span class="m">1500</span>
+      <span class="c1"># 事件保留时间，默认1小时</span>
+      event-ttl: 1h0m0s
+      <span class="c1"># 默认值400，设置0为不限制，一般来说，每25~30个Pod有15个并行</span>
+      max-requests-inflight: <span class="m">800</span>
+      <span class="c1"># 默认值200，设置0为不限制</span>
+      max-mutating-requests-inflight: <span class="m">400</span>
+      <span class="c1"># kubelet操作超时，默认5s</span>
+      kubelet-timeout: 5s
+      <span class="c1"># 启用审计日志到标准输出</span>
+      audit-log-path: <span class="s2">"-"</span>
+      <span class="c1"># 增加删除workers的数量</span>
+      delete-collection-workers: <span class="m">3</span>
+      <span class="c1"># 将日志输出的级别设置为debug模式</span>
+      v: <span class="m">4</span>
+  <span class="c1"># Rancher 2用户注意事项：如果在创建Rancher Launched Kubernetes时使用配置文件配置集群，则`kube_controller`服务名称应仅包含下划线。这仅适用于Rancher v2.0.5和v2.0.6。</span>
+  kube-controller:
+    <span class="c1"># Pods_ip范围</span>
+    cluster_cidr: 10.42.0.0/16
+    <span class="c1"># cluster_ip范围</span>
+    <span class="c1">## 这必须与kube-api中的service_cluster_ip_range相同</span>
+    service_cluster_ip_range: 10.43.0.0/16
+    extra_args:
+      <span class="c1"># 修改每个节点子网大小(cidr掩码长度)，默认为24，可用IP为254个；23，可用IP为510个；22，可用IP为1022个；</span>
+      node-cidr-mask-size: <span class="s1">'22'</span>
+      <span class="c1"># 控制器定时与节点通信以检查通信是否正常，周期默认5s</span>
+      node-monitor-period: <span class="s1">'5s'</span>
+      <span class="c1">## 当节点通信失败后，再等一段时间kubernetes判定节点为notready状态。</span>
+      <span class="c1">## 这个时间段必须是kubelet的nodeStatusUpdateFrequency(默认10s)的整数倍，</span>
+      <span class="c1">## 其中N表示允许kubelet同步节点状态的重试次数，默认40s。</span>
+      node-monitor-grace-period: <span class="s1">'20s'</span>
+      <span class="c1">## 再持续通信失败一段时间后，kubernetes判定节点为unhealthy状态，默认1m0s。</span>
+      node-startup-grace-period: <span class="s1">'30s'</span>
+      <span class="c1">## 再持续失联一段时间，kubernetes开始迁移失联节点的Pod，默认5m0s。</span>
+      pod-eviction-timeout: <span class="s1">'1m'</span>
+
+      <span class="c1"># 默认5. 同时同步的deployment的数量。</span>
+      concurrent-deployment-syncs: <span class="m">5</span>
+      <span class="c1"># 默认5. 同时同步的endpoint的数量。</span>
+      concurrent-endpoint-syncs: <span class="m">5</span>
+      <span class="c1"># 默认20. 同时同步的垃圾收集器工作器的数量。</span>
+      concurrent-gc-syncs: <span class="m">20</span>
+      <span class="c1"># 默认10. 同时同步的命名空间的数量。</span>
+      concurrent-namespace-syncs: <span class="m">10</span>
+      <span class="c1"># 默认5. 同时同步的副本集的数量。</span>
+      concurrent-replicaset-syncs: <span class="m">5</span>
+      <span class="c1"># 默认5m0s. 同时同步的资源配额数。（新版本中已弃用）</span>
+      <span class="c1"># concurrent-resource-quota-syncs: 5m0s</span>
+      <span class="c1"># 默认1. 同时同步的服务数。</span>
+      concurrent-service-syncs: <span class="m">1</span>
+      <span class="c1"># 默认5. 同时同步的服务帐户令牌数。</span>
+      concurrent-serviceaccount-token-syncs: <span class="m">5</span>
+      <span class="c1"># 默认5. 同时同步的复制控制器的数量</span>
+      <span class="c1">#concurrent-rc-syncs: 5</span>
+      <span class="c1"># 默认30s. 同步deployment的周期。</span>
+      deployment-controller-sync-period: 30s
+      <span class="c1"># 默认15s。同步PV和PVC的周期。</span>
+      pvclaimbinder-sync-period: 15s
+  kubelet:
+    <span class="c1"># 集群搜索域</span>
+    cluster_domain: cluster.local
+    <span class="c1"># 内部DNS服务器地址</span>
+    cluster_dns_server: 10.43.0.254
+    <span class="c1"># 禁用swap</span>
+    fail_swap_on: <span class="nb">false</span>
+    <span class="c1"># 扩展变量</span>
+    extra_args:
+      <span class="c1"># 支持静态Pod。在主机/etc/kubernetes/目录下创建manifest目录，Pod YAML文件放在/etc/kubernetes/manifest/目录下</span>
+      pod-manifest-path: <span class="s2">"/etc/kubernetes/manifest/"</span>
+      <span class="c1"># 指定pause镜像</span>
+      pod-infra-container-image: <span class="s1">'rancher/pause:3.1'</span>
+      <span class="c1"># 传递给网络插件的MTU值，以覆盖默认值，设置为0(零)则使用默认的1460</span>
+      network-plugin-mtu: <span class="s1">'1500'</span>
+      <span class="c1"># 修改节点最大Pod数量</span>
+      max-pods: <span class="s2">"250"</span>
+      <span class="c1"># 密文和配置映射同步时间，默认1分钟</span>
+      sync-frequency: <span class="s1">'3s'</span>
+      <span class="c1"># Kubelet进程可以打开的文件数（默认1000000）,根据节点配置情况调整</span>
+      max-open-files: <span class="s1">'2000000'</span>
+      <span class="c1"># 与apiserver会话时的并发数，默认是10</span>
+      kube-api-burst: <span class="s1">'30'</span>
+      <span class="c1"># 与apiserver会话时的 QPS,默认是5，QPS = 并发量/平均响应时间</span>
+      kube-api-qps: <span class="s1">'15'</span>
+      <span class="c1"># kubelet默认一次拉取一个镜像，设置为false可以同时拉取多个镜像，</span>
+      <span class="c1"># 前提是存储驱动要为overlay2，对应的Dokcer也需要增加下载并发数，参考[docker配置](/rancher2x/install-prepare/best-practices/docker/)</span>
+      serialize-image-pulls: <span class="s1">'false'</span>
+      <span class="c1"># 拉取镜像的最大并发数，registry-burst不能超过registry-qps ，</span>
+      <span class="c1"># 仅当registry-qps大于0(零)时生效，(默认10)。如果registry-qps为0则不限制(默认5)。</span>
+      registry-burst: <span class="s1">'10'</span>
+      registry-qps: <span class="s1">'0'</span>
+      cgroups-per-qos: <span class="s1">'true'</span>
+      cgroup-driver: <span class="s1">'cgroupfs'</span>
+
+      <span class="c1"># 节点资源预留</span>
+      enforce-node-allocatable: <span class="s1">'pods'</span>
+      system-reserved: <span class="s1">'cpu=0.25,memory=200Mi'</span>
+      kube-reserved: <span class="s1">'cpu=0.25,memory=1500Mi'</span>
+      <span class="c1"># POD驱逐，这个参数只支持内存和磁盘。</span>
+      <span class="c1">## 硬驱逐阈值</span>
+      <span class="c1">### 当节点上的可用资源降至保留值以下时，就会触发强制驱逐。强制驱逐会强制kill掉POD，不会等POD自动退出。</span>
+      eviction-hard: <span class="s1">'memory.available&lt;300Mi,nodefs.available&lt;10%,imagefs.available&lt;15%,nodefs.inodesFree&lt;5%'</span>
+      <span class="c1">## 软驱逐阈值</span>
+      <span class="c1">### 以下四个参数配套使用，当节点上的可用资源少于这个值时但大于硬驱逐阈值时候，会等待eviction-soft-grace-period设置的时长；</span>
+      <span class="c1">### 等待中每10s检查一次，当最后一次检查还触发了软驱逐阈值就会开始驱逐，驱逐不会直接Kill POD，先发送停止信号给POD，然后等待eviction-max-pod-grace-period设置的时长；</span>
+      <span class="c1">### 在eviction-max-pod-grace-period时长之后，如果POD还未退出则发送强制kill POD"</span>
+      <span class="c1"># 指定kubelet多长时间向master发布一次节点状态。注意: 它必须与kube-controller中的nodeMonitorGracePeriod一起协调工作。(默认 10s)</span>
+      node-status-update-frequency: 10s
+      <span class="c1"># 设置cAdvisor全局的采集行为的时间间隔，主要通过内核事件来发现新容器的产生。默认1m0s</span>
+      global-housekeeping-interval: 1m0s
+      <span class="c1"># 每个已发现的容器的数据采集频率。默认10s</span>
+      housekeeping-interval: 10s
+      <span class="c1"># 所有运行时请求的超时，除了长时间运行的 pull, logs, exec and attach。超时后，kubelet将取消请求，抛出错误，然后重试。(默认2m0s)</span>
+      runtime-request-timeout: 2m0s
+      <span class="c1"># 指定kubelet计算和缓存所有pod和卷的卷磁盘使用量的间隔。默认为1m0s</span>
+      volume-stats-agg-period: 1m0s
+
+    <span class="c1"># 可以选择定义额外的卷绑定到服务</span>
+    <span class="c1">#extra_binds:</span>
+    <span class="c1">#  - "/usr/libexec/kubernetes/kubelet-plugins:/usr/libexec/kubernetes/kubelet-plugins"</span>
+    <span class="c1">#  - "/etc/iscsi:/etc/iscsi"</span>
+    <span class="c1">#  - "/sbin/iscsiadm:/sbin/iscsiadm"</span>
+  kubeproxy:
+    extra_args:
+      <span class="c1"># 默认使用iptables进行数据转发，如果要启用ipvs，则此处设置为`ipvs`</span>
+      proxy-mode: <span class="s2">"ipvs"</span>
+      <span class="c1"># 与kubernetes apiserver通信并发数,默认10</span>
+      kube-api-burst: <span class="m">20</span>
+      <span class="c1"># 与kubernetes apiserver通信时使用QPS，默认值5，QPS=并发量/平均响应时间</span>
+      kube-api-qps: <span class="m">10</span>
+    extra_binds:
+  scheduler:
+    extra_args: <span class="o">{}</span>
+    extra_binds: <span class="o">[]</span>
+    extra_env: <span class="o">[]</span>
+
+<span class="c1"># 目前，只支持x509验证</span>
+<span class="c1">## 您可以选择创建额外的SAN(主机名或IP)以添加到API服务器PKI证书。</span>
+<span class="c1">## 如果要为control plane servers使用负载均衡器，这很有用。</span>
+authentication:
+  strategy: <span class="s2">"x509|webhook"</span>
+  webhook:
+<span class="c1">#    config_file: "...."</span>
+    cache_timeout: 5s
+  sans:
+    <span class="c1"># 此处配置备用域名或IP，当主域名或者IP无法访问时，可通过备用域名或IP访问</span>
+    - <span class="s2">"192.168.66.101"</span>
+    - <span class="s2">"kube-vip.treesir.pub"</span>
+<span class="c1"># Kubernetes认证模式</span>
+<span class="c1">## Use `mode: rbac` 启用 RBAC</span>
+<span class="c1">## Use `mode: none` 禁用 认证</span>
+authorization:
+  mode: rbac
+<span class="c1"># 如果要设置Kubernetes云提供商，需要指定名称和配置，非云主机则留空；</span>
+cloud_provider:
+<span class="c1"># Add-ons是通过kubernetes jobs来部署。 在超时后，RKE将放弃重试获取job状态。以秒为单位。</span>
+addon_job_timeout: <span class="m">30</span>
+<span class="c1"># 有几个网络插件可以选择：`flannel、canal、calico`，Rancher2默认canal</span>
+network:
+  <span class="c1"># rke v1.0.4+ 可用，如果选择canal网络驱动，需要设置mtu为1450</span>
+  mtu: <span class="m">1450</span>  
+  plugin: calico
+<span class="c1"># 目前只支持nginx ingress controller</span>
+
+<span class="c1">## 可以设置`provider: none`来禁用ingress controller</span>
+ingress:
+  provider: nginx
+  node_selector:
+    ingress: yes
+  options:
+      map-hash-bucket-size: <span class="s2">"1024"</span>
+      ssl-protocols: SSLv2
+<span class="c1"># 配置dns上游dns服务器</span>
+<span class="c1">## 可用rke版本 v0.2.0</span>
+dns:
+  provider: coredns
+  upstreamnameservers:
+  - 192.168.66.2
+  - 223.5.5.5
+  node_selector:
+    dns: yes
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>rke 启动集群</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-bash" data-lang="bash">rke up --config ./cluster.yml
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>部署集群，使用 <code>kubectl</code> 进行管理</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-bash" data-lang="bash">mkdir ~/.kube/
+
+ln -s <span class="sb">`</span><span class="nb">echo</span> <span class="nv">$PWD</span><span class="sb">`</span>/kube_config_cluster.yaml ~/.kube/config
+
+kubectl version  <span class="c1"># 看到有下面输出，表示集群搭建成功</span>
+Client Version: version.Info<span class="o">{</span>Major:<span class="s2">"1"</span>, Minor:<span class="s2">"22"</span>, GitVersion:<span class="s2">"v1.22.2"</span>, GitCommit:<span class="s2">"8b5a19147530eaac9476b0ab82980b4088bbc1b2"</span>, GitTreeState:<span class="s2">"clean"</span>, BuildDate:<span class="s2">"2021-09-15T21:38:50Z"</span>, GoVersion:<span class="s2">"go1.16.8"</span>, Compiler:<span class="s2">"gc"</span>, Platform:<span class="s2">"linux/amd64"</span><span class="o">}</span>
+Server Version: version.Info<span class="o">{</span>Major:<span class="s2">"1"</span>, Minor:<span class="s2">"21"</span>, GitVersion:<span class="s2">"v1.21.5"</span>, GitCommit:<span class="s2">"aea7bbadd2fc0cd689de94a54e5b7b758869d691"</span>, GitTreeState:<span class="s2">"clean"</span>, BuildDate:<span class="s2">"2021-09-15T21:04:16Z"</span>, GoVersion:<span class="s2">"go1.16.8"</span>, Compiler:<span class="s2">"gc"</span>, Platform:<span class="s2">"linux/amd64"</span><span class="o">}</span>
+
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>配置 给 node 添加 lable，让 <code>coredns</code> &amp; <code>nginx ingress</code> 在节点中启动</p>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-bash" data-lang="bash">kubectl label node node01 <span class="nv">dns</span><span class="o">=</span>yes <span class="se">\
+</span><span class="se"></span> <span class="o">&amp;&amp;</span> kubectl label node master03 <span class="nv">dns</span><span class="o">=</span>yes
+ 
+kubectl label node node01 <span class="nv">ingress</span><span class="o">=</span>yes <span class="se">\
+</span><span class="se"></span> <span class="o">&amp;&amp;</span> kubectl label node master03 <span class="nv">ingress</span><span class="o">=</span>yes 
+</code></pre></td></tr></table>
+</div>
+</div><p><img alt="image-20211012180308315" src="https://cdn.treesir.pub/img/image-20211012180308315.png"/></p>
+<h2 id="集群添加-kube-vip-组件">集群添加 Kube-Vip 组件</h2>
+<ul>
+<li>
+<p>将 rke 生成的 <code>kube_config_cluster.yaml</code>  配置文件，Copy 至其他 master 节点中 (<code>master01 节点执行</code>)</p>
+<blockquote>
+<p>这一步的目的是： kube-vip pod 中需要访问自身节点中 apiserver ，来检测当前节点是否正常。</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-bash" data-lang="bash"><span class="nv">RKE_WORKSPACE</span><span class="o">=</span>/home/rke
+
+<span class="k">for</span> i in <span class="sb">`</span>seq <span class="m">1</span> 3<span class="sb">`</span><span class="p">;</span><span class="k">do</span> scp  -o <span class="nv">StrictHostKeyChecking</span><span class="o">=</span>no <span class="s2">"</span><span class="si">${</span><span class="nv">RKE_WORKSPACE</span><span class="si">}</span><span class="s2">"</span>/kube_config_cluster.yaml master0<span class="s2">"</span><span class="nv">$i</span><span class="s2">"</span>:/etc/kubernetes/admin.conf<span class="p">;</span><span class="k">done</span> <span class="c1"># Copy rke 集群配置文件至 rke 家目录中</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>更改各节点的 <code>/etc/kubernetes/admin.conf</code> 配置文件  (<code>各 master 节点执行</code>)</p>
+<blockquote>
+<p>更改当前 node 所连接的 apiserver 为 当前节点自身；示例替换 <code>192.168.66.90</code> 根据实际情况进行更改此地址</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-bash" data-lang="bash">sed -i <span class="s2">"s#192.168.66.90#</span><span class="nv">$HOSTNAME</span><span class="s2">#g"</span> /etc/kubernetes/admin.conf
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>生成 <code>kube-vip</code> pod yaml  至 静态 pod 文件夹下  (<code>各 master 节点执行</code>)</p>
+<blockquote>
+<p>绑定网卡为 <code>eth0</code>， VIP 地址设置 <code>192.168.66.101</code>。更具实际情况更改使用。</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-bash" data-lang="bash"><span class="nv">INTERFACE</span><span class="o">=</span>eth0 <span class="c1"># 绑定的网卡</span>
+<span class="nv">VIP</span><span class="o">=</span>192.168.66.101 <span class="c1"># apiserver VIP 地址</span>
+<span class="nv">VIP_HOSTNAME</span><span class="o">=</span><span class="s1">'kube-vip.treesir.pub'</span>  <span class="c1"># VIP 域名</span>
+<span class="nv">IMAGE</span><span class="o">=</span><span class="s1">'ghcr.io/kube-vip/kube-vip:v0.3.8'</span> <span class="c1"># kubevip 使用镜像</span>
+
+cat &gt; /etc/kubernetes/manifest/kube-vip.yaml <span class="s">&lt;&lt; EOF
+</span><span class="s">apiVersion: v1
+</span><span class="s">kind: Pod
+</span><span class="s">metadata:
+</span><span class="s">  creationTimestamp: null
+</span><span class="s">  name: kube-vip
+</span><span class="s">  namespace: kube-system
+</span><span class="s">spec:
+</span><span class="s">  containers:
+</span><span class="s">  - args:
+</span><span class="s">    - manager
+</span><span class="s">    env:
+</span><span class="s">    - name: vip_arp
+</span><span class="s">      value: "true"
+</span><span class="s">    - name: vip_interface
+</span><span class="s">      value: ${INTERFACE}
+</span><span class="s">    - name: port
+</span><span class="s">      value: "6443"
+</span><span class="s">    - name: vip_cidr
+</span><span class="s">      value: "32"
+</span><span class="s">    - name: cp_enable
+</span><span class="s">      value: "true"
+</span><span class="s">    - name: cp_namespace
+</span><span class="s">      value: kube-system
+</span><span class="s">    - name: vip_ddns
+</span><span class="s">      value: "false"
+</span><span class="s">    - name: svc_enable
+</span><span class="s">      value: "true"
+</span><span class="s">    - name: vip_leaderelection
+</span><span class="s">      value: "true"
+</span><span class="s">    - name: vip_leaseduration
+</span><span class="s">      value: "5"
+</span><span class="s">    - name: vip_renewdeadline
+</span><span class="s">      value: "3"
+</span><span class="s">    - name: vip_retryperiod
+</span><span class="s">      value: "1"
+</span><span class="s">    - name: vip_address
+</span><span class="s">      value: ${VIP}
+</span><span class="s">    image: "${IMAGE}"
+</span><span class="s">    imagePullPolicy: Always
+</span><span class="s">    name: kube-vip
+</span><span class="s">    resources: {}
+</span><span class="s">    securityContext:
+</span><span class="s">      capabilities:
+</span><span class="s">        add:
+</span><span class="s">        - NET_ADMIN
+</span><span class="s">        - NET_RAW
+</span><span class="s">        - SYS_TIME
+</span><span class="s">    volumeMounts:
+</span><span class="s">    - mountPath: /etc/kubernetes/admin.conf
+</span><span class="s">      name: kubeconfig
+</span><span class="s">    - mountPath: /etc/hosts
+</span><span class="s">      name: hosts
+</span><span class="s">      readOnly: true
+</span><span class="s">  hostNetwork: true
+</span><span class="s">  volumes:
+</span><span class="s">  - hostPath:
+</span><span class="s">      path: /etc/kubernetes/admin.conf
+</span><span class="s">    name: kubeconfig
+</span><span class="s">  - name: hosts
+</span><span class="s">    hostPath:
+</span><span class="s">      path: /etc/hosts
+</span><span class="s">      type: File
+</span><span class="s">status: {}
+</span><span class="s">EOF</span>
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>也可以使用下面这种方法进行渲染生成， yaml 文件，再对生成的 pod 文件进行修饰处理。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-bash" data-lang="bash"><span class="nv">INTERFACE</span><span class="o">=</span>eth0 <span class="c1"># 绑定的网卡</span>
+<span class="nv">VIP</span><span class="o">=</span>192.168.66.101 <span class="c1"># apiserver VIP 地址</span>
+
+docker run -it --net<span class="o">=</span>host --rm --name vip plndr/kube-vip:v0.3.8 <span class="se">\
+</span><span class="se"></span><span class="s2">"manifest"</span> <span class="s2">"pod"</span> <span class="s2">"--interface"</span> <span class="se">\
+</span><span class="se"></span><span class="s2">"</span><span class="nv">$INTERFACE</span><span class="s2">"</span> <span class="s2">"--vip"</span> <span class="s2">"</span><span class="nv">$VIP</span><span class="s2">"</span> <span class="se">\
+</span><span class="se"></span><span class="s2">"--controlplane"</span> <span class="s2">"--services"</span> <span class="se">\
+</span><span class="se"></span><span class="s2">"--arp"</span> <span class="s2">"--leaderElection"</span> <span class="p">|</span> tee  /etc/kubernetes/manifest/kube-vip.yaml
+</code></pre></td></tr></table>
+</div>
+</div></blockquote>
+</li>
+<li>
+<p>检查容器日志启动情况</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-bash" data-lang="bash">docker ps<span class="p">|</span>grep kube-vip<span class="p">|</span>grep -v <span class="s1">'pause'</span><span class="p">|</span>awk <span class="s1">'{print $1}'</span><span class="p">|</span>xargs -I <span class="o">{}</span> docker logs -f -n <span class="m">100</span> <span class="o">{}</span>
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>
+<p>master01</p>
+<p><img alt="image-20211012191424566" src="https://cdn.treesir.pub/img/image-20211012191424566.png"/></p>
+</li>
+<li>
+<p>master02</p>
+<p><img alt="image-20211012191442572" src="https://cdn.treesir.pub/img/image-20211012191442572.png"/></p>
+</li>
+<li>
+<p>master03</p>
+<p><img alt="image-20211012191457593" src="https://cdn.treesir.pub/img/image-20211012191457593.png"/></p>
+</li>
+</ul>
+<p><strong>从上述 kube-vip pod 的日志中，可以看到 集群已正常启动，且 leader 为 <code>master01</code></strong></p>
+</li>
+</ul>
+<h3 id="kube-vip-与客户端-kubectl--集成">Kube-Vip 与客户端 <code>kubectl</code>  集成</h3>
+<blockquote>
+<p>kube-vip 部署好之后，客户端 kubectl 使用的配置文件中 apiserver 地址，默认还是 rke 主控节点的地址，如主控节点此时 down 机，客户端 kubectl 将不能继续访问 apiserver，更改为 vip 的域名即可解决此问题。对于 rke <code>集群内部</code> 使用的 apiserver 地址，使用的是 <code>kubernetes.default.svc.cluster.local</code> 其在内部就实现了 高可用性。</p>
+</blockquote>
+<ul>
+<li>
+<p>添加 vip 域名<code>kube-vip.treesir.pub</code> 至 hosts 文件中</p>
+<blockquote>
+<p>如有 <code>DNS</code> 基础设施服务器，添加一条 <code>A</code> 记录也可以，不想用域名的话，可以直接写 <code>192.168.66.101</code>。如出现 <code>x509</code> 证书错误，确认是否在 rke 的 <code>authentication</code> 配置项中，将 vip 地址信息，加入至 证书链中。</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-bash" data-lang="bash"><span class="nb">echo</span> <span class="s1">'192.168.66.101 kube-vip.treesir.pub'</span> &gt;&gt; /etc/hosts
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>更改 kubectl <code>~/.kube/config</code> 配置文件</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-bash" data-lang="bash">sed -i <span class="s2">"s#</span><span class="nv">$HOSTNAME</span><span class="s2">#kube-vip.treesir.pub#g"</span> ~/.kube/config
+</code></pre></td></tr></table>
+</div>
+</div><p><img alt="image-20211012194105813" src="https://cdn.treesir.pub/img/image-20211012194105813.png"/></p>
+<blockquote>
+<p>使用 vip 地址正常访问到集群信息</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="测试-kube-vip-的高可用性">测试 Kube-Vip 的高可用性</h3>
+<blockquote>
+<p>测试高可用，由于使用 <code>rke</code> 部署集群，所有的组件多是在 docker 中，那么我们只需要将 <code>docker 服务进行关停</code>，就可以模拟 节点 down 机。</p>
+</blockquote>
+<ul>
+<li>
+<p>模拟 <code>master01</code> 节点 down 机</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-bash" data-lang="bash">systemctl disable docker <span class="se">\
+</span><span class="se"></span><span class="o">&amp;&amp;</span> service docker stop <span class="se">\
+</span><span class="se"></span><span class="o">&amp;&amp;</span> reboot   <span class="c1"># 未了防止 docker 容器未正常停止，我们多系统进行一次重启，docker 不随系统进行启动，达到目的。 </span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>观察其他节点 <code>kube-vip</code> 日志情况</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-bash" data-lang="bash">docker ps<span class="p">|</span>grep kube-vip<span class="p">|</span>grep -v <span class="s1">'pause'</span><span class="p">|</span>awk <span class="s1">'{print $1}'</span><span class="p">|</span>xargs -I <span class="o">{}</span> docker logs -f -n <span class="m">100</span> <span class="o">{}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><img alt="image-20211012194732615" src="https://cdn.treesir.pub/img/image-20211012194732615.png"/></p>
+<blockquote>
+<p>可以看到 leader 从 <code>master01</code> 变更为了 <code>master03</code>，切换动作在秒级内完成，用户基本无感知。</p>
+</blockquote>
+</li>
+<li>
+<p>测试访问集群</p>
+<p><img alt="image-20211012195138306" src="https://cdn.treesir.pub/img/image-20211012195138306.png"/></p>
+<p><strong>测试集群访问，没有收到丝毫的影响</strong></p>
+</li>
+</ul>
+<h2 id="kube-vip-作为-loadbalance">Kube-Vip 作为 Loadbalance</h2>
+<blockquote>
+<p>在将 <code>Kube-Vip</code> 作为 Loadbalance 资源对象进行使用时，需要部署一个 <code>kube-vip-cloud-provider</code>，官方 <a href="https://github.com/kube-vip/kube-vip-cloud-provider">项目地址</a></p>
+</blockquote>
+<ul>
+<li>
+<p>部署 <code>kube-vip-cloud-provider</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-bash" data-lang="bash">kubectl apply -f https://raw.githubusercontent.com/kube-vip/kube-vip-cloud-provider/main/manifest/kube-vip-cloud-controller.yaml
+</code></pre></td></tr></table>
+</div>
+</div><p><img alt="image-20211012200603419" src="https://cdn.treesir.pub/img/image-20211012200603419.png"/></p>
+</li>
+<li>
+<p>创建 IP 地址池，<code>kubevip-cm.yaml</code> 配置文件</p>
+<blockquote>
+<p>kube-vip Loadbalance 的地址池，可以针对 当个命名空间 (<code>cidr-&lt;namespace&gt;/range-&lt;namespace&gt;</code>) 和全局 (<code>cidr-global/range-global</code>) 进行设置，支持方式可以通过 <code>子网掩码</code> &amp; <code>地址范围</code>，具体可以参考 <a href="https://kube-vip.io/usage/on-prem/">此文档</a></p>
+</blockquote>
+<p><img alt="image-20211012200820789" src="https://cdn.treesir.pub/img/image-20211012200820789.png"/></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-bash" data-lang="bash">cat <span class="s">&lt;&lt; EOF |tr -s "n" | tee kubevip-cm.yaml | kubectl apply -f -
+</span><span class="s">apiVersion: v1
+</span><span class="s">kind: ConfigMap
+</span><span class="s">metadata:
+</span><span class="s">  name: kubevip
+</span><span class="s">  namespace: kube-system
+</span><span class="s">data:
+</span><span class="s">  range-global: 192.168.66.210-192.168.66.219
+</span><span class="s">EOF</span>
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>上述资源清单中我 允许 Loadbalance 在未指定 <code>loadBalancerIP</code> 时，使用 192.168.66.210 ~ 192.168.66.219 <code>10 个 IP 地址</code>。</p>
+</blockquote>
+</li>
+<li>
+<p>创建 <code>nginx-deployment.yaml</code> 资源清单</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-bash" data-lang="bash">cat <span class="s">&lt;&lt; EOF |tr -s "n" | tee nginx-deployment.yaml | kubectl apply -f -
+</span><span class="s">apiVersion: apps/v1
+</span><span class="s">kind: Deployment
+</span><span class="s">metadata:
+</span><span class="s">  name: nginx
+</span><span class="s">spec:
+</span><span class="s">  replicas: 3
+</span><span class="s">  selector:
+</span><span class="s">    matchLabels:
+</span><span class="s">      app: nginx
+</span><span class="s">  template:
+</span><span class="s">    metadata:
+</span><span class="s">      labels:
+</span><span class="s">        app: nginx
+</span><span class="s">    spec:
+</span><span class="s">      containers:
+</span><span class="s">      - name: nginx
+</span><span class="s">        image: nginx
+</span><span class="s">        resources:
+</span><span class="s">          limits:
+</span><span class="s">            memory: "128Mi"
+</span><span class="s">            cpu: "500m"
+</span><span class="s">        ports:
+</span><span class="s">        - containerPort: 80
+</span><span class="s">EOF</span>
+
+kubectl get po --watch <span class="c1"># 等待 pod 启动完成</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>测试将 nginx pod 已 <code>LoadBalancer</code> service 类型进行暴露</p>
+<blockquote>
+<p>下面资源清单文件中不指定 <code>loadBalancerIP</code>  的话，默认使用 <code>configmap</code> 中 <code>range-global</code> 地址池</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-bash" data-lang="bash">cat <span class="s">&lt;&lt; EOF |tr -s "n" | tee nginx-ingress-lb | kubectl apply -f -
+</span><span class="s">apiVersion: v1
+</span><span class="s">kind: Service
+</span><span class="s">metadata:
+</span><span class="s">  name: nginx-lb
+</span><span class="s">spec:
+</span><span class="s">  selector:
+</span><span class="s">    app: nginx
+</span><span class="s">  ports:
+</span><span class="s">  - port: 80
+</span><span class="s">    targetPort: 80
+</span><span class="s">  type: LoadBalancer
+</span><span class="s">EOF</span>
+
+kubectl get svc -o wide
+</code></pre></td></tr></table>
+</div>
+</div><p><img alt="image-20211012201651292" src="https://cdn.treesir.pub/img/image-20211012201651292.png"/></p>
+<blockquote>
+<p>从上图中，测试使用 LoadBalancer 自动获取到的 vip 地址，来访问 pod，可以看到链路是正常可以走通的。</p>
+</blockquote>
+<p><strong>查看 kube-vip leader 日志</strong></p>
+<p><img alt="image-20211012201943973" src="https://cdn.treesir.pub/img/image-20211012201943973.png"/></p>
+<blockquote>
+<p>从上图中，可以看到 kube-vip leader 新增了刚才，<code>nginx-lb</code> LoadBalancer 资源对象自动获取到的 vip 地址，并将其绑定在了自己的 eth0 接口中。</p>
+</blockquote>
+<ul>
+<li>
+<p><code>除了可以使用 地址池之外，还可以将 loadBalancerIP 写成静态的，方法如下</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-bash" data-lang="bash">apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-lb
+spec:
+  selector:
+    app: nginx
+  ports:
+  - port: <span class="m">80</span>
+    targetPort: <span class="m">80</span>
+  type: LoadBalancer
+loadBalancerIP: <span class="s2">"192.168.66.101"</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+</li>
+</ul>
+<h3 id="验证-kube-vip-loadbalancer-流量特征">验证 kube-vip LoadBalancer 流量特征</h3>
+<blockquote>
+<p>kube-vip 流量会将未匹配的流量，全路由给 <code>leader </code>，匹配到的流量将转发给对应的 <code>service</code>。这样说可能有点抽象，这里进行实际验证一下。这里就已刚才上面 <code>nginx-lb</code>，自动获取的 <code>192.168.66.210</code> vip 地址做示例。</p>
+</blockquote>
+<ul>
+<li>
+<p>验证无法匹配的流量</p>
+<blockquote>
+<p>这里我们使用 ssh 进行远程验证，ssh 默认工作在 <code>22</code> 端口，集群中目前 我们是没有匹配的 <code>service</code> 规则。</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-bash" data-lang="bash">ssh root@192.168.66.210
+</code></pre></td></tr></table>
+</div>
+</div><p><img alt="image-20211012203428628" src="https://cdn.treesir.pub/img/image-20211012203428628.png"/></p>
+<blockquote>
+<p>从图中，我们可以验证流量是给了 kube-vip 的 leader 上的 <code>sshd</code>，但是还不能确定。我们让 kube-vip leader 主动发生切换动作，再远程来看看。</p>
+</blockquote>
+<p><strong>关闭 master03 中的 kube-vip</strong></p>
+<blockquote>
+<p>把对应节点中的 <code>/etc/kubernetes/manifest/</code> 下资源清单给移走，kubelet 会自动删除对应  pod。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-bash" data-lang="bash">mv /etc/kubernetes/manifest/kube-vip.yaml /tmp/
+</code></pre></td></tr></table>
+</div>
+</div></blockquote>
+<p><img alt="image-20211012204240632" src="https://cdn.treesir.pub/img/image-20211012204240632.png"/></p>
+<p>现在变成 leader 变成 <code>master02</code> 了 再远程一下看看。</p>
+<p><img alt="image-20211012204349565" src="https://cdn.treesir.pub/img/image-20211012204349565.png"/></p>
+</li>
+<li>
+<p>验证匹配的流量</p>
+<blockquote>
+<p>这里将 LoadBalancer service 中的 端口改为 22，同样已 ssh 的端口进行测试</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-bash" data-lang="bash">cat <span class="s">&lt;&lt; EOF |tr -s "n" | tee nginx-ingress-lb | kubectl apply -f -
+</span><span class="s">apiVersion: v1
+</span><span class="s">kind: Service
+</span><span class="s">metadata:
+</span><span class="s">  name: nginx-lb
+</span><span class="s">spec:
+</span><span class="s">  selector:
+</span><span class="s">    app: nginx
+</span><span class="s">  ports:
+</span><span class="s">  - port: 22 # 改成 ssh port
+</span><span class="s">    targetPort: 80
+</span><span class="s">  type: LoadBalancer
+</span><span class="s">EOF</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><img alt="image-20211012204634140" src="https://cdn.treesir.pub/img/image-20211012204634140.png"/></p>
+</li>
+</ul>
+<h2 id="参考文档">参考文档</h2>
+<p><a href="https://www.treesir.pub/post/kube-vip-deploy-ha-k8s-cluster/">https://www.treesir.pub/post/kube-vip-deploy-ha-k8s-cluster/</a></p>
+<p><a href="https://kube-vip.io/usage/on-prem/">https://kube-vip.io/usage/on-prem/</a></p>
+<h1 id="总结">总结</h1>
+<blockquote>
+<p>在以前的情况下，实现 HA 需要部署外部的服务来支持，比如：nginx、haproxy、keepalived、lvs ； 通过 kube-vip 在没有其他额外的节点的情况下可以使用简单的配置实现集群外部访问 apiserver 的高可用， 并且能够很方便的对接  Kubernetes 的 LoadBalancer Service，如果我们将 ingress service 绑定在  LoadBalancer vip 中，就实现了外部流量访问的高可用性。在上生产前还是需要针对应用场景进行一下性能测试，在某些应用场景下没有专门的负载均衡器功能那么强大，且目前自身暂还不支持流量的负载功能。</p>
+</blockquote>
+</div>
+<div class="post-copyright">
+<p class="copyright-item">
+<span class="item-title">文章作者</span>
+<span class="item-content">Leafy'John</span>
+</p>
+<p class="copyright-item">
+<span class="item-title">上次更新</span>
+<span class="item-content">
+        2021-10-12
+        
+    </span>
+</p>
+<p class="copyright-item">
+<span class="item-title">许可协议</span>
+<span class="item-content"><a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license noopener" target="_blank">CC BY-NC-ND 4.0</a></span>
+</p>
+</div>
+<footer class="post-footer">
+<div class="post-tags">
+<a href="/tags/rke/">rke</a>
+<a href="/tags/kube-vip/">kube-vip</a>
+<a href="/tags/loadbalance/">Loadbalance </a>
+</div>
+<nav class="post-nav">
+<a class="prev" href="/post/golang-docs/">
+<i class="iconfont icon-left"></i>
+<span class="prev-text nav-default">Go 语言参考手册</span>
+<span class="prev-text nav-mobile">上一篇</span>
+</a>
+<a class="next" href="/post/coredns-deployment/">
+<span class="next-text nav-default">以二进制形式部署 CoreDNS 服务器</span>
+<span class="next-text nav-mobile">下一篇</span>
+<i class="iconfont icon-right"></i>
+</a>
+</nav>
+</footer>
+</article>
+</div>
+<div id="vcomments"></div>
+<script src="https://cdn.jsdelivr.net/npm/leancloud-storage@3/dist/av-min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js"></script>
+<script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'wS5tU9o2RILlBpQiEfIDgPwI-gzGzoHsz',
+        appKey: 'siSAWI3rzA6Ow8Tmiv7V4GO4',
+        notify:  true ,
+        verify:  true ,
+        avatar:'',
+        placeholder: '来留下点什么吧~',
+        visitor:  false 
+    });
+  </script>
+</div>
+</main>
+<footer class="footer" id="footer">
+<div class="social-links">
+<a class="iconfont icon-email" href="mailto:yangzun@treesir.pub" title="email"></a>
+<a class="iconfont icon-github" href="https://github.com/cdryzun" title="github"></a>
+<a class="iconfont icon-rss" href="https://cdryzun.github.io/index.xml" title="rss" type="application/rss+xml"></a>
+</div>
+<div class="copyright">
+<span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+</span>
+<span class="division">|</span>
+<span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+</span>
+<span class="copyright-year">
+<a class="busuanzi-footer" href="https://beian.miit.gov.cn/">湘ICP备2021002157号-1</a> <img alt="upai" class="ls-is-cached lazyloaded" height="28" src="https://cdn.treesir.pub/img/icp.png" style="margin: -25px 2px" width="23"/> <a href="https://www.upyun.com/?utm_source=lianmeng&amp;utm_medium=referral" rel="nofollow" target="_blank"><img alt="upai" class="ls-is-cached lazyloaded" height="28" src="https://cdn.treesir.pub/img/upyun.png" style="margin: -25px 2px" width="56"/></a>
+    © 
+    2019 - 
+    2023<span class="heart"><i class="iconfont icon-heart"></i></span><span>Leafy'John </span>
+</span>
+</div>
+</footer>
+<div class="back-to-top" id="back-to-top">
+<i class="iconfont icon-up"></i>
+</div>
+</div>
+<script crossorigin="anonymous" src="https://cdn.treesir.pub/blog-js/jquery.min.js"></script>
+<script crossorigin="anonymous" src="https://cdn.treesir.pub/blog-js/slideout.min.js"></script>
+<script crossorigin="anonymous" src="https://cdn.treesir.pub/blog-js/jquery.fancybox.min.js"></script>
+<script src="/js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js" type="text/javascript"></script>
+<script src="/js/copy-to-clipboard.js"></script>
+<script src="https://cdn.treesir.pub/blog-js/docsearch.min.js"></script>
+<script>
+    docsearch({
+    apiKey: "17388eec628e676a77d6235068b458df",
+    indexName: "blog",
+    appId: "KEECS2XKBV",
+    inputSelector: '.docsearch-input',
+    debug: false,
+    });
+</script>
+</body>
+</html>

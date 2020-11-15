@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>dns on 「Leafy&#39;John」PlayGround</title>
+    <link>https://cdryzun.github.io/tags/dns/</link>
+    <description>Recent content in dns on 「Leafy&#39;John」PlayGround</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 25 Sep 2021 16:40:31 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/tags/dns/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>以二进制形式部署 CoreDNS 服务器</title>
+      <link>https://cdryzun.github.io/post/coredns-deployment/</link>
+      <pubDate>Sat, 25 Sep 2021 16:40:31 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/coredns-deployment/</guid>
+      <description>背景 CoreDNS 是 Golang 编写的一个插件式 DNS 服务器，Kubernetes 1.13 后内置的默认 DNS 服务器。特点如下: 插件化：基于 Caddy 框架，实现了一个插件链的架构，将不同</description>
+    </item>
+    
+    <item>
+      <title>Coredns 出现间断性无法正常解析域名问题</title>
+      <link>https://cdryzun.github.io/post/intermittent-coredns-hosts/</link>
+      <pubDate>Thu, 07 Jan 2021 14:34:16 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/intermittent-coredns-hosts/</guid>
+      <description>问题描述: Kubernetes 节点中，有一台节点使用 coredns 进行解析某个域名时，出现间断性无法正常解析问题，而解析另外一个域名时不会出现解析问题。 再次重复一下问题重</description>
+    </item>
+    
+  </channel>
+</rss>

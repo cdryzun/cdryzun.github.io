@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Cloud on 「Leafy&#39;John」PlayGround</title>
+    <link>https://cdryzun.github.io/categories/cloud/</link>
+    <description>Recent content in Cloud on 「Leafy&#39;John」PlayGround</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 05 Oct 2023 16:40:38 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/categories/cloud/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>PVE AutoSnap 工具使用</title>
+      <link>https://cdryzun.github.io/post/pve-autosnap/</link>
+      <pubDate>Thu, 05 Oct 2023 16:40:38 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/pve-autosnap/</guid>
+      <description>项目介绍 Github 地址: https://github.com/Corsinvest/cv4pve-autosnap 安装和使用 1 2 3 4 5 6 7 wget https://github.com/Corsinvest/cv4pve-autosnap/releases/download/v1.14.8/cv4pve-autosnap-linux-x64.zip unzip cv4pve-autosnap-linux-x64.zip mv cv4pve-autosnap /usr/bin/ chmod a+x /usr/local/bin/cv4pve-autosnap 使用 备份快照 1 2 3 4 5 6 7 8 9 10 11 SNAP_LIST=&amp;#34;111,101&amp;#34; PVE_USER=&amp;#39;root@pam&amp;#39; PVE_PASSWD=&amp;#39;xxx&amp;#39; PVE_HOST=&amp;#39;192.168.8.19&amp;#39; for vmid in ${SNAP_LIST//,/ };do cv4pve-autosnap --host=${PVE_HOST} \ --username=${PVE_USER} \ --password=${PVE_PASSWD} --vmid=${vmid} \ snap --label=daily --keep=3 done 查</description>
+    </item>
+    
+  </channel>
+</rss>

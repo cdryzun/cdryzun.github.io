@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>helm on 「Leafy&#39;John」PlayGround</title>
+    <link>https://cdryzun.github.io/tags/helm/</link>
+    <description>Recent content in helm on 「Leafy&#39;John」PlayGround</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 25 May 2021 11:33:17 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/tags/helm/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>使用 Helm 配合 localPV 在 K8s 中部署 Mariadb 主程复制集群</title>
+      <link>https://cdryzun.github.io/post/helm-k8s-deploy-mariadb/</link>
+      <pubDate>Tue, 25 May 2021 11:33:17 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/helm-k8s-deploy-mariadb/</guid>
+      <description>环境说明 helm version: v3.3.1 kubernetes: v1.17.9 使用 helm chart: bitnami/mariadb 操作系统: CentOS 7.8.2003 helm 部署 mariadb 前的准备 添加 helm 私服 1 2 3 4 5 6 helm repo add bitnami https://charts.bitnami.com/bitnami helm repo update # 更新仓库索引 helm search repo mariadb bitnami/mariadb 9.3.12 10.5.10 Fast, reliable, scalable, and easy to use open-...</description>
+    </item>
+    
+    <item>
+      <title>使用 Helm 部署 Spinnaker 持续部署(CD)平台</title>
+      <link>https://cdryzun.github.io/post/spinnaker-helm-installd/</link>
+      <pubDate>Mon, 24 May 2021 16:33:49 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/spinnaker-helm-installd/</guid>
+      <description>环境说明 Kubernetes Version: v1.17.9 操作系统: CentOS 7.8.2003 Helm Version: v3.2.1 Spinnaker Version: 1.26.3 spinnaker 版本说明 spinnaker 组件说明 Deck：前端web页面 端口9000 Gate：API网关，所有程序通过gate与</description>
+    </item>
+    
+    <item>
+      <title>使用 helm 在 Kubernetes 中部署 Nexus 私服</title>
+      <link>https://cdryzun.github.io/post/helm-k8s-deploy-nexus/</link>
+      <pubDate>Sun, 23 May 2021 15:50:31 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/helm-k8s-deploy-nexus/</guid>
+      <description>环境说明 helm version: v3.3.1 kubernetes: v1.17.9 nexus: 3.29.0 部署 准备 storageClass 非 必要 操作，可以选择手动创建 pvc &amp;amp; pv，如果想部署 nfsStorageClass 的话，请参考早期整理的 文档。此篇文档实战部署步骤中基于 nfsStorageClass 进</description>
+    </item>
+    
+    <item>
+      <title>使用 Confluentinc 在 Kubernetes 集群中部署 Kafka 集群 </title>
+      <link>https://cdryzun.github.io/post/k8s-deploy-kafka-cluster/</link>
+      <pubDate>Tue, 19 Jan 2021 13:44:03 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/k8s-deploy-kafka-cluster/</guid>
+      <description>部署说明 kafka &amp;amp; zookeeper 集群部署工具: confluentinc 使用 helm 进行部署，并部署一个外置的 kafka 管理工具。 环境说明 kubernetes version: v1.17.4 helm version: v3.3.1 traefik version: v2.3.6 docker version: 18.09.6 k8s strage class: nfs kafka dashboard: kafka-manager 集群部署 Helm 应用下载 1</description>
+    </item>
+    
+    <item>
+      <title>部署 Nginx-Ingress 并配置暴露 kubernetes dashboard</title>
+      <link>https://cdryzun.github.io/post/ingress-to-dashboard/</link>
+      <pubDate>Tue, 22 Dec 2020 09:24:55 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/ingress-to-dashboard/</guid>
+      <description>环境说明 链接文档 软件版本说明 helm: v3.4.2 ingress: v3.16.1 Nginx Ingress 参考文档 安装 1 2 3 4 wget https://get.helm.sh/helm-v3.4.2-linux-amd64.tar.gz tar xf helm-v3.4.2-linux-amd64.tar.gz \ &amp;amp;&amp;amp; cp linux-amd64/helm /usr/local/bin/ 添加helm命令补全 1 2 helm completion bash \ &amp;amp;&amp;amp; helm completion bash &amp;gt; /etc/bash_completion.d/helm 添加 ingress repo 1 2 3 helm</description>
+    </item>
+    
+  </channel>
+</rss>

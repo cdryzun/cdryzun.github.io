@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>go on 「Leafy&#39;John」PlayGround</title>
+    <link>https://cdryzun.github.io/tags/go/</link>
+    <description>Recent content in go on 「Leafy&#39;John」PlayGround</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 02 Dec 2022 14:58:28 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/tags/go/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Go 语言参考手册</title>
+      <link>https://cdryzun.github.io/post/golang-docs/</link>
+      <pubDate>Fri, 02 Dec 2022 14:58:28 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/golang-docs/</guid>
+      <description>介绍 这是一个 Go 语言的参考手册，你也可以访问golang.org获取更多信息和其他文档。 Go 是在设计时考虑了系统编程的通用型编程语言。它是强类型</description>
+    </item>
+    
+  </channel>
+</rss>

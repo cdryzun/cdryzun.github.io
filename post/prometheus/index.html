@@ -1,0 +1,1492 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible"/>
+<title>Centos 单机部署 Prometheus - 「Leafy'John」PlayGround</title>
+<meta content="webkit" name="renderer"/>
+<meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport"/>
+<meta content="no-transform" http-equiv="Cache-Control"/>
+<meta content="no-siteapp" http-equiv="Cache-Control"/>
+<meta content="#f8f5ec" name="theme-color"/>
+<meta content="#f8f5ec" name="msapplication-navbutton-color"/>
+<meta content="yes" name="apple-mobile-web-app-capable"/>
+<meta content="#f8f5ec" name="apple-mobile-web-app-status-bar-style"/>
+<meta content="Leafy'John" name="author"/><meta content="此文档为归档文件，不保证有效，且供参考 环境说明 操作系统: CentOS Linux release 7.9.2009 (Core) Prometheus Version: 2.25.0 Prometheus 软件包下载 1 2 3 4 5 6 7 8 wget https://github.com/prometheus/prometheus/releases/download/v2.25.0/prometheus-2.25.0.linux-amd64.tar.gz tar xf prometheus-2.25.0.linux-amd64.tar.gz mkdir -p /usr/local/prometheus cp -a prometheus-2.25.0.linux-amd64/* /usr/local/prometheus # 复制文件到，刚" name="description"/><meta content="github action, pipeline, gitlab, nexus3, 技术分享, 前端技术, 计算机网络, devops, kubernetes, jenkins, centos, 技术积累, 个人文档, 个人总结, mysql, 运维, 自动化, python, hugo, k3s, kafka, go lang, helm, traefik, kubeadm, rancher, redis, rke, nginx, apache, 网络安全" name="keywords"/>
+<meta content="Hugo 0.92.0 with theme even" name="generator"/>
+<link href="https://cdryzun.github.io/post/prometheus/" rel="canonical"/>
+<link href="/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/>
+<link href="/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png"/>
+<link href="/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png"/>
+<link href="/manifest.json" rel="manifest"/>
+<link color="#5bbad5" href="/safari-pinned-tab.svg" rel="mask-icon"/>
+<link href="/sass/main.min.404b35997075abed13fc31198c48ccfa115c0855fc6e525128eac767d84fdcd2.css" rel="stylesheet"/>
+<link crossorigin="anonymous" href="https://cdn.treesir.pub/blog-css/jquery.fancybox.min.css" rel="stylesheet"/>
+<link href="/css/custom.css" rel="stylesheet"/>
+<meta content="Centos 单机部署 Prometheus" property="og:title"/>
+<meta content="此文档为归档文件，不保证有效，且供参考 环境说明 操作系统: CentOS Linux release 7.9.2009 (Core) Prometheus Version: 2.25.0 Prometheus 软件包下载 1 2 3 4 5 6 7 8 wget https://github.com/prometheus/prometheus/releases/download/v2.25.0/prometheus-2.25.0.linux-amd64.tar.gz tar xf prometheus-2.25.0.linux-amd64.tar.gz mkdir -p /usr/local/prometheus cp -a prometheus-2.25.0.linux-amd64/* /usr/local/prometheus # 复制文件到，刚" property="og:description"/>
+<meta content="article" property="og:type"/>
+<meta content="https://cdryzun.github.io/post/prometheus/" property="og:url"/><meta content="post" property="article:section"/>
+<meta content="2021-03-09T15:50:54+08:00" property="article:published_time"/>
+<meta content="2021-03-09T15:50:54+08:00" property="article:modified_time"/>
+<meta content="Centos 单机部署 Prometheus" itemprop="name"/>
+<meta content="此文档为归档文件，不保证有效，且供参考 环境说明 操作系统: CentOS Linux release 7.9.2009 (Core) Prometheus Version: 2.25.0 Prometheus 软件包下载 1 2 3 4 5 6 7 8 wget https://github.com/prometheus/prometheus/releases/download/v2.25.0/prometheus-2.25.0.linux-amd64.tar.gz tar xf prometheus-2.25.0.linux-amd64.tar.gz mkdir -p /usr/local/prometheus cp -a prometheus-2.25.0.linux-amd64/* /usr/local/prometheus # 复制文件到，刚" itemprop="description"/><meta content="2021-03-09T15:50:54+08:00" itemprop="datePublished"/>
+<meta content="2021-03-09T15:50:54+08:00" itemprop="dateModified"/>
+<meta content="2481" itemprop="wordCount"/>
+<meta content="" itemprop="keywords"/><meta content="summary" name="twitter:card"/>
+<meta content="Centos 单机部署 Prometheus" name="twitter:title"/>
+<meta content="此文档为归档文件，不保证有效，且供参考 环境说明 操作系统: CentOS Linux release 7.9.2009 (Core) Prometheus Version: 2.25.0 Prometheus 软件包下载 1 2 3 4 5 6 7 8 wget https://github.com/prometheus/prometheus/releases/download/v2.25.0/prometheus-2.25.0.linux-amd64.tar.gz tar xf prometheus-2.25.0.linux-amd64.tar.gz mkdir -p /usr/local/prometheus cp -a prometheus-2.25.0.linux-amd64/* /usr/local/prometheus # 复制文件到，刚" name="twitter:description"/>
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+<!--[if lt IE 9]>
+  <script src="https://cdn.treesir.pub/blog-js/html5shiv.min.js"></script>
+  <script src="https://cdn.treesir.pub/blog-js/respond.min.js"></script>
+<![endif]-->
+<link href="https://cdn.treesir.pub/blog-css/docsearch.min.css" rel="stylesheet"/>
+</head>
+<body>
+<header class="header" id="header">
+<div class="logo-wrapper">
+<a class="logo" href="/">Leafy'John」PlayGround</a>
+</div>
+<nav class="site-navbar">
+<ul class="menu" id="menu">
+<li class="menu-item">
+<a class="menu-item-link" href="/">主页</a>
+</li><li class="menu-item">
+<a class="menu-item-link" href="/post/">归档</a>
+</li><li class="menu-item">
+<a class="menu-item-link" href="/tags/">标签</a>
+</li><li class="menu-item">
+<a class="menu-item-link" href="/categories/">分类</a>
+</li>
+</ul><li style="display:inline-block;margin-right:10px;">
+<input class="docsearch-input" placeholder="Search" type="search"/>
+</li></nav>
+</header>
+<div class="mobile-navbar" id="mobile-navbar">
+<div class="mobile-header-logo">
+<a class="logo" href="/">Leafy'John」PlayGround</a>
+</div>
+<div class="mobile-navbar-icon">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+<nav class="mobile-menu slideout-menu" id="mobile-menu">
+<ul class="mobile-menu-list">
+<a href="/">
+<li class="mobile-menu-item">主页</li>
+</a><a href="/post/">
+<li class="mobile-menu-item">归档</li>
+</a><a href="/tags/">
+<li class="mobile-menu-item">标签</li>
+</a><a href="/categories/">
+<li class="mobile-menu-item">分类</li>
+</a>
+</ul>
+</nav>
+<div class="container" id="mobile-panel">
+<main class="main" id="main">
+<div class="content-wrapper">
+<div class="content" id="content">
+<article class="post">
+<header class="post-header">
+<h1 class="post-title">Centos 单机部署 Prometheus</h1>
+<div class="post-meta">
+<span class="post-time"> 2021-03-09 </span>
+<span class="more-meta"> 约 2481 字 </span>
+<span class="more-meta"> 预计阅读 5 分钟 </span>
+</div>
+</header>
+<div class="post-toc" id="post-toc">
+<h2 class="post-toc-title">文章目录</h2>
+<div class="post-toc-content always-active">
+<nav id="TableOfContents">
+<ul>
+<li><a href="#环境说明">环境说明</a>
+<ul>
+<li>
+<ul>
+<li><a href="#prometheus">Prometheus</a></li>
+</ul>
+</li>
+<li><a href="#软件包下载">软件包下载</a></li>
+<li><a href="#设置至环境变量内">设置至环境变量内</a></li>
+<li><a href="#添加为服务启动">添加为服务启动</a>
+<ul>
+<li><a href="#删除不必要的标签---参考配置httpsrawgithubusercontentcomaishangweiprometheus-demomasterprometheusprometheus4yml">删除不必要的标签   </a><a href="https://raw.githubusercontent.com/aishangwei/prometheus-demo/master/prometheus/prometheus4.yml">参考配置</a></li>
+<li><a href="#alertmanager-安装部署">AlertManager 安装部署</a></li>
+<li><a href="#配置linux-_node_exporter">配置linux _node_exporter</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#常用公式">常用公式</a>
+<ul>
+<li>
+<ul>
+<li><a href="#自定义数据持久查询">自定义数据持久查询</a></li>
+<li><a href="#服务发现">服务发现</a></li>
+<li><a href="#alertmanager-设置钉钉告警----参考链接httpswwwcnblogscompyuhp9548495html">alertmanager 设置钉钉告警    </a><a href="https://www.cnblogs.com/pyuh/p/9548495.html">参考链接</a></li>
+<li><a href="#配置黑盒监控">配置黑盒监控</a></li>
+<li><a href="#配置php-fpm_exporter">配置php-fpm_exporter</a></li>
+<li><a href="#win_exporter-安装配置">win_exporter 安装配置</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+<div class="post-content">
+<p><strong>此文档为归档文件，不保证有效，且供参考</strong></p>
+<h1 id="环境说明">环境说明</h1>
+<ul>
+<li>操作系统:  CentOS Linux release 7.9.2009 (Core)</li>
+<li>Prometheus Version:   <a href="https://github.com/prometheus/prometheus/releases/download/v2.25.0/prometheus-2.25.0.linux-amd64.tar.gz">2.25.0</a></li>
+</ul>
+<h3 id="prometheus">Prometheus</h3>
+<h2 id="软件包下载">软件包下载</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-bash" data-lang="bash">wget https://github.com/prometheus/prometheus/releases/download/v2.25.0/prometheus-2.25.0.linux-amd64.tar.gz
+
+
+tar xf prometheus-2.25.0.linux-amd64.tar.gz 
+
+mkdir -p /usr/local/prometheus
+
+cp -a prometheus-2.25.0.linux-amd64/* /usr/local/prometheus  <span class="c1"># 复制文件到，刚才创建的文件夹下</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><img alt="image-20210309160753537" src="https://cdn.treesir.pub/img/image-20210309160753537.png"/></p>
+<h2 id="设置至环境变量内">设置至环境变量内</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-bash" data-lang="bash">vim /etc/profile
+<span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span>/usr/local/prometheus:<span class="nv">$PATH</span>   <span class="c1"># 添加到 PATH 变量中</span>
+
+<span class="nb">source</span> /etc/profile
+
+<span class="o">[</span>root@Myvps ~<span class="o">]</span><span class="c1"># prometheus --version</span>
+prometheus, version 2.25.0 <span class="o">(</span>branch: HEAD, revision: a6be548dbc17780d562a39c0e4bd0bd4c00ad6e2<span class="o">)</span>
+  build user:       root@615f028225c9
+  build date:       20210217-14:17:24
+  go version:       go1.15.8
+  platform:         linux/amd64
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="添加为服务启动">添加为服务启动</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-shell" data-lang="shell">
+groupadd -r prometheus <span class="o">&amp;&amp;</span> useradd -r -g prometheus -s /sbin/nologin -M prometheus   <span class="c1"># 添加 prometheus 专属运行用户</span>
+
+chown -R prometheus:prometheus /usr/local/prometheus/  <span class="c1"># 权限赋予给专属用户</span>
+
+touch /usr/lib/systemd/system/prometheus.service <span class="se">\
+</span><span class="se"></span><span class="o">&amp;&amp;</span> chown prometheus:prometheus /usr/lib/systemd/system/prometheus.service  <span class="c1"># 创建服务启动文件</span>
+
+
+mkdir -p /etc/prometheus/ /var/lib/prometheus
+
+cp -a /usr/local/prometheus/console_libraries/ /usr/local/prometheus/consoles/ /usr/local/prometheus/prometheus.yml  /etc/prometheus/  <span class="c1"># copy 配置文件到 配置文件路径下</span>
+
+/usr/local/prometheus/prometheus <span class="se">\
+</span><span class="se"></span>--config.file<span class="o">=</span>/etc/prometheus/prometheus.yml <span class="se">\
+</span><span class="se"></span>--storage.tsdb.path<span class="o">=</span>/var/lib/prometheus <span class="se">\
+</span><span class="se"></span>--web.external-url<span class="o">=</span><span class="s2">"http://prometheus.treesir.pub:1800/prometheus"</span> <span class="se">\
+</span><span class="se"></span>--storage.tsdb.retention.time<span class="o">=</span>168h <span class="se">\
+</span><span class="se"></span>--web.enable-lifecycle <span class="se">\
+</span><span class="se"></span>--storage.tsdb.no-lockfile <span class="se">\
+</span><span class="se"></span>--web.route-prefix<span class="o">=</span><span class="s2">"/prometheus"</span> <span class="se">\
+</span><span class="se"></span>--web.listen-address<span class="o">=</span><span class="s2">"0.0.0.0:19091"</span> <span class="se">\
+</span><span class="se"></span>--web.console.templates<span class="o">=</span>/etc/prometheus/consoles <span class="se">\
+</span><span class="se"></span>--web.console.libraries<span class="o">=</span>/etc/prometheus/console_libraries   <span class="c1"># 测试启动</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>上面示例中，prometheus 监听在 127.0.0.1:9091 之上，外部无法访问 127.0.0.1 地址，且默认 Prometheus 为做任何加密处理。这里演示使用 <code>nginx</code> 虚拟主机配置 <code>代理功能</code> &amp; <code>用户密码</code> 实现访问，其他还有很多工具可以实现，这里不多赘述，可以自行 <a href="https://www.baidu.com">百度</a> 搜索。</p>
+<ul>
+<li><a href="https://prometheus.io/docs/guides/basic-auth/">参考文档</a></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-bash" data-lang="bash">yum install httpd-tools -y
+
+htpasswd -c /etc/prometheus/.auth admin <span class="c1"># 交互式创建 admin 账号和密码</span>
+
+
+vim /usr/local/nginx/conf/vhost/prometheus.conf   <span class="c1"># nginx 添加 prometheus.conf 虚拟主机配置文件，类容如下所示。</span>
+server <span class="o">{</span>
+      listen 1800<span class="p">;</span>
+      server_name prometheus.treesir.pub<span class="p">;</span>
+      charset    utf-8<span class="p">;</span>
+      location / <span class="o">{</span>
+            auth_basic           <span class="s2">"Prometheus"</span><span class="p">;</span>
+            auth_basic_user_file /etc/prometheus/.auth<span class="p">;</span>
+            proxy_pass       http://127.0.0.1:9091<span class="p">;</span>
+         <span class="o">}</span>
+<span class="o">}</span>
+
+
+<span class="o">[</span>root@Myvps ~<span class="o">]</span><span class="c1"># nginx -t</span>
+nginx: the configuration file /usr/local/nginx/conf/nginx.conf syntax is ok
+nginx: configuration file /usr/local/nginx/conf/nginx.conf <span class="nb">test</span> is successful
+<span class="o">[</span>root@Myvps ~<span class="o">]</span><span class="c1"># nginx -s reload  # 重载配置</span>
+</code></pre></td></tr></table>
+</div>
+</div></blockquote>
+<ul>
+<li>
+<p>添加至systemctl 服务</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-shell" data-lang="shell">
+chown prometheus:prometheus -R /var/lib/prometheus/
+
+cat &gt; /usr/lib/systemd/system/prometheus.service <span class="s">&lt;&lt; EOF
+</span><span class="s">[Unit]
+</span><span class="s">Description=Prometheus
+</span><span class="s">Documentation=https://prometheus.io/
+</span><span class="s">After=network.target
+</span><span class="s">
+</span><span class="s">[Service]
+</span><span class="s">Type=simple
+</span><span class="s">User=prometheus
+</span><span class="s">ExecStart=/usr/local/prometheus/prometheus \
+</span><span class="s">--config.file=/etc/prometheus/prometheus.yml \
+</span><span class="s">--storage.tsdb.path=/var/lib/prometheus \
+</span><span class="s">--web.external-url=http://prometheus.treesir.pub:1800/prometheus \
+</span><span class="s">--storage.tsdb.retention.time=168h \
+</span><span class="s">--web.enable-lifecycle \
+</span><span class="s">--storage.tsdb.no-lockfile \
+</span><span class="s">--web.route-prefix=/prometheus \
+</span><span class="s">--web.listen-address=0.0.0.0:19091 \
+</span><span class="s">--web.console.templates=/etc/prometheus/consoles \
+</span><span class="s">--web.console.libraries=/etc/prometheus/console_libraries
+</span><span class="s">Restart=on-failure
+</span><span class="s">
+</span><span class="s">[Install]
+</span><span class="s">WantedBy=multi-user.target
+</span><span class="s">EOF</span>
+
+systemctl start prometheus <span class="o">&amp;&amp;</span> systemctl <span class="nb">enable</span> prometheus <span class="o">&amp;&amp;</span> systemctl status prometheus
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+<h3 id="删除不必要的标签---参考配置httpsrawgithubusercontentcomaishangweiprometheus-demomasterprometheusprometheus4yml">删除不必要的标签   <a href="https://raw.githubusercontent.com/aishangwei/prometheus-demo/master/prometheus/prometheus4.yml">参考配置</a></h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-fallback" data-lang="fallback">  - job_name: 'docker'
+    static_configs:
+      - targets: ['192.168.20.172:8080', '192.168.20.173:8080', '192.168.20.174:8080']
+    metric_relabel_configs:
+      - source_labels: [__name__]
+        separator: ','
+        regex: '(container_tasks_state|container_memory_failures_total)'
+        action: drop
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="alertmanager-安装部署">AlertManager 安装部署</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-shell" data-lang="shell"> <span class="c1">#下载地址: https://prometheus.io/download/</span>
+wget https://github.com/prometheus/alertmanager/releases/download/v0.17.0/alertmanager-0.17.0.linux-amd64.tar.gz
+tar xf alertmanager-0.17.0.linux-amd64.tar.gz
+sudo firewall-cmd --zone<span class="o">=</span>public --add-port<span class="o">=</span>9093/tcp --permanent
+sudo firewall-cmd --zone<span class="o">=</span>public --add-port<span class="o">=</span>9093/udp --permanent
+sudo firewall-cmd --reload
+
+cp alertmanager/<span class="o">{</span>alertmanager,amtool<span class="o">}</span> /usr/local/bin/
+mkdir /etc/alertmanager/
+cat &gt; /etc/alertmanager/alertmanager.yml <span class="s">&lt;&lt; EOF
+</span><span class="s">global:
+</span><span class="s">  smtp_smarthost: 'smtp.163.com'
+</span><span class="s">  smtp_from: 'csheidou@163.com'
+</span><span class="s">  smtp_auth_username: 'csheidou@163.com'
+</span><span class="s">  smtp_auth_password: 'hdkj123456'
+</span><span class="s">  smtp_require_tls: false
+</span><span class="s">
+</span><span class="s">route:
+</span><span class="s">  receiver: 'mail'
+</span><span class="s">
+</span><span class="s">receivers:
+</span><span class="s">- name: 'mail'
+</span><span class="s">  email_configs:
+</span><span class="s">  - to: '522181549@qq.com'
+</span><span class="s">EOF</span>
+
+
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>
+<p>Alertmanager 启动</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-fallback" data-lang="fallback">nohup alertmanager --config.file=/etc/alertmanager/alertmanager.yml --web.external-url=http://hdkj.alertmanager.com &gt;/tmp/alertmanager.log 2&gt;&amp;1 &amp;  #启动 
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>添加为服务自启动</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-bash" data-lang="bash"> cat  &gt; /usr/lib/systemd/system/alertmanager.service <span class="s">&lt;&lt;EOF
+</span><span class="s">[Unit]
+</span><span class="s">Description=alertmanager
+</span><span class="s">Documentation=https://github.com/prometheus/alertmanager
+</span><span class="s">After=network.target
+</span><span class="s">
+</span><span class="s">[Service]
+</span><span class="s">Type=simple
+</span><span class="s">User=root
+</span><span class="s">ExecStart=/usr/local/bin/php-fpm-exporter --addr 0.0.0.0:9190 --endpoint http://127.0.0.1:9010/status 
+</span><span class="s">Restart=on-failure
+</span><span class="s">
+</span><span class="s">[Install]
+</span><span class="s">WantedBy=multi-user.target
+</span><span class="s">EOF</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>prometheus dingtalk webhook</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-bash" data-lang="bash"> wget https://github.com/timonwong/prometheus-webhook-dingtalk/releases/download/v1.4.0/prometheus-webhook-dingtalk-1.4.0.linux-amd64.tar.gz
+
+ mv prometheus-webhook-dingtalk-1.4.0.linux-amd64 /usr/local/webhook-dingtalk
+
+ cat /etc/profile
+ <span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span>/usr/local/webhook-dingtalk:<span class="nv">$PATH</span>  <span class="c1"># 添加到环境变量至 /etc/profile 中永久生效</span>
+
+mkdir -p /etc/webhook-dingtalk   
+cp /usr/local/webhook-dingtalk/config.example.yml /etc/webhook-dingtalk/config.yml <span class="c1"># 添加配置文件</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><p><img alt="image-20210314113423734" src="https://cdn.treesir.pub/img/image-20210314113423734.png"/></p>
+<blockquote>
+<p>添加自定义机器人, 选择密钥加签</p>
+</blockquote>
+<p><img alt="image-20210314113559950" src="https://cdn.treesir.pub/img/image-20210314113559950.png"/></p>
+<p><img alt="image-20210314113623278" src="https://cdn.treesir.pub/img/image-20210314113623278.png"/></p>
+</li>
+</ul>
+<p>将默认配置文件中的，token 替换为刚才生成的 token，如配置了密钥加签还需要将 加签密钥，添加到 <code> secret:</code> 自动中</p>
+<p><img alt="image-20210314114033365" src="https://cdn.treesir.pub/img/image-20210314114033365.png"/></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-bash" data-lang="bash">sed -i <span class="s2">"s#xxxxxxxxxxxx#3136d33c12465a58a1#g"</span> /etc/webhook-dingtalk/config.yml 
+</code></pre></td></tr></table>
+</div>
+</div><p>测试启动</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-bash" data-lang="bash">prometheus-webhook-dingtalk <span class="se">\
+</span><span class="se"></span>--web.listen-address<span class="o">=</span><span class="s2">"127.0.0.1:8060"</span> <span class="se">\
+</span><span class="se"></span>--web.enable-ui <span class="se">\
+</span><span class="se"></span>--config.file<span class="o">=</span>/etc/webhook-dingtalk/config.yml <span class="se">\
+</span><span class="se"></span>--log.level<span class="o">=</span>info <span class="se">\
+</span><span class="se"></span>--log.format<span class="o">=</span>json
+
+curl http://localhost:8060/dingtalk/webhook1/send <span class="se">\
+</span><span class="se"></span>-H <span class="s1">'Content-Type: application/json'</span> <span class="se">\
+</span><span class="se"></span>-d <span class="s1">'{"msgtype": "text",
+</span><span class="s1">"text": {
+</span><span class="s1">"content": "我就是我, 是不一样的烟火"
+</span><span class="s1">}
+</span><span class="s1">}'</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><img alt="image-20210314115118455" src="https://cdn.treesir.pub/img/image-20210314115118455.png"/></p>
+<blockquote>
+<p><code>可以看的，发送消息成功了，只是我们发送的消息 和 alert 模板里面的值不匹配，导致渲染消息没有成功</code>。</p>
+</blockquote>
+<p>webhook-dingtalk 配置为服务自启动</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-bash" data-lang="bash"> cat  &gt; /usr/lib/systemd/system/webhook-dingtalk.service <span class="s">&lt;&lt;EOF
+</span><span class="s">[Unit]
+</span><span class="s">Description=webhook-dingtalk
+</span><span class="s">Documentation=https://github.com/timonwong/prometheus-webhook-dingtalk
+</span><span class="s">After=network.target
+</span><span class="s">
+</span><span class="s">[Service]
+</span><span class="s">Type=simple
+</span><span class="s">User=root
+</span><span class="s">ExecStart=/usr/local/webhook-dingtalk/prometheus-webhook-dingtalk \
+</span><span class="s">--web.listen-address=127.0.0.1:8060 \
+</span><span class="s">--config.file=/etc/webhook-dingtalk/config.yml \
+</span><span class="s">--log.level=info \
+</span><span class="s">--log.format=json
+</span><span class="s">
+</span><span class="s">Restart=on-failure
+</span><span class="s">
+</span><span class="s">[Install]
+</span><span class="s">WantedBy=multi-user.target
+</span><span class="s">EOF</span>
+
+systemctl <span class="nb">enable</span>  webhook-dingtalk.service
+systemctl start webhook-dingtalk.service
+systemctl status webhook-dingtalk.service
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>
+<p>dingtalk</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-bash" data-lang="bash">cat &gt; /etc/alertmanager/alertmanager.yml <span class="s">&lt;&lt; EOF
+</span><span class="s">global:
+</span><span class="s">  resolve_timeout: 5m
+</span><span class="s">route:
+</span><span class="s">  receiver: webhook
+</span><span class="s">  group_wait: 30s
+</span><span class="s">  group_interval: 5m
+</span><span class="s">  repeat_interval: 4h
+</span><span class="s">  group_by: [alertname]
+</span><span class="s">  routes:
+</span><span class="s">  - receiver: webhook
+</span><span class="s">    group_wait: 10s
+</span><span class="s">    match:
+</span><span class="s">      team: node
+</span><span class="s">receivers:
+</span><span class="s">- name: webhook
+</span><span class="s">  webhook_configs:
+</span><span class="s">  - url: http://127.0.0.1:8060/dingtalk/webhook1/send
+</span><span class="s">    send_resolved: true
+</span><span class="s">EOF</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>alertmange 配置服务自启动</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-bash" data-lang="bash">alertmanager <span class="se">\
+</span><span class="se"></span>--config.file<span class="o">=</span>/etc/alertmanager/alertmanager.yml <span class="se">\
+</span><span class="se"></span>--web.external-url<span class="o">=</span>http://alertmanager.treesir.pub <span class="se">\
+</span><span class="se"></span>--web.listen-address<span class="o">=</span><span class="s2">"127.0.0.1:9093"</span>
+<span class="c1"># 测试启动</span>
+
+
+cat  &gt; /usr/lib/systemd/system/alertmanager.service <span class="s">&lt;&lt;EOF
+</span><span class="s">[Unit]
+</span><span class="s">Description=alertmanager
+</span><span class="s">Documentation=https://github.com/prometheus/alertmanager
+</span><span class="s">After=network.target
+</span><span class="s">
+</span><span class="s">[Service]
+</span><span class="s">Type=simple
+</span><span class="s">User=root
+</span><span class="s">ExecStart=/usr/local/alertmanager/alertmanager \
+</span><span class="s">--config.file=/etc/alertmanager/alertmanager.yml \
+</span><span class="s">--web.external-url=http://alertmanager.treesir.pub \
+</span><span class="s">--web.listen-address=127.0.0.1:9093
+</span><span class="s">
+</span><span class="s">Restart=on-failure
+</span><span class="s">
+</span><span class="s">[Install]
+</span><span class="s">WantedBy=multi-user.target
+</span><span class="s">EOF</span>
+
+systemctl <span class="nb">enable</span>  alertmanager.service
+systemctl start alertmanager.service
+systemctl status alertmanager.service
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+<h3 id="配置linux-_node_exporter">配置linux _node_exporter</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-fallback" data-lang="fallback">node_exporter --collector.textfile.directory /var/lib/node_exporter/textfile_collector --collector.systemd --collector.systemd.unit-whitelist="(docker|sshd|rsyslog).service" --web.listen-address="0.0.0.0:9600" --web.telemetry-path="/node_metrics" &amp;
+
+node_exporter --web.listen-address="0.0.0.0:9600" &amp;   #指定端口启动
+
+
+
+nohup node_exporter --collector.textfile.directory /var/lib/node_exporter/textfile_collector --collector.systemd --collector.systemd.unit-whitelist="(docker|sshd|rsyslog).service" &gt; /tmp/node_exporter.out 2&gt;&amp;1 &amp;          # 监控服务是否运行
+
+
+
+node_systemd_unit_state{name="docker.service"}   ## 只查询 docker服务
+
+node_systemd_unit_state{name="docker.service",state="active"}  #返回活动状态
+ 
+node_systemd_unit_state{name="docker.service"} == 1 #返回当前服务的状态
+
+[root@localhost textfile_collector]# cat matadata.prom  
+metadata{role="122",datacenter="LOCAL"} 1   #自定义收集文本
+[root@localhost textfile_collector]# ll /var/lib/node_exporter/textfile_collector/matadata.prom 
+-rw-r--r-- 1 root root 42 6月  12 21:15 /var/lib/node_exporter/textfile_collector/matadata.prom
+		--collector.textfile.directory  #指定收集路径
+
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="常用公式">常用公式</h1>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-shell" data-lang="shell">promtool check config ./prometheus.yml   <span class="c1">#检查配置文件是否有错误</span>
+<span class="m">100</span>  / <span class="o">((</span>node_memory_MemTotal_bytes - <span class="o">(</span>node_memory_MemFree_bytes + node_memory_Cached_bytes + node_memory_Buffers_bytes<span class="o">))</span> / node_memory_MemTotal_bytes * 10<span class="o">)</span>   <span class="c1">#内存使用计公式</span>
+ 
+<span class="m">100</span> - avg <span class="o">(</span>irate <span class="o">(</span>node_cpu_seconds_total<span class="o">{</span><span class="nv">job</span><span class="o">=</span><span class="s2">"内网服务器122"</span>,mode<span class="o">=</span><span class="s2">"idle"</span><span class="o">}[</span>5m<span class="o">]))</span> by <span class="o">(</span>instance<span class="o">)</span> * <span class="m">100</span>  <span class="c1">#计算5分钟CPU平均使用</span>
+ 
+<span class="o">(</span>node_filesystem_size_bytes<span class="o">{</span><span class="nv">mountpoint</span><span class="o">=</span><span class="s2">"/"</span><span class="o">}</span> - node_filesystem_free_bytes<span class="o">{</span><span class="nv">mountpoint</span><span class="o">=</span><span class="s2">"/"</span><span class="o">})</span> / 
+node_filesystem_size_bytes<span class="o">{</span><span class="nv">mountpoint</span><span class="o">=</span><span class="s2">"/"</span><span class="o">}</span> * <span class="m">100</span>  <span class="c1">#计算根分区磁盘使用率公式</span>
+
+
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="自定义数据持久查询">自定义数据持久查询</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-shell" data-lang="shell"><span class="nb">cd</span> /etc/prometheus <span class="o">&amp;&amp;</span> mkdir -p rules
+<span class="c1">#在prometheus.yml 中添加一下信息</span>
+rule_files:
+  - <span class="s2">"rules/node_alerts.yml"</span>
+cat &gt; rules/node_alerts.yml <span class="s">&lt;&lt; EOF 
+</span><span class="s">groups:
+</span><span class="s">  - name: node_alerts
+</span><span class="s">    interval: 10s
+</span><span class="s">    rules:
+</span><span class="s">    - record: instance:node_cpu:avg_rate5m
+</span><span class="s">      expr: 100 - avg (irate (node_cpu_seconds_total{mode="idle"}[5m])) by (instance) * 100
+</span><span class="s">      labels:
+</span><span class="s">        metric_tyep: aggregation
+</span><span class="s">    - record: instance:node_memory_usage:percentage
+</span><span class="s">      expr: 100  / ((node_memory_MemTotal_bytes - (node_memory_MemFree_bytes + node_memory_Cached_bytes + node_memory_Buffers_bytes)) / node_memory_MemTotal_bytes * 10) 
+</span><span class="s">    - record: instance:root:node_filesystem_usage:percentage
+</span><span class="s">      expr: (node_filesystem_size_bytes{mountpoint="/"} - node_filesystem_free_bytes{mountpoint="/"}) / node_filesystem_size_bytes{mountpoint="/"} * 100
+</span><span class="s">EOF</span>
+/usr/sbin/lsof -n -P -t -i :9090 <span class="p">|</span>xargs <span class="nb">kill</span> -HUP    <span class="c1">#重启加载配置</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="服务发现">服务发现</h3>
+<ul>
+<li>
+<p>基于文件</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span><span class="lnt">74
+</span><span class="lnt">75
+</span><span class="lnt">76
+</span><span class="lnt">77
+</span><span class="lnt">78
+</span><span class="lnt">79
+</span><span class="lnt">80
+</span><span class="lnt">81
+</span><span class="lnt">82
+</span><span class="lnt">83
+</span><span class="lnt">84
+</span><span class="lnt">85
+</span><span class="lnt">86
+</span><span class="lnt">87
+</span><span class="lnt">88
+</span><span class="lnt">89
+</span><span class="lnt">90
+</span><span class="lnt">91
+</span><span class="lnt">92
+</span><span class="lnt">93
+</span><span class="lnt">94
+</span><span class="lnt">95
+</span><span class="lnt">96
+</span><span class="lnt">97
+</span><span class="lnt">98
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-shell" data-lang="shell"> <span class="nb">cd</span> /etc/prometheus
+ mkdir -pv targets/<span class="o">{</span>linux_nodes,docker_nodes,win_nodes<span class="o">}</span>
+
+
+
+<span class="o">[</span>root@localhost prometheus<span class="o">]</span><span class="c1"># cat prometheus.yml</span>
+global:
+  scrape_interval:     15s <span class="c1"># Set the scrape interval to every 15 seconds. Default is every 1 minute.</span>
+  evaluation_interval: 15s <span class="c1"># Evaluate rules every 15 seconds. The default is every 1 minute.</span>
+  <span class="c1"># scrape_timeout is set to the global default (10s).</span>
+
+<span class="c1"># Alertmanager configuration</span>
+alerting:
+  alertmanagers:
+  - static_configs:
+    - targets:
+      - 192.168.8.131:9093
+
+<span class="c1"># Load rules once and periodically evaluate them according to the global 'evaluation_interval'.</span>
+rule_files:
+  - <span class="s2">"rules/node_alerts.yml"</span>
+  <span class="c1"># - "second_rules.yml"</span>
+
+<span class="c1"># A scrape configuration containing exactly one endpoint to scrape:</span>
+<span class="c1"># Here it's Prometheus itself.</span>
+scrape_configs:
+  - job_name: <span class="s1">'Prometheus'</span>
+    static_configs:
+    - targets: <span class="o">[</span><span class="s1">'192.168.8.122:9090'</span><span class="o">]</span>
+      labels:
+        instance: <span class="s1">'192.168.8.122:9090'</span>
+
+  - job_name: <span class="s1">'linux_node'</span>
+    file_sd_configs:
+      - files:
+        - targets/linux_nodes/*.json
+        refresh_interval: 1m
+
+  - job_name: <span class="s1">'docker'</span>
+    file_sd_configs:
+      - files:
+        - targets/docker_nodes/*.json
+        refresh_interval: 1m
+
+  - job_name: <span class="s1">'win_node'</span>
+    file_sd_configs:
+      - files:
+        - targets/win_nodes/*.json
+        refresh_interval: 1m
+
+  - job_name: <span class="s1">'alertmanager'</span>
+    static_configs:
+    - targets: <span class="o">[</span><span class="s1">'192.168.8.131:9093'</span><span class="o">]</span> 
+      labels:
+        instance: <span class="s1">'192.168.8.131:9093'</span>
+
+<span class="o">[</span>root@localhost prometheus<span class="o">]</span><span class="c1"># cat targets/docker_nodes/docker_nodes.json </span>
+<span class="o">[{</span>
+   <span class="s2">"targets"</span>: <span class="o">[</span>
+   <span class="s2">"192.168.8.122:9999"</span>,
+   <span class="s2">"192.168.8.131:9999"</span>
+<span class="o">]</span>
+<span class="o">}]</span>
+
+
+<span class="o">[</span>root@localhost prometheus<span class="o">]</span><span class="c1"># cat targets/linux_nodes/linux_nodes.json </span>
+<span class="o">[{</span>
+  <span class="s2">"targets"</span>: <span class="o">[</span>
+   <span class="s2">"192.168.8.131:9100"</span>,
+   <span class="s2">"192.168.8.122:9100"</span>
+<span class="o">]</span>
+<span class="o">}]</span>
+
+
+<span class="o">[</span>root@localhost prometheus<span class="o">]</span><span class="c1"># cat targets/win_nodes/yangzun_node.json</span>
+<span class="o">[{</span>
+   <span class="s2">"targets"</span>: <span class="o">[</span>
+    <span class="s2">"192.168.8.66:9182"</span>
+<span class="o">]</span>
+<span class="o">}]</span>
+
+<span class="o">[</span>root@localhost prometheus<span class="o">]</span><span class="c1"># promtool check config prometheus.yml</span>
+Checking prometheus.yml
+  SUCCESS: <span class="m">1</span> rule files found
+
+Checking rules/node_alerts.yml
+  SUCCESS: <span class="m">3</span> rules found
+
+/usr/sbin/lsof -n -P -t -i :9090 <span class="p">|</span>xargs <span class="nb">kill</span> -HUP
+
+
+
+// 也可以使用下面的这种方式（YAML）
+<span class="c1"># cat /etc/prometheus/targets/nodes/demo.json</span>
+- targets:
+- <span class="s2">"192.168.20.172:8080"</span>
+- <span class="s2">"192.168.20.173:8080"</span>
+- <span class="s2">"192.168.20.174:8080"</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+<h3 id="alertmanager-设置钉钉告警----参考链接httpswwwcnblogscompyuhp9548495html">alertmanager 设置钉钉告警    <a href="https://www.cnblogs.com/pyuh/p/9548495.html">参考链接</a></h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-shell" data-lang="shell">yum install go -y 
+mkdir -p /usr/lib/golang/src/github.com/timonwong/
+git clone https://github.com/timonwong/prometheus-webhook-dingtalk.git
+make 
+cp prometheus-webhook-dingtalk /usr/local/bin
+ nohup prometheus-webhook-dingtalk --web.listen-address<span class="o">=</span><span class="s2">":8228"</span> --ding.profile<span class="o">=</span><span class="s2">"webhook1=https://oapi.dingtalk.com/robot/send?access_token=d4d3069d3ef12a9487ecf878b7611579d8d100e0a82516cc8e80009cbb506ebc"</span>   2&gt;<span class="p">&amp;</span><span class="m">1</span> 1&gt;/tmp/dingding.log <span class="p">&amp;</span>               <span class="c1">#安装钉钉插件并启动 </span>
+
+
+
+
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="配置黑盒监控">配置黑盒监控</h3>
+<p>(下载地址)[<a href="https://github.com/prometheus/blackbox_exporter">https://github.com/prometheus/blackbox_exporter</a>]</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-shell" data-lang="shell">wget https://github.com/prometheus/blackbox_exporter/releases/download/v0.14.0/blackbox_exporter-0.14.0.linux-amd64.tar.gz
+tar xf blackbox_exporter-0.14.0.linux-amd64.tar.gz
+mkdir /etc/exporter <span class="o">&amp;&amp;</span> cp ./blackbox_exporter-0.14.0.linux-amd64/blackbox_exporter-0.14.0.linux-amd64 /usr/local/bin/
+  cp ./blackbox_exporter-0.14.0.linux-amd64/blackbox.yml /etc/exporter/blackbox.yml
+nohup blackbox_exporter --config.file<span class="o">=</span><span class="s2">"/etc/exporter/blackbox.yml"</span> --web.listen-address<span class="o">=</span><span class="s2">":9115"</span> --log.level<span class="o">=</span>info &gt;/tmp/blackbox.log 2&gt;<span class="p">&amp;</span><span class="m">1</span> <span class="p">&amp;</span>  <span class="c1">#启动</span>
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>
+<h4 id="blackbox_exporter-添加至自启动">blackbox_exporter 添加至自启动</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-shell" data-lang="shell"> cat  &gt; /usr/lib/systemd/system/blackbox_exporter.service <span class="s">&lt;&lt;EOF
+</span><span class="s">[Unit]
+</span><span class="s">Description=blackbox_exporter 
+</span><span class="s">Documentation=https://github.com/prometheus/blackbox_exporter
+</span><span class="s">After=network.target
+</span><span class="s">
+</span><span class="s">[Service]
+</span><span class="s">Type=simple
+</span><span class="s">User=root
+</span><span class="s">ExecStart=/usr/local/bin/blackbox_exporter --config.file=/etc/exporter/blackbox.yml --web.listen-address=192.168.8.122:9115
+</span><span class="s">Restart=on-failure
+</span><span class="s">
+</span><span class="s">[Install]
+</span><span class="s">WantedBy=multi-user.target
+</span><span class="s">EOF</span>
+
+systemctl daemon-reload <span class="o">&amp;&amp;</span> systemctl start blackbox_exporter <span class="o">&amp;&amp;</span> systemctl status blackbox_exporter   <span class="c1">#启动</span>
+
+systemctl <span class="nb">enable</span> blackbox_exporter  <span class="c1">#加入开机自启动</span>
+lsof -i :9115
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>docker 启动</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-bash" data-lang="bash">mkdir -p /application/black-box-exporter/config
+
+wget -O /application/black-box-exporter/config/blackbox.yml https://raw.githubusercontent.com/prometheus/blackbox_exporter/master/blackbox.yml
+
+docker run -d <span class="se">\
+</span><span class="se"></span>-p 9115:9115 --name blackbox_exporter <span class="se">\
+</span><span class="se"></span>--restart always <span class="se">\
+</span><span class="se"></span>--net<span class="o">=</span>host <span class="se">\
+</span><span class="se"></span>-v /application/black-box-exporter/config:/config prom/blackbox-exporter:master <span class="se">\
+</span><span class="se"></span>--config.file<span class="o">=</span>/config/blackbox.yml <span class="se">\
+</span><span class="se"></span>--web.external-url<span class="o">=</span>/black-box
+
+
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+<h3 id="配置php-fpm_exporter">配置php-fpm_exporter</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-shell" data-lang="shell">
+<span class="o">[</span>root@hadoopname ~<span class="o">]</span><span class="c1"># egrep '/ping|/status' /usr/local/php/etc/php-fpm.d/walle.conf </span>
+pm.status_path <span class="o">=</span> /status
+ping.path <span class="o">=</span> /ping    <span class="c1">#</span>
+
+
+<span class="o">[</span>root@hadoopname ~<span class="o">]</span><span class="c1"># cat /usr/local/nginx/conf/conf.d/</span>
+cobra.conf       jumpserver.conf  official.conf    php_status.conf  walle.conf       zabbix.conf      
+<span class="o">[</span>root@hadoopname ~<span class="o">]</span><span class="c1"># cat /usr/local/nginx/conf/conf.d/php_status.conf </span>
+server <span class="o">{</span>
+    listen 9010<span class="p">;</span>
+    allow 127.0.0.1<span class="p">;</span>
+    allow 192.168.8.0/24<span class="p">;</span>
+    deny all<span class="p">;</span>
+
+    location ~ ^/<span class="o">(</span>status<span class="p">|</span>ping<span class="o">)</span>$ <span class="o">{</span>
+         fastcgi_pass 127.0.0.1:9000<span class="p">;</span>
+         fastcgi_param SCRIPT_FILENAME <span class="nv">$document_root$fastcgi_script_name</span><span class="p">;</span>
+         include fastcgi_params<span class="p">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+nohup php-fpm-exporter --addr 0.0.0.0:9190 --endpoint http://127.0.0.1:9010/status &gt; /tmp/php-fpm-exporter.log 2&gt;<span class="p">&amp;</span><span class="m">1</span> <span class="p">&amp;</span>
+sudo firewall-cmd --zone<span class="o">=</span>public --add-port<span class="o">=</span>9190/tcp --permanent
+firewall-cmd --reload
+
+
+
+
+
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>
+<h4 id="添加至systemd服务-及开机自启动">添加至systemd服务 及开机自启动</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-shell" data-lang="shell"><span class="c1">#添加开机自启动</span>
+ cat  &gt; /usr/lib/systemd/system/php-fpm-exporter.service <span class="s">&lt;&lt;EOF
+</span><span class="s">[Unit]
+</span><span class="s">Description=php-fpm-exporter
+</span><span class="s">Documentation=https://github.com/hipages/php-fpm_exporter
+</span><span class="s">After=network.target
+</span><span class="s">
+</span><span class="s">[Service]
+</span><span class="s">Type=simple
+</span><span class="s">User=root
+</span><span class="s">ExecStart=/usr/local/bin/php-fpm-exporter --addr 0.0.0.0:9190 --endpoint http://127.0.0.1:9010/status 
+</span><span class="s">Restart=on-failure
+</span><span class="s">
+</span><span class="s">[Install]
+</span><span class="s">WantedBy=multi-user.target
+</span><span class="s">EOF</span>
+
+systemctl daemon-reload <span class="o">&amp;&amp;</span> systemctl start php-fpm-exporter <span class="o">&amp;&amp;</span> systemctl status php-fpm-exporter
+systemctl <span class="nb">enable</span> php-fpm-exporter
+lsof -i :9090
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+<h3 id="win_exporter-安装配置">win_exporter 安装配置</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-shell" data-lang="shell">msiexec /i wmi_exporter-0.7.0-amd64.msi <span class="nv">ENABLED_COLLECTORS</span><span class="o">=</span>cpu,cs,logical_disk,net,os,service,system,textfile,memory,tcp <span class="nv">LISTEN_PORT</span><span class="o">=</span><span class="m">9010</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><p>grafana 启动</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-bash" data-lang="bash">docker pull grafana/grafana:7.4.3
+
+mkdir -p  /application/grafana/conf
+
+
+docker run <span class="se">\
+</span><span class="se"></span>-d --rm  --name grafana  -p 3000:3000 <span class="se">\
+</span><span class="se"></span>grafana/grafana grafana
+
+</code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<div class="post-copyright">
+<p class="copyright-item">
+<span class="item-title">文章作者</span>
+<span class="item-content">Leafy'John</span>
+</p>
+<p class="copyright-item">
+<span class="item-title">上次更新</span>
+<span class="item-content">
+        2021-03-09
+        
+    </span>
+</p>
+<p class="copyright-item">
+<span class="item-title">许可协议</span>
+<span class="item-content"><a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license noopener" target="_blank">CC BY-NC-ND 4.0</a></span>
+</p>
+</div>
+<footer class="post-footer">
+<nav class="post-nav">
+<a class="prev" href="/post/jira-webhook-integration-jenkins/">
+<i class="iconfont icon-left"></i>
+<span class="prev-text nav-default">Jira Webhook Integration Jenkins</span>
+<span class="prev-text nav-mobile">上一篇</span>
+</a>
+<a class="next" href="/post/gitlab-deploy/">
+<span class="next-text nav-default">使用 Docker 部署 Gitlab，及常用优化项的说明</span>
+<span class="next-text nav-mobile">下一篇</span>
+<i class="iconfont icon-right"></i>
+</a>
+</nav>
+</footer>
+</article>
+</div>
+<div id="vcomments"></div>
+<script src="https://cdn.jsdelivr.net/npm/leancloud-storage@3/dist/av-min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js"></script>
+<script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'wS5tU9o2RILlBpQiEfIDgPwI-gzGzoHsz',
+        appKey: 'siSAWI3rzA6Ow8Tmiv7V4GO4',
+        notify:  true ,
+        verify:  true ,
+        avatar:'',
+        placeholder: '来留下点什么吧~',
+        visitor:  false 
+    });
+  </script>
+</div>
+</main>
+<footer class="footer" id="footer">
+<div class="social-links">
+<a class="iconfont icon-email" href="mailto:yangzun@treesir.pub" title="email"></a>
+<a class="iconfont icon-github" href="https://github.com/cdryzun" title="github"></a>
+<a class="iconfont icon-rss" href="https://cdryzun.github.io/index.xml" title="rss" type="application/rss+xml"></a>
+</div>
+<div class="copyright">
+<span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+</span>
+<span class="division">|</span>
+<span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+</span>
+<span class="copyright-year">
+<a class="busuanzi-footer" href="https://beian.miit.gov.cn/">湘ICP备2021002157号-1</a> <img alt="upai" class="ls-is-cached lazyloaded" height="28" src="https://cdn.treesir.pub/img/icp.png" style="margin: -25px 2px" width="23"/> <a href="https://www.upyun.com/?utm_source=lianmeng&amp;utm_medium=referral" rel="nofollow" target="_blank"><img alt="upai" class="ls-is-cached lazyloaded" height="28" src="https://cdn.treesir.pub/img/upyun.png" style="margin: -25px 2px" width="56"/></a>
+    © 
+    2019 - 
+    2023<span class="heart"><i class="iconfont icon-heart"></i></span><span>Leafy'John </span>
+</span>
+</div>
+</footer>
+<div class="back-to-top" id="back-to-top">
+<i class="iconfont icon-up"></i>
+</div>
+</div>
+<script crossorigin="anonymous" src="https://cdn.treesir.pub/blog-js/jquery.min.js"></script>
+<script crossorigin="anonymous" src="https://cdn.treesir.pub/blog-js/slideout.min.js"></script>
+<script crossorigin="anonymous" src="https://cdn.treesir.pub/blog-js/jquery.fancybox.min.js"></script>
+<script src="/js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js" type="text/javascript"></script>
+<script src="/js/copy-to-clipboard.js"></script>
+<script src="https://cdn.treesir.pub/blog-js/docsearch.min.js"></script>
+<script>
+    docsearch({
+    apiKey: "17388eec628e676a77d6235068b458df",
+    indexName: "blog",
+    appId: "KEECS2XKBV",
+    inputSelector: '.docsearch-input',
+    debug: false,
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>linux on 「Leafy&#39;John」PlayGround</title>
+    <link>https://cdryzun.github.io/categories/linux/</link>
+    <description>Recent content in linux on 「Leafy&#39;John」PlayGround</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 24 Jul 2023 14:01:29 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/categories/linux/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>修复 SSH 免密无法连接</title>
+      <link>https://cdryzun.github.io/post/fix-ssh-connect/</link>
+      <pubDate>Mon, 24 Jul 2023 14:01:29 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/fix-ssh-connect/</guid>
+      <description>说明 我们通常在远程连接目标服务器时，已避免经常性的输入密码，通常会通过 免密钥 的方式以解决每次连接多需要输入密码问题，但有的时候我们配置免密钥</description>
+    </item>
+    
+    <item>
+      <title>Gocron 实践安装，实现统一定时任务管理平台</title>
+      <link>https://cdryzun.github.io/post/gocron-install/</link>
+      <pubDate>Wed, 26 May 2021 11:29:34 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/gocron-install/</guid>
+      <description>部署环境说明 操作系统: CentOS release 7.8.2003 Gocron Version: v1.5.3 Mysql Version: 5.5 Gocron 说明 gocron 是使用 go 语言开发的轻量级定时任务集中调度和管理系统, 可以用于替代 linux-crontab。</description>
+    </item>
+    
+    <item>
+      <title>使用 Docker-Compose 部署 openConnect Vpn Server</title>
+      <link>https://cdryzun.github.io/post/ocserv-vpn-install/</link>
+      <pubDate>Sat, 15 May 2021 16:20:46 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/ocserv-vpn-install/</guid>
+      <description>环境说明 docker-compose：1.18.0 操作系统: openwrt (x86) docker version: 19.03.12 docker image yangzun/docker-openconnect-ldap:latest 此镜像基于 morganonbass/ocserv-ldap 之上做了修饰修改，原因为此容器存在 bug，无法正常启</description>
+    </item>
+    
+    <item>
+      <title>Git 使用问题的记录</title>
+      <link>https://cdryzun.github.io/post/git-use-issue/</link>
+      <pubDate>Sun, 25 Apr 2021 10:35:57 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/git-use-issue/</guid>
+      <description>指定特定仓库拉取代码 1 2 3 4 5 git remote add origin https://github.com/demo/example.git git pull https://repo.csheidou.com/forestry_afterend/prevention_fire_test.git master git branch --set-upstream-to=origin/master git status git pull 更改远程仓库地址 1 2 3 4 5 git remote -v git remote set-url origin https://github.com/demo/example.git git pull origin master --allow-unrelated-histories git push git branch --set-upstream-to=origin/master 清理本地错误的用</description>
+    </item>
+    
+    <item>
+      <title>OpenVpn 的安装，并配置关联 openLdap 认证</title>
+      <link>https://cdryzun.github.io/post/openvpn-install/</link>
+      <pubDate>Thu, 22 Apr 2021 16:19:56 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/openvpn-install/</guid>
+      <description>环境说明 docker-compose：1.23.2 操作系统: armbian (斐讯n1) 部署软件 openldap 部署 省略 openldap 的部署配置 请参考之前整理的 文档 openvpn 安装 这里 openvpn 一键</description>
+    </item>
+    
+    <item>
+      <title>Centos7 执行 shutdown 无法正常关机的解决</title>
+      <link>https://cdryzun.github.io/post/centos-shutdown-notpoweroff/</link>
+      <pubDate>Wed, 14 Apr 2021 10:48:42 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/centos-shutdown-notpoweroff/</guid>
+      <description>环境说明 因为在公司中，有下班后有需要关闭 服务器 的操作，并且每天还需要去手动打开。有点违背 极客精神，所有自己通过 shell script + cron 的形式进行每天定时的 开</description>
+    </item>
+    
+    <item>
+      <title>Raid 阵列卡 Megacli 管理工具的使用记录</title>
+      <link>https://cdryzun.github.io/post/raid-megacli/</link>
+      <pubDate>Wed, 24 Feb 2021 20:54:13 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/raid-megacli/</guid>
+      <description>安装 安装参考文档 使用参考文档 示例为： Centos7 中的安装步骤 1 2 3 4 5 6 7 wget https://docs.broadcom.com/docs-and-downloads/raid-controllers/raid-controllers-common-files/8-07-14_MegaCLI.zip unzip 8-07-14_MegaCLI.zip rpm -ivhU Linux/MegaCli-8.07.14-1.noarch.rpm cp -a /opt/MegaRAID/MegaCli/MegaCli64 /usr/local/bin/MegaCli 命令使用记录 将某块物理盘下线/上线 1 2 3 4 5 6 7 8 9 MegaCli</description>
+    </item>
+    
+    <item>
+      <title>Centos7 安装之后必要的初始化操作</title>
+      <link>https://cdryzun.github.io/post/centos-init-config/</link>
+      <pubDate>Mon, 21 Dec 2020 09:34:01 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/centos-init-config/</guid>
+      <description>⚠️ 注意此些操作在Centos7中得到验证且可行，其他发行版本请自己尝试 OS 调优 内核优化 ⚠️ 请更具实践业务场景进行调整，此示例中较适合kube</description>
+    </item>
+    
+  </channel>
+</rss>

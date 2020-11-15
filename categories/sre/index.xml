@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>SRE on 「Leafy&#39;John」PlayGround</title>
+    <link>https://cdryzun.github.io/categories/sre/</link>
+    <description>Recent content in SRE on 「Leafy&#39;John」PlayGround</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 05 Oct 2023 16:53:53 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/categories/sre/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Slimtoolkit/Slim 与 Gitlab 集成体验</title>
+      <link>https://cdryzun.github.io/post/slimtoolkit-slim-study-1/</link>
+      <pubDate>Thu, 05 Oct 2023 16:53:53 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/slimtoolkit-slim-study-1/</guid>
+      <description>说明 SlimToolkit/Slim 是一个开源工具，用于优化 Docker 容器的大小、速度和安全性。它可以将容器的大小缩减多达 30 倍，并提高容器的启动速度和安全性。 SlimToolkit/Slim 使用了一种称为 ptrace 的</description>
+    </item>
+    
+    <item>
+      <title>站点开始使用 Grafana loki 统计分析</title>
+      <link>https://cdryzun.github.io/post/blog-starts-loki-data-analysis/</link>
+      <pubDate>Sat, 29 Jul 2023 16:54:09 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/blog-starts-loki-data-analysis/</guid>
+      <description>说明 建站已接近快三年，一直没有怎么维护和管理，查看站点访问数据目前还使用的是Google Search Console&amp;amp; 正在对接用的CDN厂商 (又拍云) 所提供的后台统计</description>
+    </item>
+    
+    <item>
+      <title>Gitea Actions ActRunner 基于 Systemd 部署安装</title>
+      <link>https://cdryzun.github.io/post/gitea-actrunner-systemd-deployment/</link>
+      <pubDate>Tue, 25 Jul 2023 22:06:35 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/gitea-actrunner-systemd-deployment/</guid>
+      <description>说明 Gitea是一个开源的自助式Git服务，用于托管和管理Git仓库。它是一个轻量级且易于安装和使用的解决方案，类似于GitHub或GitL</description>
+    </item>
+    
+    <item>
+      <title>Sonatype Nexus Repository（Nexus3） 私服文件下载至本地 - (使用进阶篇 一)</title>
+      <link>https://cdryzun.github.io/post/nexus-browse-directory-download/</link>
+      <pubDate>Tue, 25 Jul 2023 20:47:22 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/nexus-browse-directory-download/</guid>
+      <description>说明 Sonatype Nexus Repository 是什么？ Sonatype Nexus Repository 是一个用于管理和分发软件组件的开源仓库管理系统。它提供了一个集中化的平台，使开发人员能够有效地存储、共享和发布各种类</description>
+    </item>
+    
+    <item>
+      <title>K8S 使用 CronJob 备份 MySQL 数据至 MInIO</title>
+      <link>https://cdryzun.github.io/post/k8s-cronjob-backup-mysql/</link>
+      <pubDate>Mon, 24 Jul 2023 16:14:42 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/k8s-cronjob-backup-mysql/</guid>
+      <description>说明 目前 K8S 已相当成熟，完全具备生产环境的落地应用。在各应用复杂的运行场景下，有时也会将 MySQL 这类有状态应用也部署至 K8S 中，但是部署后，如何保证其数</description>
+    </item>
+    
+    <item>
+      <title>Linux 使用 LVM 来扩充分区</title>
+      <link>https://cdryzun.github.io/post/use-lvm-to-expand-partitions/</link>
+      <pubDate>Mon, 24 Jul 2023 14:56:12 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/use-lvm-to-expand-partitions/</guid>
+      <description>说明 自用笔记文档 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 cfdisk /dev/vdb # 将磁盘创建分区 为8e类型（ LVM 类型）,如果虚拟机找不到所添加的磁盘，请尝试重启解决。 # 下</description>
+    </item>
+    
+    <item>
+      <title>修复 SSH 免密无法连接</title>
+      <link>https://cdryzun.github.io/post/fix-ssh-connect/</link>
+      <pubDate>Mon, 24 Jul 2023 14:01:29 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/fix-ssh-connect/</guid>
+      <description>说明 我们通常在远程连接目标服务器时，已避免经常性的输入密码，通常会通过 免密钥 的方式以解决每次连接多需要输入密码问题，但有的时候我们配置免密钥</description>
+    </item>
+    
+  </channel>
+</rss>

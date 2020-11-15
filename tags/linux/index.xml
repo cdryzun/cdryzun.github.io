@@ -1,19 +1,55 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>linux on 「Yang&#39;zun」的网志博客</title>
-    <link>https://coderyzun.github.io/tags/linux/</link>
-    <description>Recent content in linux on 「Yang&#39;zun」的网志博客</description>
+    <title>linux on 「Leafy&#39;John」PlayGround</title>
+    <link>https://cdryzun.github.io/tags/linux/</link>
+    <description>Recent content in linux on 「Leafy&#39;John」PlayGround</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 15 Nov 2020 14:24:42 +0800</lastBuildDate><atom:link href="https://coderyzun.github.io/tags/linux/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 25 Jul 2023 22:06:35 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/tags/linux/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Kind 部署本地k8s集群的使用记录</title>
-      <link>https://coderyzun.github.io/post/some-content/</link>
-      <pubDate>Sun, 15 Nov 2020 14:24:42 +0800</pubDate>
+      <title>Gitea Actions ActRunner 基于 Systemd 部署安装</title>
+      <link>https://cdryzun.github.io/post/gitea-actrunner-systemd-deployment/</link>
+      <pubDate>Tue, 25 Jul 2023 22:06:35 +0800</pubDate>
       
-      <guid>https://coderyzun.github.io/post/some-content/</guid>
-      <description>参考资料 Github 地址 参考博客 安装 1 2 3 curl -Lo ./kind &amp;#34;https://kind.sigs.k8s.io/dl/v0.9.0/kind-$(uname)-amd64&amp;#34; chmod +x ./kind mv ./kind /some-dir-in-your-PATH/kind 启动集群 注意启动集群前 请确认 docker 服务是否启动 1 2 3 4 5 6 7 8 9 10 11 12 docker info|grep -A 2 Server # 确认 是否启</description>
+      <guid>https://cdryzun.github.io/post/gitea-actrunner-systemd-deployment/</guid>
+      <description>说明 Gitea是一个开源的自助式Git服务，用于托管和管理Git仓库。它是一个轻量级且易于安装和使用的解决方案，类似于GitHub或GitL</description>
+    </item>
+    
+    <item>
+      <title>Linux 使用 LVM 来扩充分区</title>
+      <link>https://cdryzun.github.io/post/use-lvm-to-expand-partitions/</link>
+      <pubDate>Mon, 24 Jul 2023 14:56:12 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/use-lvm-to-expand-partitions/</guid>
+      <description>说明 自用笔记文档 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 cfdisk /dev/vdb # 将磁盘创建分区 为8e类型（ LVM 类型）,如果虚拟机找不到所添加的磁盘，请尝试重启解决。 # 下</description>
+    </item>
+    
+    <item>
+      <title>K3s 集群修改 Flannel CNI 插件网络模式</title>
+      <link>https://cdryzun.github.io/post/k3s-change-flannel-cni-model/</link>
+      <pubDate>Thu, 29 Jul 2021 08:56:04 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/k3s-change-flannel-cni-model/</guid>
+      <description>背景说明 在 之前搭建 的 k3s 集群中因为某些原因我将 openwrt 节点，进行了系统重装，更改固件为了 esir 高大全的 op 固件，由于其 固件中没有将 vxlan 模块编译进内核当中，而</description>
+    </item>
+    
+    <item>
+      <title>Centos7 安装之后必要的初始化操作</title>
+      <link>https://cdryzun.github.io/post/centos-init-config/</link>
+      <pubDate>Mon, 21 Dec 2020 09:34:01 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/centos-init-config/</guid>
+      <description>⚠️ 注意此些操作在Centos7中得到验证且可行，其他发行版本请自己尝试 OS 调优 内核优化 ⚠️ 请更具实践业务场景进行调整，此示例中较适合kube</description>
+    </item>
+    
+    <item>
+      <title>Docker 部署多网口 openWrt 软路由</title>
+      <link>https://cdryzun.github.io/post/openwrt-docker-multi-net/</link>
+      <pubDate>Thu, 19 Nov 2020 17:56:52 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/openwrt-docker-multi-net/</guid>
+      <description>环境说明: 操作系统: Centos 7.8.2003 内核版本: 4.14.129-bbrplus Docker 版本: 19.03.12 使用 Docker 镜像: raymondwong/openwrt_r9:20.1.24-x86_64 网卡说明: 板载螃蟹网卡、绿联 usb3.0 千M 网卡 系统网卡配置 将对应网卡启动混淆模式 1 2 3 4</description>
     </item>
     
   </channel>

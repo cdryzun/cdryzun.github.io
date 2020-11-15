@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>docker on 「Leafy&#39;John」PlayGround</title>
+    <link>https://cdryzun.github.io/categories/docker/</link>
+    <description>Recent content in docker on 「Leafy&#39;John」PlayGround</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 03 Aug 2021 11:37:38 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/categories/docker/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>使用 Docker Compose 5分钟 部署 一台邮件服务器</title>
+      <link>https://cdryzun.github.io/post/docker-deploy-mailserver/</link>
+      <pubDate>Tue, 03 Aug 2021 11:37:38 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/docker-deploy-mailserver/</guid>
+      <description>背景 由于 Gmail 邮箱在国内无法使用 且 国内手机 号码无法继续注册账号原因，最近想着折腾一下 自建一台 邮件服务器 玩玩。正好在国外有台 vps (搬瓦工的)，比较空</description>
+    </item>
+    
+    <item>
+      <title>Docker 在 Centos7 中离线安装</title>
+      <link>https://cdryzun.github.io/post/docker-centosoffline-install/</link>
+      <pubDate>Thu, 25 Mar 2021 11:12:50 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/docker-centosoffline-install/</guid>
+      <description>环境说明 操作系统: Centos Docker 版本: 19.03.8 离线版本安装 Docker-ce 版本 YUM源 配置 - 参考文档 docker_rpm.tar.gz 离线文件准备 1 sudo yum install --downloadonly --downloaddir=./docker_rpm docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin # 下载离线包，如已机器已安装 docker 可以</description>
+    </item>
+    
+    <item>
+      <title>使用 Docker 部署 Gitlab，及常用优化项的说明</title>
+      <link>https://cdryzun.github.io/post/gitlab-deploy/</link>
+      <pubDate>Thu, 04 Mar 2021 16:31:06 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/gitlab-deploy/</guid>
+      <description>环境说明及准备工作 部署 Gitlab 版本说明: 1 docker pull gitlab/gitlab-ce:13.10.2-ce.0 提前拉取好镜像。 docker-compose 版本说明: 1 2 docker-compose --version docker-compose version 1.18.0, build 8dd22a9 docker version: 19.03.9 创建 Docker-Compose 部署文件 Gitlab docker-compose.yaml 部署文件如下所示 1 2 3 4 5 6</description>
+    </item>
+    
+    <item>
+      <title>Rancher 单机部署，进行升级后，导致docker无法正常启动</title>
+      <link>https://cdryzun.github.io/post/rancher-upgrade-docker/</link>
+      <pubDate>Sat, 16 Jan 2021 14:39:59 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/rancher-upgrade-docker/</guid>
+      <description>环境说明 操作系统: Centos 7.9.2009 Docker Version: 18.09.9 模拟复现 rancher 安装 1 2 3 4 5 6 7 8 docker pull rancher/rancher:v2.3.5 docker run -d \ --restart=unless-stopped \ --name rancher \ -p 80:80 -p 443:443 \ --privileged \ rancher/rancher:v2.3.5 升级 rancher 示例将 v2.3.5 升级至 v2.5.0 创建备份 1 2 3 4 5 docker</description>
+    </item>
+    
+    <item>
+      <title>记录一次，因误删容器导致的容器恢复过程</title>
+      <link>https://cdryzun.github.io/post/delete-container-reset/</link>
+      <pubDate>Thu, 14 Jan 2021 20:09:58 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/delete-container-reset/</guid>
+      <description>环境说明 因在日常维护过程中升级了docker的版本 ，碰到了一个 docker 的一个 bug, 导致 docker 服务无法正常启动。在恢复 docker 服务的过程中把 /var/lib/docker/containers 下的所有文件给 清空 了</description>
+    </item>
+    
+    <item>
+      <title>使用 Docker 部署 Nexus3 私服的详细记录总结</title>
+      <link>https://cdryzun.github.io/post/docker-deploy-nexus3-upgrade/</link>
+      <pubDate>Tue, 22 Dec 2020 09:24:55 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/docker-deploy-nexus3-upgrade/</guid>
+      <description>Nexus3.x 说明 功能介绍 Nexus3, 是一款支持仓库种类繁多的私服仓库管理工具，支持目前大众所知晓的仓库类型如：go、pypi、docker、maven、yum、</description>
+    </item>
+    
+    <item>
+      <title>Docker Quickstart Redis Server</title>
+      <link>https://cdryzun.github.io/post/docker-quickstart-redis/</link>
+      <pubDate>Mon, 30 Nov 2020 10:35:47 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/docker-quickstart-redis/</guid>
+      <description>环境说明: 系统镜像: Redis:5.x （示例容器为: redis:5.0.4 ） 操作系统: Centos Docker 版本: 19.03.8 具体实现步骤 操作系统简单优化 1 2 3 4 5 6 echo &amp;#39;vm.overcommit_memory=1 net.core.somaxconn=65535&amp;#39; &amp;gt;&amp;gt; /etc/sysctl.conf sysctl -p echo never &amp;gt; /sys/kernel/mm/transparent_hugepage/enable 下载容器 1 docker pull redis:5.0.4</description>
+    </item>
+    
+    <item>
+      <title>Kind 部署本地k8s集群的使用记录</title>
+      <link>https://cdryzun.github.io/post/first-kind/</link>
+      <pubDate>Sun, 15 Nov 2020 14:24:42 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/first-kind/</guid>
+      <description>参考资料 Github 地址 参考博客 安装 1 2 3 curl -Lo ./kind &amp;#34;https://kind.sigs.k8s.io/dl/v0.9.0/kind-$(uname)-amd64&amp;#34; chmod +x ./kind mv ./kind /some-dir-in-your-PATH/kind 启动集群 注意启动集群前 请确认 docker 服务是否启动 1 2 3 4 5 6 7 8 9 10 11 12 docker info|grep -A 2 Server # 确认 是否启</description>
+    </item>
+    
+  </channel>
+</rss>

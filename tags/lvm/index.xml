@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>lvm on 「Leafy&#39;John」PlayGround</title>
+    <link>https://cdryzun.github.io/tags/lvm/</link>
+    <description>Recent content in lvm on 「Leafy&#39;John」PlayGround</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 24 Jul 2023 14:56:12 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/tags/lvm/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Linux 使用 LVM 来扩充分区</title>
+      <link>https://cdryzun.github.io/post/use-lvm-to-expand-partitions/</link>
+      <pubDate>Mon, 24 Jul 2023 14:56:12 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/use-lvm-to-expand-partitions/</guid>
+      <description>说明 自用笔记文档 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 cfdisk /dev/vdb # 将磁盘创建分区 为8e类型（ LVM 类型）,如果虚拟机找不到所添加的磁盘，请尝试重启解决。 # 下</description>
+    </item>
+    
+  </channel>
+</rss>

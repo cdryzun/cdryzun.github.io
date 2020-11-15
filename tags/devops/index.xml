@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>DevOps on 「Leafy&#39;John」PlayGround</title>
+    <link>https://cdryzun.github.io/tags/devops/</link>
+    <description>Recent content in DevOps on 「Leafy&#39;John」PlayGround</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 05 Oct 2023 20:40:24 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/tags/devops/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Python Fro DevOps 笔记</title>
+      <link>https://cdryzun.github.io/post/python-fro-devops-notes/</link>
+      <pubDate>Thu, 05 Oct 2023 20:40:24 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/python-fro-devops-notes/</guid>
+      <description>笔记 2019 年，70%的开发者认为自己高于平均水平，而 10%的人认为自己低于平均水平。 相信自动化优于等级制度的信念正是 DevOps 的核心。 Windows 操作系统会临时关</description>
+    </item>
+    
+    <item>
+      <title>站点开始使用 Grafana loki 统计分析</title>
+      <link>https://cdryzun.github.io/post/blog-starts-loki-data-analysis/</link>
+      <pubDate>Sat, 29 Jul 2023 16:54:09 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/blog-starts-loki-data-analysis/</guid>
+      <description>说明 建站已接近快三年，一直没有怎么维护和管理，查看站点访问数据目前还使用的是Google Search Console&amp;amp; 正在对接用的CDN厂商 (又拍云) 所提供的后台统计</description>
+    </item>
+    
+    <item>
+      <title>Gitea Actions ActRunner 基于 Systemd 部署安装</title>
+      <link>https://cdryzun.github.io/post/gitea-actrunner-systemd-deployment/</link>
+      <pubDate>Tue, 25 Jul 2023 22:06:35 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/gitea-actrunner-systemd-deployment/</guid>
+      <description>说明 Gitea是一个开源的自助式Git服务，用于托管和管理Git仓库。它是一个轻量级且易于安装和使用的解决方案，类似于GitHub或GitL</description>
+    </item>
+    
+    <item>
+      <title>Sonatype Nexus Repository（Nexus3） 私服文件下载至本地 - (使用进阶篇 一)</title>
+      <link>https://cdryzun.github.io/post/nexus-browse-directory-download/</link>
+      <pubDate>Tue, 25 Jul 2023 20:47:22 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/nexus-browse-directory-download/</guid>
+      <description>说明 Sonatype Nexus Repository 是什么？ Sonatype Nexus Repository 是一个用于管理和分发软件组件的开源仓库管理系统。它提供了一个集中化的平台，使开发人员能够有效地存储、共享和发布各种类</description>
+    </item>
+    
+  </channel>
+</rss>

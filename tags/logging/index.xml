@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Logging on 「Leafy&#39;John」PlayGround</title>
+    <link>https://cdryzun.github.io/tags/logging/</link>
+    <description>Recent content in Logging on 「Leafy&#39;John」PlayGround</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 29 Jul 2023 16:54:09 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/tags/logging/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>站点开始使用 Grafana loki 统计分析</title>
+      <link>https://cdryzun.github.io/post/blog-starts-loki-data-analysis/</link>
+      <pubDate>Sat, 29 Jul 2023 16:54:09 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/blog-starts-loki-data-analysis/</guid>
+      <description>说明 建站已接近快三年，一直没有怎么维护和管理，查看站点访问数据目前还使用的是Google Search Console&amp;amp; 正在对接用的CDN厂商 (又拍云) 所提供的后台统计</description>
+    </item>
+    
+  </channel>
+</rss>

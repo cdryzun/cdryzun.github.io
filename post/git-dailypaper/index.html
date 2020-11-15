@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible"/>
+<title>Git Dailypaper shell script - 「Leafy'John」PlayGround</title>
+<meta content="webkit" name="renderer"/>
+<meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport"/>
+<meta content="no-transform" http-equiv="Cache-Control"/>
+<meta content="no-siteapp" http-equiv="Cache-Control"/>
+<meta content="#f8f5ec" name="theme-color"/>
+<meta content="#f8f5ec" name="msapplication-navbutton-color"/>
+<meta content="yes" name="apple-mobile-web-app-capable"/>
+<meta content="#f8f5ec" name="apple-mobile-web-app-status-bar-style"/>
+<meta content="Leafy'John" name="author"/><meta content="简述 此脚本为 git 日报通知脚本，将 gitlab 中对应项目组中的所有项目 git commit 信息 已 html表格 形式发送给需要通知的人，可用与项目 敏捷开发 时进行使用。 环境说明" name="description"/><meta content="github action, pipeline, gitlab, nexus3, 技术分享, 前端技术, 计算机网络, devops, kubernetes, jenkins, centos, 技术积累, 个人文档, 个人总结, mysql, 运维, 自动化, python, hugo, k3s, kafka, go lang, helm, traefik, kubeadm, rancher, redis, rke, nginx, apache, 网络安全" name="keywords"/>
+<meta content="Hugo 0.92.0 with theme even" name="generator"/>
+<link href="https://cdryzun.github.io/post/git-dailypaper/" rel="canonical"/>
+<link href="/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/>
+<link href="/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png"/>
+<link href="/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png"/>
+<link href="/manifest.json" rel="manifest"/>
+<link color="#5bbad5" href="/safari-pinned-tab.svg" rel="mask-icon"/>
+<link href="/sass/main.min.404b35997075abed13fc31198c48ccfa115c0855fc6e525128eac767d84fdcd2.css" rel="stylesheet"/>
+<link crossorigin="anonymous" href="https://cdn.treesir.pub/blog-css/jquery.fancybox.min.css" rel="stylesheet"/>
+<link href="/css/custom.css" rel="stylesheet"/>
+<meta content="Git Dailypaper shell script" property="og:title"/>
+<meta content="简述 此脚本为 git 日报通知脚本，将 gitlab 中对应项目组中的所有项目 git commit 信息 已 html表格 形式发送给需要通知的人，可用与项目 敏捷开发 时进行使用。 环境说明" property="og:description"/>
+<meta content="article" property="og:type"/>
+<meta content="https://cdryzun.github.io/post/git-dailypaper/" property="og:url"/><meta content="post" property="article:section"/>
+<meta content="2021-04-13T13:41:01+08:00" property="article:published_time"/>
+<meta content="2021-04-13T13:41:01+08:00" property="article:modified_time"/>
+<meta content="Git Dailypaper shell script" itemprop="name"/>
+<meta content="简述 此脚本为 git 日报通知脚本，将 gitlab 中对应项目组中的所有项目 git commit 信息 已 html表格 形式发送给需要通知的人，可用与项目 敏捷开发 时进行使用。 环境说明" itemprop="description"/><meta content="2021-04-13T13:41:01+08:00" itemprop="datePublished"/>
+<meta content="2021-04-13T13:41:01+08:00" itemprop="dateModified"/>
+<meta content="1327" itemprop="wordCount"/>
+<meta content="" itemprop="keywords"/><meta content="summary" name="twitter:card"/>
+<meta content="Git Dailypaper shell script" name="twitter:title"/>
+<meta content="简述 此脚本为 git 日报通知脚本，将 gitlab 中对应项目组中的所有项目 git commit 信息 已 html表格 形式发送给需要通知的人，可用与项目 敏捷开发 时进行使用。 环境说明" name="twitter:description"/>
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+<!--[if lt IE 9]>
+  <script src="https://cdn.treesir.pub/blog-js/html5shiv.min.js"></script>
+  <script src="https://cdn.treesir.pub/blog-js/respond.min.js"></script>
+<![endif]-->
+<link href="https://cdn.treesir.pub/blog-css/docsearch.min.css" rel="stylesheet"/>
+</head>
+<body>
+<header class="header" id="header">
+<div class="logo-wrapper">
+<a class="logo" href="/">Leafy'John」PlayGround</a>
+</div>
+<nav class="site-navbar">
+<ul class="menu" id="menu">
+<li class="menu-item">
+<a class="menu-item-link" href="/">主页</a>
+</li><li class="menu-item">
+<a class="menu-item-link" href="/post/">归档</a>
+</li><li class="menu-item">
+<a class="menu-item-link" href="/tags/">标签</a>
+</li><li class="menu-item">
+<a class="menu-item-link" href="/categories/">分类</a>
+</li>
+</ul><li style="display:inline-block;margin-right:10px;">
+<input class="docsearch-input" placeholder="Search" type="search"/>
+</li></nav>
+</header>
+<div class="mobile-navbar" id="mobile-navbar">
+<div class="mobile-header-logo">
+<a class="logo" href="/">Leafy'John」PlayGround</a>
+</div>
+<div class="mobile-navbar-icon">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+<nav class="mobile-menu slideout-menu" id="mobile-menu">
+<ul class="mobile-menu-list">
+<a href="/">
+<li class="mobile-menu-item">主页</li>
+</a><a href="/post/">
+<li class="mobile-menu-item">归档</li>
+</a><a href="/tags/">
+<li class="mobile-menu-item">标签</li>
+</a><a href="/categories/">
+<li class="mobile-menu-item">分类</li>
+</a>
+</ul>
+</nav>
+<div class="container" id="mobile-panel">
+<main class="main" id="main">
+<div class="content-wrapper">
+<div class="content" id="content">
+<article class="post">
+<header class="post-header">
+<h1 class="post-title">Git Dailypaper shell script</h1>
+<div class="post-meta">
+<span class="post-time"> 2021-04-13 </span>
+<span class="more-meta"> 约 1327 字 </span>
+<span class="more-meta"> 预计阅读 3 分钟 </span>
+</div>
+</header>
+<div class="post-toc" id="post-toc">
+<h2 class="post-toc-title">文章目录</h2>
+<div class="post-toc-content always-active">
+<nav id="TableOfContents">
+<ul>
+<li><a href="#简述">简述</a></li>
+<li><a href="#环境说明">环境说明</a></li>
+<li><a href="#依赖准备">依赖准备</a></li>
+<li><a href="#脚本初始化">脚本初始化</a>
+<ul>
+<li><a href="#获取-gitlab-中的-api-token">获取 gitlab 中的 api token</a></li>
+<li><a href="#新建组并获取组-id">新建组并获取组 id</a></li>
+<li><a href="#新建测试仓库">新建测试仓库</a></li>
+</ul>
+</li>
+<li><a href="#测试执行脚本">测试执行脚本</a></li>
+<li><a href="#添加定时任务">添加定时任务</a></li>
+</ul>
+</nav>
+</div>
+</div>
+<div class="post-content">
+<h1 id="简述">简述</h1>
+<blockquote>
+<p>此脚本为 git 日报通知脚本，将 gitlab 中对应项目组中的所有项目 git <code>commit 信息</code> 已<code> html表格</code> 形式发送给需要通知的人，可用与项目 <code>敏捷开发</code> 时进行使用。</p>
+</blockquote>
+<h1 id="环境说明">环境说明</h1>
+<p><strong>依赖工具</strong></p>
+<ul>
+<li>git 2.9.3</li>
+<li>sendemail</li>
+<li>jq</li>
+</ul>
+<p><strong>操作环境说明</strong></p>
+<ul>
+<li>Centos7 <code>7.9.2009</code></li>
+<li>Gitlab : <code>13.10.2</code></li>
+</ul>
+<h1 id="依赖准备">依赖准备</h1>
+<p><strong>编译安装 git</strong></p>
+<ul>
+<li><a href="https://github.com/git/git/releases">其他版本列表</a></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-bash" data-lang="bash">yum remove git  <span class="c1"># 卸载系统当前 低版本 git</span>
+
+wget https://github.com/git/git/archive/refs/tags/v2.9.3.zip <span class="c1"># 下载源码</span>
+
+unzip v2.9.3.zip 
+
+<span class="nb">cd</span> git-2.9.3/
+
+make configure  
+
+./configure <span class="nv">prefix</span><span class="o">=</span>/usr/local/git/  <span class="c1"># 配置 git 安装目录</span>
+
+make -j8 <span class="o">&amp;&amp;</span> make install  <span class="c1"># 编译并且安装</span>
+
+ls /usr/local/git/
+bin  lib64  libexec  share
+
+vim /etc/profile <span class="c1"># 添加至 path 变量中</span>
+<span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span>/usr/local/git/bin
+
+<span class="nb">source</span> /etc/profile <span class="c1"># 使 path 变量生效</span>
+
+git version
+	git version 2.9.3
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>使用 yum 安装 其他依赖工具</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-bash" data-lang="bash">yum install sendemail jq -y
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="脚本初始化">脚本初始化</h1>
+<h2 id="获取-gitlab-中的-api-token">获取 gitlab 中的 api token</h2>
+<p><img alt="image-20210413141815261" src="https://cdn.treesir.pub/img/image-20210413141815261.png"/></p>
+<p><img alt="image-20210413141922548" src="https://cdn.treesir.pub/img/image-20210413141922548.png"/></p>
+<blockquote>
+<p>点击创建，复制生成的 key</p>
+</blockquote>
+<p><img alt="image-20210413142042056" src="https://cdn.treesir.pub/img/image-20210413142042056.png"/></p>
+<h2 id="新建组并获取组-id">新建组并获取组 id</h2>
+<p><img alt="image-20210413142645928" src="https://cdn.treesir.pub/img/image-20210413142645928.png"/></p>
+<p><img alt="image-20210413142715324" src="https://cdn.treesir.pub/img/image-20210413142715324.png"/></p>
+<p><img alt="image-20210413142728912" src="https://cdn.treesir.pub/img/image-20210413142728912.png"/></p>
+<blockquote>
+<p>获取到当前项目的 组id <code>3</code></p>
+</blockquote>
+<h2 id="新建测试仓库">新建测试仓库</h2>
+<blockquote>
+<p>在刚才新建的项目组中，新建几个参考，并在这几个仓库中添加几条 <code>commit</code> message。</p>
+</blockquote>
+<p><img alt="image-20210413143108201" src="https://cdn.treesir.pub/img/image-20210413143108201.png"/></p>
+<p><strong>添加 commit message 数据</strong></p>
+<p><img alt="image-20210413143334606" src="https://cdn.treesir.pub/img/image-20210413143334606.png"/></p>
+<p><img alt="image-20210413143320161" src="https://cdn.treesir.pub/img/image-20210413143320161.png"/></p>
+<h1 id="测试执行脚本">测试执行脚本</h1>
+<blockquote>
+<p><code>最终脚本如下所述，相关变量参数，根据实际情况更改即可</code></p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span><span class="lnt">109
+</span><span class="lnt">110
+</span><span class="lnt">111
+</span><span class="lnt">112
+</span><span class="lnt">113
+</span><span class="lnt">114
+</span><span class="lnt">115
+</span><span class="lnt">116
+</span><span class="lnt">117
+</span><span class="lnt">118
+</span><span class="lnt">119
+</span><span class="lnt">120
+</span><span class="lnt">121
+</span><span class="lnt">122
+</span><span class="lnt">123
+</span><span class="lnt">124
+</span><span class="lnt">125
+</span><span class="lnt">126
+</span><span class="lnt">127
+</span><span class="lnt">128
+</span><span class="lnt">129
+</span><span class="lnt">130
+</span><span class="lnt">131
+</span><span class="lnt">132
+</span><span class="lnt">133
+</span><span class="lnt">134
+</span><span class="lnt">135
+</span><span class="lnt">136
+</span><span class="lnt">137
+</span><span class="lnt">138
+</span><span class="lnt">139
+</span><span class="lnt">140
+</span><span class="lnt">141
+</span><span class="lnt">142
+</span><span class="lnt">143
+</span><span class="lnt">144
+</span><span class="lnt">145
+</span><span class="lnt">146
+</span><span class="lnt">147
+</span><span class="lnt">148
+</span><span class="lnt">149
+</span><span class="lnt">150
+</span><span class="lnt">151
+</span><span class="lnt">152
+</span><span class="lnt">153
+</span><span class="lnt">154
+</span><span class="lnt">155
+</span><span class="lnt">156
+</span><span class="lnt">157
+</span><span class="lnt">158
+</span><span class="lnt">159
+</span><span class="lnt">160
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-shell" data-lang="shell"><span class="cp">#!/bin/bash
+</span><span class="cp"></span><span class="nb">source</span> /etc/profile
+<span class="nv">GITLAB_TOKEN</span><span class="o">=</span><span class="s1">'xxx'</span> <span class="c1"># gitlab api token</span>
+<span class="nv">GROUP_ID</span><span class="o">=</span><span class="m">3</span> <span class="c1"># 组 id</span>
+<span class="nv">GROUP_NAME</span><span class="o">=</span><span class="s1">'git-log'</span>  <span class="c1"># 对应的 gitlab 组</span>
+<span class="nv">GITLAB_WEB_URL</span><span class="o">=</span><span class="s1">'http://gitlab.treesir.pub'</span> <span class="c1"># gitlab 地址</span>
+<span class="nv">GITLAB_URL</span><span class="o">=</span><span class="s1">'http://root:xxx@gitlab.treesir.pub'</span>  <span class="c1"># 拥有当前项目 git clone 权限的账号密码</span>
+
+<span class="nv">DATE</span><span class="o">=</span><span class="sb">`</span>date +%Y-%m-%d<span class="sb">`</span>
+<span class="nv">HTML_NAME</span><span class="o">=</span><span class="s2">"</span><span class="nv">$DATE</span><span class="s2">-</span><span class="nv">$GROUP_NAME</span><span class="s2">"</span>.html
+<span class="nv">DATA_DIR</span><span class="o">=</span>/data/scripts/gitdata/<span class="s2">"</span><span class="nv">$GROUP_NAME</span><span class="s2">"</span>
+<span class="nv">GITWORK</span><span class="o">=</span>/data/scripts/gitwork/<span class="s2">"</span><span class="nv">$GROUP_NAME</span><span class="s2">"</span>
+<span class="c1">#EMAIL_LIST=("user1@gmail.com" "user2@qq.com")  # 定义需要通知的人员，邮箱地址</span>
+<span class="nv">EMAIL_LIST</span><span class="o">=(</span><span class="s2">"xxx@dingtalk.com"</span><span class="o">)</span>
+<span class="nv">DATA_SAVE_TIME</span><span class="o">=</span><span class="m">180</span> <span class="c1"># 生成的 htlm 保存时长</span>
+<span class="nv">HTML_PATH_NAME</span><span class="o">=</span><span class="s2">"</span><span class="nv">$DATA_DIR</span><span class="s2">"</span>/<span class="s2">"</span><span class="nv">$HTML_NAME</span><span class="s2">"</span>
+<span class="nv">IFS</span><span class="o">=</span><span class="s1">$'\n'</span>
+<span class="nv">RETRY</span><span class="o">=</span><span class="m">0</span>
+<span class="nv">SMTP_EMAIL</span><span class="o">=</span><span class="s1">'xxx@163.com'</span>
+<span class="nv">SMTP_SERVER</span><span class="o">=</span><span class="s1">'smtp.163.com'</span>
+<span class="nv">SMTP_AUTH</span><span class="o">=</span><span class="s1">'xxx'</span>
+
+mkdir -p <span class="s2">"</span><span class="nv">$GITWORK</span><span class="s2">"</span> <span class="o">&amp;&amp;</span> mkdir -p <span class="s2">"</span><span class="nv">$DATA_DIR</span><span class="s2">"</span>
+<span class="nv">GIT_DATE</span><span class="o">=</span><span class="s2">"`date -d '1 days ago' +%Y-%m-%d` 18:50:00"</span> <span class="c1"># 从上一天的 下午 6:50 开始计算 commit</span>
+
+<span class="c1"># 如果文件存在就删除</span>
+<span class="k">if</span> <span class="o">[</span> -f <span class="s2">"</span><span class="nv">$HTML_PATH_NAME</span><span class="s2">"</span> <span class="o">]</span>
+<span class="k">then</span>
+        rm -rf <span class="s2">"</span><span class="nv">$HTML_PATH_NAME</span><span class="s2">"</span>
+<span class="k">fi</span>
+
+<span class="c1"># 获取项目中 仓库的名称</span>
+<span class="nv">GITLAB_JSON</span><span class="o">=</span><span class="sb">`</span>curl --header <span class="s2">"Authorization: Bearer </span><span class="nv">$GITLAB_TOKEN</span><span class="s2">"</span> <span class="s2">"</span><span class="nv">$GITLAB_URL</span><span class="s2">/api/v4/groups/</span><span class="si">${</span><span class="nv">GROUP_ID</span><span class="si">}</span><span class="s2">"</span> 2&gt;/dev/null<span class="sb">`</span>
+
+
+<span class="c1"># 生成 html 文件上半部分</span>
+<span class="nb">echo</span> <span class="s2">"""&lt;!DOCTYPE html&gt;
+</span><span class="s2">&lt;html lang="</span>en<span class="s2">"&gt;
+</span><span class="s2">&lt;head&gt;
+</span><span class="s2">&lt;meta charset="</span>UTF-8<span class="s2">"&gt;
+</span><span class="s2">&lt;meta name="</span>viewport<span class="s2">" content="</span><span class="nv">width</span><span class="o">=</span>device-width, initial-scale<span class="o">=</span>1.0<span class="s2">"&gt;
+</span><span class="s2">&lt;meta http-equiv="</span>X-UA-Compatible<span class="s2">" content="</span><span class="nv">ie</span><span class="o">=</span>edge<span class="s2">"&gt;
+</span><span class="s2">&lt;title&gt;Document&lt;/title&gt;
+</span><span class="s2">&lt;style&gt;
+</span><span class="s2">table{
+</span><span class="s2">width: 800px;
+</span><span class="s2">height: auto;
+</span><span class="s2">border: 1px solid #999;
+</span><span class="s2">color: #000;
+</span><span class="s2">margin: 100px auto;
+</span><span class="s2">text-align: left;
+</span><span class="s2">}
+</span><span class="s2">table  caption{
+</span><span class="s2">font-size: 20px;
+</span><span class="s2">font-weight:bold;
+</span><span class="s2">padding-bottom: 10px;
+</span><span class="s2">}
+</span><span class="s2">.title{
+</span><span class="s2">border: none;
+</span><span class="s2">
+</span><span class="s2">}
+</span><span class="s2">table th{
+</span><span class="s2">background-color: #999;  
+</span><span class="s2">opacity: 0.8;
+</span><span class="s2">height: 35px;
+</span><span class="s2">}
+</span><span class="s2">table td{
+</span><span class="s2">height: 20px;
+</span><span class="s2">background-color: #333;
+</span><span class="s2">color: seashell;
+</span><span class="s2">font-size: 14px;
+</span><span class="s2">}
+</span><span class="s2">&lt;/style&gt;
+</span><span class="s2">&lt;/head&gt;
+</span><span class="s2">&lt;body&gt;
+</span><span class="s2">"""</span> &gt;&gt; <span class="s2">"</span><span class="nv">$HTML_PATH_NAME</span><span class="s2">"</span>
+
+<span class="k">for</span> REMONAME in <span class="sb">`</span><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$GITLAB_JSON</span><span class="s2">"</span><span class="p">|</span>jq .projects<span class="o">[]</span>.name<span class="p">|</span>awk -F <span class="s1">'"'</span> <span class="s1">'{print \$2}'</span><span class="sb">`</span>
+<span class="k">do</span>
+        <span class="c1"># 下载镜像代码</span>
+        <span class="k">if</span> <span class="o">[</span> ! -d <span class="s2">"</span><span class="nv">$GITWORK</span><span class="s2">/</span><span class="nv">$REMONAME</span><span class="s2">"</span> <span class="o">]</span>
+        <span class="k">then</span>
+                <span class="nb">cd</span> <span class="s2">"</span><span class="nv">$GITWORK</span><span class="s2">"</span>
+                git clone <span class="s2">"</span><span class="nv">$GITLAB_URL</span><span class="s2">/</span><span class="nv">$GROUP_NAME</span><span class="s2">/</span><span class="nv">$REMONAME</span><span class="s2">"</span>.git
+        <span class="k">else</span> 
+                <span class="nb">cd</span> <span class="s2">"</span><span class="nv">$GITWORK</span><span class="s2">/</span><span class="nv">$REMONAME</span><span class="s2">"</span>
+                git pull
+        <span class="k">fi</span>
+
+        <span class="k">for</span> GIT_BRANCH in <span class="sb">`</span>git -C <span class="s2">"</span><span class="nv">$GITWORK</span><span class="s2">/</span><span class="nv">$REMONAME</span><span class="s2">"</span> branch -a<span class="p">|</span>grep origin<span class="p">|</span>grep -v <span class="s1">'HEAD'</span><span class="p">|</span>awk -F <span class="s1">'remotes/origin/'</span> <span class="s1">'{print $2}'</span><span class="sb">`</span>
+        <span class="k">do</span>
+                <span class="nb">cd</span> <span class="s2">"</span><span class="nv">$GITWORK</span><span class="s2">/</span><span class="nv">$REMONAME</span><span class="s2">"</span>
+                git checkout <span class="s2">"</span><span class="nv">$GIT_BRANCH</span><span class="s2">"</span>
+                git pull
+                <span class="k">if</span> <span class="o">[</span> <span class="sb">`</span>git log --date<span class="o">=</span>format:<span class="s1">'%Y-%m-%d %H:%M:%S'</span> --pretty<span class="o">=</span>format:<span class="s2">"%ad,%an,%s,%h"</span> --since<span class="o">=</span><span class="s2">"</span><span class="nv">$GIT_DATE</span><span class="s2">"</span><span class="p">|</span>grep <span class="s2">"-"</span> <span class="p">|</span>wc -l<span class="sb">`</span> -ge <span class="m">1</span> <span class="o">]</span>
+                <span class="k">then</span>
+                        <span class="nb">echo</span> <span class="s2">"""
+</span><span class="s2">&lt;table&gt;
+</span><span class="s2">&lt;caption&gt;项目和分支名称: </span><span class="nv">$REMONAME</span><span class="s2"> </span><span class="nv">$GIT_BRANCH</span><span class="s2">&lt;/caption&gt;
+</span><span class="s2">&lt;tr class="</span>title<span class="s2">"&gt;
+</span><span class="s2">&lt;th&gt;提交时间&lt;/th&gt;
+</span><span class="s2">&lt;th&gt;提交人&lt;/th&gt;
+</span><span class="s2">&lt;th&gt;提交内容&lt;/th&gt;
+</span><span class="s2">&lt;th&gt;提交ID&lt;/th&gt;
+</span><span class="s2">&lt;/tr&gt;
+</span><span class="s2">                        """</span> &gt;&gt; <span class="s2">"</span><span class="nv">$HTML_PATH_NAME</span><span class="s2">"</span>
+                        <span class="k">for</span> COMMINT in <span class="sb">`</span>git log --date<span class="o">=</span>format:<span class="s1">'%Y-%m-%d-%H:%M:%S'</span> --pretty<span class="o">=</span>format:<span class="s2">"%ad|%an|%s|%h|%H"</span> --since<span class="o">=</span><span class="s2">"</span><span class="nv">$GIT_DATE</span><span class="s2">"</span><span class="sb">`</span>
+                        <span class="k">do</span> 
+                                <span class="k">if</span> <span class="o">[</span> <span class="sb">`</span><span class="nb">echo</span> <span class="nv">$COMMINT</span><span class="p">|</span>grep <span class="s1">'Merge'</span><span class="p">|</span>wc -l<span class="sb">`</span> -eq <span class="m">1</span> <span class="o">]</span>
+                                <span class="k">then</span>
+                                        <span class="k">continue</span>
+                                <span class="k">else</span>
+                                        <span class="nv">submit_time</span><span class="o">=</span><span class="sb">`</span><span class="nb">echo</span> <span class="nv">$COMMINT</span><span class="p">|</span>awk -F <span class="s1">'|'</span> <span class="s1">'{print $1}'</span><span class="sb">`</span>
+                                        <span class="nv">submit_one</span><span class="o">=</span><span class="sb">`</span><span class="nb">echo</span> <span class="nv">$COMMINT</span><span class="p">|</span>awk -F <span class="s1">'|'</span> <span class="s1">'{print $2}'</span><span class="sb">`</span>
+                                        <span class="nv">submit_message</span><span class="o">=</span><span class="sb">`</span><span class="nb">echo</span> <span class="nv">$COMMINT</span><span class="p">|</span>awk -F <span class="s1">'|'</span> <span class="s1">'{print $3}'</span><span class="sb">`</span>
+                                        <span class="nv">submit_id</span><span class="o">=</span><span class="sb">`</span><span class="nb">echo</span> <span class="nv">$COMMINT</span><span class="p">|</span>awk -F <span class="s1">'|'</span> <span class="s1">'{print $4}'</span><span class="sb">`</span>
+                                        <span class="nv">submit_long_id</span><span class="o">=</span><span class="sb">`</span><span class="nb">echo</span> <span class="nv">$COMMINT</span><span class="p">|</span>awk -F <span class="s1">'|'</span> <span class="s1">'{print $5}'</span><span class="sb">`</span>
+                                        <span class="nb">echo</span> <span class="s2">"""
+</span><span class="s2">&lt;tr class="</span>title<span class="s2">"&gt;
+</span><span class="s2">&lt;td&gt;"</span><span class="nv">$submit_time</span><span class="s2">"&lt;/td&gt;
+</span><span class="s2">&lt;td&gt;"</span><span class="nv">$submit_one</span><span class="s2">"&lt;/td&gt;
+</span><span class="s2">&lt;td&gt;"</span><span class="nv">$submit_message</span><span class="s2">"&lt;/td&gt;
+</span><span class="s2">&lt;td&gt;&lt;a href="</span><span class="nv">$GITLAB_WEB_URL</span>/<span class="nv">$GROUP_NAME</span>/<span class="nv">$REMONAME</span>/-/commit/<span class="nv">$submit_long_id</span><span class="s2">"&gt;"</span><span class="nv">$submit_id</span><span class="s2">"&lt;/a&gt;&lt;/td&gt;
+</span><span class="s2">&lt;/tr&gt;
+</span><span class="s2">                                        """</span> &gt;&gt; <span class="s2">"</span><span class="nv">$HTML_PATH_NAME</span><span class="s2">"</span>
+                                <span class="k">fi</span>
+                        <span class="k">done</span>
+                        <span class="nb">echo</span> <span class="s2">"&lt;/table&gt;"</span> &gt;&gt; <span class="s2">"</span><span class="nv">$HTML_PATH_NAME</span><span class="s2">"</span>
+                <span class="k">fi</span>
+        <span class="k">done</span>
+<span class="k">done</span>
+
+<span class="nb">echo</span> <span class="s2">"""
+</span><span class="s2">&lt;/body&gt;
+</span><span class="s2">&lt;/html&gt;
+</span><span class="s2">"""</span> &gt;&gt; <span class="s2">"</span><span class="nv">$HTML_PATH_NAME</span><span class="s2">"</span>
+
+<span class="k">if</span> <span class="o">[</span> <span class="sb">`</span>cat <span class="s2">"</span><span class="nv">$HTML_PATH_NAME</span><span class="s2">"</span> <span class="p">|</span>grep tr<span class="p">|</span>wc -l<span class="sb">`</span> -gt <span class="m">0</span> <span class="o">]</span>
+<span class="k">then</span>
+        <span class="k">for</span> EMAIL in <span class="si">${</span><span class="nv">EMAIL_LIST</span><span class="p">[@]</span><span class="si">}</span>
+        <span class="k">do</span>
+                /usr/bin/sendemail -f <span class="s2">"</span><span class="si">${</span><span class="nv">SMTP_EMAIL</span><span class="si">}</span><span class="s2">"</span> -u <span class="s2">"</span><span class="nv">$DATE</span><span class="s2"> </span><span class="si">${</span><span class="nv">GROUP_NAME</span><span class="si">}</span><span class="s2">项目 日报请查收~"</span> -s <span class="s2">"</span><span class="si">${</span><span class="nv">SMTP_SERVER</span><span class="si">}</span><span class="s2">"</span> -o <span class="nv">tls</span><span class="o">=</span>no -o message-content-type<span class="o">=</span>html -o message-charset<span class="o">=</span>utf8 -xu <span class="s2">"</span><span class="si">${</span><span class="nv">SMTP_EMAIL</span><span class="si">}</span><span class="s2">"</span> -t <span class="s2">"</span><span class="nv">$EMAIL</span><span class="s2">"</span> -xp <span class="si">${</span><span class="nv">SMTP_AUTH</span><span class="si">}</span> -m <span class="sb">`</span>cat <span class="s2">"</span><span class="nv">$HTML_PATH_NAME</span><span class="s2">"</span><span class="sb">`</span> 
+                <span class="k">if</span> <span class="o">[</span> <span class="s2">"</span><span class="nv">$?</span><span class="s2">"</span> -ne <span class="m">0</span> <span class="o">]</span>
+                <span class="k">then</span>
+                        <span class="k">while</span> <span class="o">[</span> <span class="s2">"</span><span class="nv">$RETRY</span><span class="s2">"</span> -lt <span class="m">3</span> <span class="o">]</span>        
+                        <span class="k">do</span>
+                                sleep <span class="m">2</span>
+                                /usr/bin/sendemail -f <span class="s2">"</span><span class="si">${</span><span class="nv">SMTP_EMAIL</span><span class="si">}</span><span class="s2">"</span> -u <span class="s2">"</span><span class="nv">$DATE</span><span class="s2"> </span><span class="si">${</span><span class="nv">GROUP_NAME</span><span class="si">}</span><span class="s2">项目 日报请查收~"</span> -s <span class="s2">"</span><span class="si">${</span><span class="nv">SMTP_SERVER</span><span class="si">}</span><span class="s2">"</span> -o <span class="nv">tls</span><span class="o">=</span>no -o message-content-type<span class="o">=</span>html -o message-charset<span class="o">=</span>utf8 -xu <span class="s2">"</span><span class="si">${</span><span class="nv">SMTP_EMAIL</span><span class="si">}</span><span class="s2">"</span> -t <span class="s2">"</span><span class="nv">$EMAIL</span><span class="s2">"</span> -xp <span class="si">${</span><span class="nv">SMTP_AUTH</span><span class="si">}</span> -m <span class="sb">`</span>cat <span class="s2">"</span><span class="nv">$HTML_PATH_NAME</span><span class="s2">"</span><span class="sb">`</span>
+                                <span class="k">if</span> <span class="o">[</span> <span class="s2">"</span><span class="nv">$?</span><span class="s2">"</span> -eq <span class="m">0</span> <span class="o">]</span>
+                                <span class="k">then</span>
+                                        <span class="nb">break</span>
+                                <span class="k">else</span>
+                                        <span class="nv">RETRY</span><span class="o">=</span><span class="k">$((</span><span class="nv">$RETRY</span><span class="o">+</span><span class="m">1</span><span class="k">))</span>
+                                <span class="k">fi</span>
+                        <span class="k">done</span>
+                <span class="k">fi</span>
+        <span class="k">done</span>
+<span class="k">fi</span>
+
+find <span class="s2">"</span><span class="nv">$DATA_DIR</span><span class="s2">"</span> -type f -mtime +<span class="s2">"</span><span class="nv">$DATA_SAVE_TIME</span><span class="s2">"</span> -exec rm -f <span class="o">{}</span> <span class="se">\;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><img alt="image-20210413143518697" src="https://cdn.treesir.pub/img/image-20210413143518697.png"/></p>
+<p><strong>日报程序使用效果展示</strong></p>
+<p><img alt="image-20210413143639404" src="https://cdn.treesir.pub/img/image-20210413143639404.png"/></p>
+<blockquote>
+<p>上面 <code>时区不对</code> 的问题。应该是我在  gitlab dashboard 中操作添加的 commit 导致的。我们不要 dashboard 添加一下 message 看看是否正确。</p>
+<p><img alt="image-20210413144055456" src="https://cdn.treesir.pub/img/image-20210413144055456.png"/>
+再次执行一下这个脚本</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-bash" data-lang="bash">./gitlogs.sh 
+</code></pre></td></tr></table>
+</div>
+</div></blockquote>
+<p><img alt="image-20210413145615142" src="https://cdn.treesir.pub/img/image-20210413145615142.png"/></p>
+<blockquote>
+<p>可以看到是正常的</p>
+</blockquote>
+<h1 id="添加定时任务">添加定时任务</h1>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-bash" data-lang="bash">crontab -e <span class="c1"># 编辑 crontab 表</span>
+<span class="m">0</span> <span class="m">12</span> * * * /usr/bin/bash /data/scripts/gitlogs.sh &gt;&gt; /tmp/script_debug.log
+<span class="m">0</span> <span class="m">16</span> * * * /usr/bin/bash /data/scripts/gitlogs.sh &gt;&gt; /tmp/script_debug.log
+<span class="m">0</span> <span class="m">17</span> * * * /usr/bin/bash /data/scripts/gitlogs.sh &gt;&gt; /tmp/script_debug.log
+<span class="m">0</span> <span class="m">19</span> * * * /usr/bin/bash /data/scripts/gitlogs.sh &gt;&gt; /tmp/script_debug.log
+</code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<div class="post-copyright">
+<p class="copyright-item">
+<span class="item-title">文章作者</span>
+<span class="item-content">Leafy'John</span>
+</p>
+<p class="copyright-item">
+<span class="item-title">上次更新</span>
+<span class="item-content">
+        2021-04-13
+        
+    </span>
+</p>
+<p class="copyright-item">
+<span class="item-title">许可协议</span>
+<span class="item-content"><a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license noopener" target="_blank">CC BY-NC-ND 4.0</a></span>
+</p>
+</div>
+<footer class="post-footer">
+<nav class="post-nav">
+<a class="prev" href="/post/centos-shutdown-notpoweroff/">
+<i class="iconfont icon-left"></i>
+<span class="prev-text nav-default">Centos7 执行 shutdown 无法正常关机的解决</span>
+<span class="prev-text nav-mobile">上一篇</span>
+</a>
+<a class="next" href="/post/gitlab-pre-receive-webhook/">
+<span class="next-text nav-default">Gitlab pre-receive WebHook 的添加与使用</span>
+<span class="next-text nav-mobile">下一篇</span>
+<i class="iconfont icon-right"></i>
+</a>
+</nav>
+</footer>
+</article>
+</div>
+<div id="vcomments"></div>
+<script src="https://cdn.jsdelivr.net/npm/leancloud-storage@3/dist/av-min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js"></script>
+<script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'wS5tU9o2RILlBpQiEfIDgPwI-gzGzoHsz',
+        appKey: 'siSAWI3rzA6Ow8Tmiv7V4GO4',
+        notify:  true ,
+        verify:  true ,
+        avatar:'',
+        placeholder: '来留下点什么吧~',
+        visitor:  false 
+    });
+  </script>
+</div>
+</main>
+<footer class="footer" id="footer">
+<div class="social-links">
+<a class="iconfont icon-email" href="mailto:yangzun@treesir.pub" title="email"></a>
+<a class="iconfont icon-github" href="https://github.com/cdryzun" title="github"></a>
+<a class="iconfont icon-rss" href="https://cdryzun.github.io/index.xml" title="rss" type="application/rss+xml"></a>
+</div>
+<div class="copyright">
+<span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+</span>
+<span class="division">|</span>
+<span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+</span>
+<span class="copyright-year">
+<a class="busuanzi-footer" href="https://beian.miit.gov.cn/">湘ICP备2021002157号-1</a> <img alt="upai" class="ls-is-cached lazyloaded" height="28" src="https://cdn.treesir.pub/img/icp.png" style="margin: -25px 2px" width="23"/> <a href="https://www.upyun.com/?utm_source=lianmeng&amp;utm_medium=referral" rel="nofollow" target="_blank"><img alt="upai" class="ls-is-cached lazyloaded" height="28" src="https://cdn.treesir.pub/img/upyun.png" style="margin: -25px 2px" width="56"/></a>
+    © 
+    2019 - 
+    2023<span class="heart"><i class="iconfont icon-heart"></i></span><span>Leafy'John </span>
+</span>
+</div>
+</footer>
+<div class="back-to-top" id="back-to-top">
+<i class="iconfont icon-up"></i>
+</div>
+</div>
+<script crossorigin="anonymous" src="https://cdn.treesir.pub/blog-js/jquery.min.js"></script>
+<script crossorigin="anonymous" src="https://cdn.treesir.pub/blog-js/slideout.min.js"></script>
+<script crossorigin="anonymous" src="https://cdn.treesir.pub/blog-js/jquery.fancybox.min.js"></script>
+<script src="/js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js" type="text/javascript"></script>
+<script src="/js/copy-to-clipboard.js"></script>
+<script src="https://cdn.treesir.pub/blog-js/docsearch.min.js"></script>
+<script>
+    docsearch({
+    apiKey: "17388eec628e676a77d6235068b458df",
+    indexName: "blog",
+    appId: "KEECS2XKBV",
+    inputSelector: '.docsearch-input',
+    debug: false,
+    });
+</script>
+</body>
+</html>

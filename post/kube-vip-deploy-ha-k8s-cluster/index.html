@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible"/>
+<title>使用 Kube-Vip 部署 高可用的 Kubernetes 集群 - 「Leafy'John」PlayGround</title>
+<meta content="webkit" name="renderer"/>
+<meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport"/>
+<meta content="no-transform" http-equiv="Cache-Control"/>
+<meta content="no-siteapp" http-equiv="Cache-Control"/>
+<meta content="#f8f5ec" name="theme-color"/>
+<meta content="#f8f5ec" name="msapplication-navbutton-color"/>
+<meta content="yes" name="apple-mobile-web-app-capable"/>
+<meta content="#f8f5ec" name="apple-mobile-web-app-status-bar-style"/>
+<meta content="Leafy'John" name="author"/><meta content="使用 Kube-Vip 部署 高可用的 Kubernetes 集群" name="description"/><meta content="kube-vip, containerd, install, kubeadm, deploy, k8s" name="keywords"/>
+<meta content="Hugo 0.92.0 with theme even" name="generator"/>
+<link href="https://cdryzun.github.io/post/kube-vip-deploy-ha-k8s-cluster/" rel="canonical"/>
+<link href="/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/>
+<link href="/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png"/>
+<link href="/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png"/>
+<link href="/manifest.json" rel="manifest"/>
+<link color="#5bbad5" href="/safari-pinned-tab.svg" rel="mask-icon"/>
+<link href="/sass/main.min.404b35997075abed13fc31198c48ccfa115c0855fc6e525128eac767d84fdcd2.css" rel="stylesheet"/>
+<link crossorigin="anonymous" href="https://cdn.treesir.pub/blog-css/jquery.fancybox.min.css" rel="stylesheet"/>
+<link href="/css/custom.css" rel="stylesheet"/>
+<meta content="使用 Kube-Vip 部署 高可用的 Kubernetes 集群" property="og:title"/>
+<meta content="使用 Kube-Vip 部署 高可用的 Kubernetes 集群" property="og:description"/>
+<meta content="article" property="og:type"/>
+<meta content="https://cdryzun.github.io/post/kube-vip-deploy-ha-k8s-cluster/" property="og:url"/><meta content="post" property="article:section"/>
+<meta content="2021-06-24T11:01:10+08:00" property="article:published_time"/>
+<meta content="2021-06-24T11:01:10+08:00" property="article:modified_time"/>
+<meta content="使用 Kube-Vip 部署 高可用的 Kubernetes 集群" itemprop="name"/>
+<meta content="使用 Kube-Vip 部署 高可用的 Kubernetes 集群" itemprop="description"/><meta content="2021-06-24T11:01:10+08:00" itemprop="datePublished"/>
+<meta content="2021-06-24T11:01:10+08:00" itemprop="dateModified"/>
+<meta content="1694" itemprop="wordCount"/>
+<meta content="kube-vip,containerd,kubeadm," itemprop="keywords"/><meta content="summary" name="twitter:card"/>
+<meta content="使用 Kube-Vip 部署 高可用的 Kubernetes 集群" name="twitter:title"/>
+<meta content="使用 Kube-Vip 部署 高可用的 Kubernetes 集群" name="twitter:description"/>
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+<!--[if lt IE 9]>
+  <script src="https://cdn.treesir.pub/blog-js/html5shiv.min.js"></script>
+  <script src="https://cdn.treesir.pub/blog-js/respond.min.js"></script>
+<![endif]-->
+<link href="https://cdn.treesir.pub/blog-css/docsearch.min.css" rel="stylesheet"/>
+</head>
+<body>
+<header class="header" id="header">
+<div class="logo-wrapper">
+<a class="logo" href="/">Leafy'John」PlayGround</a>
+</div>
+<nav class="site-navbar">
+<ul class="menu" id="menu">
+<li class="menu-item">
+<a class="menu-item-link" href="/">主页</a>
+</li><li class="menu-item">
+<a class="menu-item-link" href="/post/">归档</a>
+</li><li class="menu-item">
+<a class="menu-item-link" href="/tags/">标签</a>
+</li><li class="menu-item">
+<a class="menu-item-link" href="/categories/">分类</a>
+</li>
+</ul><li style="display:inline-block;margin-right:10px;">
+<input class="docsearch-input" placeholder="Search" type="search"/>
+</li></nav>
+</header>
+<div class="mobile-navbar" id="mobile-navbar">
+<div class="mobile-header-logo">
+<a class="logo" href="/">Leafy'John」PlayGround</a>
+</div>
+<div class="mobile-navbar-icon">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+<nav class="mobile-menu slideout-menu" id="mobile-menu">
+<ul class="mobile-menu-list">
+<a href="/">
+<li class="mobile-menu-item">主页</li>
+</a><a href="/post/">
+<li class="mobile-menu-item">归档</li>
+</a><a href="/tags/">
+<li class="mobile-menu-item">标签</li>
+</a><a href="/categories/">
+<li class="mobile-menu-item">分类</li>
+</a>
+</ul>
+</nav>
+<div class="container" id="mobile-panel">
+<main class="main" id="main">
+<div class="content-wrapper">
+<div class="content" id="content">
+<article class="post">
+<header class="post-header">
+<h1 class="post-title">使用 Kube-Vip 部署 高可用的 Kubernetes 集群</h1>
+<div class="post-meta">
+<span class="post-time"> 2021-06-24 </span>
+<div class="post-category">
+<a href="/categories/k8s/"> k8s </a>
+</div>
+<span class="more-meta"> 约 1694 字 </span>
+<span class="more-meta"> 预计阅读 4 分钟 </span>
+</div>
+</header>
+<div class="post-toc" id="post-toc">
+<h2 class="post-toc-title">文章目录</h2>
+<div class="post-toc-content always-active">
+<nav id="TableOfContents">
+<ul>
+<li><a href="#前言">前言</a></li>
+<li><a href="#环境说明">环境说明</a></li>
+<li><a href="#集群部署">集群部署</a>
+<ul>
+<li><a href="#节点初始化">节点初始化</a></li>
+<li><a href="#kubernetes-集群初始化">kubernetes 集群初始化</a>
+<ul>
+<li><a href="#生成-kubeadm-初始化文件">生成 kubeadm 初始化文件</a></li>
+</ul>
+</li>
+<li><a href="#部署-kube-vip-添加静态-pod-启动文件">部署 kube-vip ，添加静态 pod 启动文件</a></li>
+<li><a href="#安装-cni-网络插件">安装 CNI 网络插件</a></li>
+<li><a href="#添加-其他两台控制节点">添加 其他两台控制节点</a></li>
+<li><a href="#添加-worker-节点">添加 worker 节点</a></li>
+<li><a href="#可选优化">可选优化</a>
+<ul>
+<li><a href="#去掉-master-节点的污点">去掉 master 节点的污点</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#参考文档">参考文档</a></li>
+<li><a href="#todo">ToDo</a></li>
+</ul>
+</nav>
+</div>
+</div>
+<div class="post-content">
+<h1 id="前言">前言</h1>
+<p>在以前我们在私有环境下创建 Kubernetes 集群时，我们需要准备一个硬件/软件的 <code>负载均衡器</code> 来创建多控制平面集群，更多的情况下我们会选择使用 HAProxy + Keepalived 来实现这个功能。一般情况下我们创建2个负载均衡器的虚拟机，然后分配一个 VIP，然后使用 VIP 为负载均衡器提供服务，通过 VIP 将流量重定向到后端的某个 Kubernetes 控制器平面节点上。如下图所示:</p>
+<p><img alt="20210616142006" src="https://cdn.treesir.pub/img/20210616142006.png"/></p>
+<p>接下来我们再来看看如果使用 kube-vip 的话会怎样呢？</p>
+<p><img alt="20210616142207" src="https://cdn.treesir.pub/img/20210616142207.png"/></p>
+<blockquote>
+<p>可以看到，这样实现后使得架构变得更为的优雅，少了之前架构中 <code>负载均衡</code> 服务器的使用。</p>
+</blockquote>
+<h1 id="环境说明">环境说明</h1>
+<ul>
+<li>
+<p>节点 说明</p>
+<table>
+<thead>
+<tr>
+<th>IP地址</th>
+<th>操作系统</th>
+<th>内核版本</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>192.168.8.81 (master-01)</td>
+<td>CentOS Linux release 7.9.2009</td>
+<td>5.4.128-1.el7.elrepo.x86_64</td>
+</tr>
+<tr>
+<td>192.168.8.82 (master-02)</td>
+<td>CentOS Linux release 7.9.2009</td>
+<td>5.4.128-1.el7.elrepo.x86_64</td>
+</tr>
+<tr>
+<td>192.168.8.83 (master-03)</td>
+<td>CentOS Linux release 7.9.2009</td>
+<td>5.4.128-1.el7.elrepo.x86_64</td>
+</tr>
+<tr>
+<td>192.168.8.84 (node-01)</td>
+<td>CentOS Linux release 7.9.2009</td>
+<td>5.4.128-1.el7.elrepo.x86_64</td>
+</tr>
+<tr>
+<td>192.168.8.85 (node-02)</td>
+<td>CentOS Linux release 7.9.2009</td>
+<td>5.4.128-1.el7.elrepo.x86_64</td>
+</tr>
+<tr>
+<td>192.168.8.86 (node-03)</td>
+<td>CentOS Linux release 7.9.2009</td>
+<td>5.4.128-1.el7.elrepo.x86_64</td>
+</tr>
+<tr>
+<td>192.168.8.100 (kube-vip 虚拟ip)</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p>软件说明</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>版本</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>kubernetes</td>
+<td>v1.20.5</td>
+</tr>
+<tr>
+<td>containerd</td>
+<td>v1.4.6</td>
+</tr>
+<tr>
+<td>rancher</td>
+<td>v2.4.15</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+<h1 id="集群部署">集群部署</h1>
+<blockquote>
+<p>如下所示中的 <code>节点初始化</code> 操作，需要在所有的节点多进行操作一次。</p>
+</blockquote>
+<h2 id="节点初始化">节点初始化</h2>
+<ul>
+<li>
+<p>添加 hosts 记录</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-bash" data-lang="bash">cat &gt;&gt; /etc/hosts <span class="s">&lt;&lt; EOF
+</span><span class="s">192.168.8.81 master-01
+</span><span class="s">192.168.8.82 master-02
+</span><span class="s">192.168.8.83 master-03
+</span><span class="s">192.168.8.84 node-01
+</span><span class="s">192.168.8.85 node-02
+</span><span class="s">192.168.8.86 node-03
+</span><span class="s">EOF</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>关闭 swap</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-bash" data-lang="bash">swapoff -a
+sed -i <span class="s1">'s/.*swap.*/#&amp;/'</span> /etc/fstab
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>更改hostname</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-bash" data-lang="bash">hostnamectl set-hostname xxx <span class="c1"># hostnamectl set-hostname master-01</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>关闭防火墙</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-bash" data-lang="bash">systemctl stop firewalld
+systemctl disable firewalld
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>关闭 selinux</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-bash" data-lang="bash">sed -i <span class="s1">'s#SELINUX=enforcing#SELINUX=disabled#g'</span> /etc/selinux/config
+grep -i  ^selinux<span class="o">=</span> /etc/selinux/config 
+setenforce <span class="m">0</span>
+getenforce
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>更新内核</p>
+<blockquote>
+<p>参考 <a href="https://www.treesir.pub/post/centos-init-config/#%E6%9B%B4%E6%96%B0%E7%B3%BB%E7%BB%9F%E5%86%85%E6%A0%B8">文档步骤</a></p>
+</blockquote>
+</li>
+<li>
+<p>开启内核参数</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-bash" data-lang="bash">sudo yum install -y conntrack ipvsadm ipset jq sysstat curl iptables
+
+
+cat <span class="s">&lt;&lt;EOF | sudo tee /etc/modules-load.d/containerd.conf
+</span><span class="s">overlay
+</span><span class="s">br_netfilter
+</span><span class="s">EOF</span>
+
+chmod a+x /etc/rc.local 
+
+cat <span class="s">&lt;&lt;EOF | sudo tee /etc/sysctl.d/99-kubernetes-cri.conf
+</span><span class="s">net.bridge.bridge-nf-call-iptables  = 1
+</span><span class="s">net.ipv4.ip_forward                 = 1
+</span><span class="s">net.bridge.bridge-nf-call-ip6tables = 1
+</span><span class="s">EOF</span>
+
+modprobe overlay
+modprobe br_netfilter  <span class="c1"># 执行操作，使其生效</span>
+
+cat &gt; /etc/rc.local <span class="s">&lt;&lt; EOF
+</span><span class="s">modprobe overlay
+</span><span class="s">modprobe br_netfilter
+</span><span class="s">EOF</span>
+
+sysctl -p /etc/sysctl.d/k8s.conf
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>开启内核 ipvs 特性</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-bash" data-lang="bash">cat &gt; /etc/sysconfig/modules/ipvs.modules <span class="s">&lt;&lt;EOF
+</span><span class="s">#!/bin/bash
+</span><span class="s">modprobe -- ip_vs
+</span><span class="s">modprobe -- ip_vs_rr
+</span><span class="s">modprobe -- ip_vs_wrr
+</span><span class="s">modprobe -- ip_vs_sh
+</span><span class="s">modprobe -- nf_conntrack_ipv4
+</span><span class="s">EOF</span>
+
+chmod <span class="m">755</span> /etc/sysconfig/modules/ipvs.modules <span class="se">\
+</span><span class="se"></span><span class="o">&amp;&amp;</span> bash /etc/sysconfig/modules/ipvs.modules <span class="se">\
+</span><span class="se"></span><span class="o">&amp;&amp;</span> lsmod <span class="p">|</span> grep -e ip_vs -e nf_conntrack_ipv4
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>安装 containerd ,设置参数优化</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-bash" data-lang="bash">sudo yum install -y yum-utils device-mapper-persistent-data lvm2 <span class="se">\
+</span><span class="se"></span><span class="o">&amp;&amp;</span> sudo yum-config-manager --add-repo https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo <span class="se">\
+</span><span class="se"></span><span class="o">&amp;&amp;</span> sudo yum makecache fast
+
+yum install containerd -y
+
+containerd config default &gt; /etc/containerd/config.toml
+
+sed -i <span class="s2">"s#k8s.gcr.io#registry.cn-hangzhou.aliyuncs.com/google_containers#g"</span>  /etc/containerd/config.toml
+sed -i <span class="s1">'/containerd.runtimes.runc.options/a\ \ \ \ \ \ \ \ \ \ \ \ SystemdCgroup = true'</span> /etc/containerd/config.toml
+sed -i <span class="s2">"s#https://registry-1.docker.io#https://registry.cn-hangzhou.aliyuncs.com#g"</span>  /etc/containerd/config.toml
+
+systemctl daemon-reload
+systemctl <span class="nb">enable</span> containerd
+systemctl restart containerd
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>安装 crictl 客户端</p>
+<blockquote>
+<p>此工具为 <code>containerd</code> client 端使用工具</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-bash" data-lang="bash">wget https://github.com/kubernetes-sigs/cri-tools/releases/download/v1.21.0/crictl-v1.21.0-linux-amd64.tar.gz
+
+sudo tar zxvf crictl-v1.21.0-linux-amd64.tar.gz -C /usr/local/bin
+
+cat &gt; /etc/crictl.yaml <span class="s">&lt;&lt; EOF
+</span><span class="s">runtime-endpoint: unix:///run/containerd/containerd.sock
+</span><span class="s">image-endpoint: unix:///run/containerd/containerd.sock
+</span><span class="s">timeout: 10
+</span><span class="s">debug: true
+</span><span class="s">EOF</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>安装 kubernetes 部署组件</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-bash" data-lang="bash">cat <span class="s">&lt;&lt;EOF &gt; /etc/yum.repos.d/kubernetes.repo
+</span><span class="s">[kubernetes]
+</span><span class="s">name=Kubernetes
+</span><span class="s">baseurl=http://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-x86_64
+</span><span class="s">enabled=1
+</span><span class="s">gpgcheck=0
+</span><span class="s">repo_gpgcheck=0
+</span><span class="s">gpgkey=http://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg http://mirrors.aliyun.com/kubernetes/yum/doc/rpm-package-key.gpg
+</span><span class="s">EOF</span>
+
+yum list kubeadm --showduplicates <span class="p">|</span> sort -r <span class="c1"># 打印查看所有 kubeadm 版本</span>
+
+yum install -y kubeadm-1.20.5 kubelet-1.20.5 kubectl-1.20.5
+
+systemctl <span class="nb">enable</span> kubelet  <span class="c1"># 安装完成后 添加kebelet服务自启</span>
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>可选操作，配置 kubectl 命名补全功能</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-bash" data-lang="bash">yum install -y bash-completion
+<span class="nb">source</span> /usr/share/bash-completion/bash_completion
+<span class="nb">source</span> &lt;<span class="o">(</span>kubectl completion bash<span class="o">)</span>
+<span class="nb">echo</span> <span class="s2">"source &lt;(kubectl completion bash)"</span> &gt;&gt; ~/.bashrc
+</code></pre></td></tr></table>
+</div>
+</div></blockquote>
+</li>
+</ul>
+<h2 id="kubernetes-集群初始化">kubernetes 集群初始化</h2>
+<blockquote>
+<p>使用 kubeadm 首先 初始化 <code>master-01</code> 节点，操作的步骤如下所示</p>
+</blockquote>
+<h3 id="生成-kubeadm-初始化文件">生成 kubeadm 初始化文件</h3>
+<blockquote>
+<p>执行初始化操作时, 控制平面地址因为填写了 vip 地址，如果 kube-vip 还未进行部署时，kubeadm init 操作将一直处于 pending 状态，直至超时，这里需要在执行初始化操作后，就立即 <code>执行部署 kube-vip</code> 操作。</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-bash" data-lang="bash">kubeadm config print init-defaults &gt; init_kubelet.yaml <span class="c1"># 生成 默认的初始化配置文件</span>
+
+<span class="c1"># 下面为 更改后的初始化配置文件</span>
+cat init_kubelet.yaml
+apiVersion: kubeadm.k8s.io/v1beta2
+bootstrapTokens:
+- groups:
+  - system:bootstrappers:kubeadm:default-node-token
+  token: abcdef.0123456789abcdef
+  ttl: 24h0m0s
+  usages:
+  - signing
+  - authentication
+kind: InitConfiguration
+nodeRegistration:
+  criSocket: /run/containerd/containerd.sock
+---
+apiServer:
+  timeoutForControlPlane: 4m0s
+apiVersion: kubeadm.k8s.io/v1beta2
+certificatesDir: /etc/kubernetes/pki
+clusterName: kubernetes
+controllerManager: <span class="o">{}</span>
+dns:
+  type: CoreDNS
+etcd:
+  local:
+    dataDir: /var/lib/etcd
+imageRepository: registry.cn-hangzhou.aliyuncs.com/google_containers
+kind: ClusterConfiguration
+controlPlaneEndpoint: <span class="s2">"192.168.8.100:6443"</span>
+kubernetesVersion: v1.20.5
+networking:
+  dnsDomain: cluster.local
+  serviceSubnet: 10.96.0.0/12
+scheduler: <span class="o">{}</span>
+---
+apiVersion: kubelet.config.k8s.io/v1beta1
+kind: KubeletConfiguration
+cgroupDriver: systemd
+<span class="c1">#protectKernelDefaults: false</span>
+---
+apiVersion: kubeproxy.config.k8s.io/v1alpha1
+kind: KubeProxyConfiguration
+mode: ipvs
+
+kubeadm init --config init_kubelet.yaml --upload-certs 
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>这里记录一个踩坑点，就是配置文件中所示的 “protectKernelDefaults”，添加了这个配置项后，会出现 <code>kubelet 奔溃</code>问题，将其注释掉后问题就解决了，下面图片中为官方文档中给出的注解。</p>
+<p><img alt="image-20210624115549902" src="https://cdn.treesir.pub/img/image-20210624115549902.png"/></p>
+</blockquote>
+<h2 id="部署-kube-vip-添加静态-pod-启动文件">部署 kube-vip ，添加静态 pod 启动文件</h2>
+<blockquote>
+<p>kubelet 静态文件夹目录为 <code>/etc/kubernetes/manifests/</code>，我们只需将对应的 yaml 文件生成至这个下面即可，这个下面的 pod 生命周期将交给 kubelet 进行管理。</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-bash" data-lang="bash"><span class="nb">export</span> <span class="nv">VIP</span><span class="o">=</span>192.168.8.100 <span class="c1"># vip 地址</span>
+<span class="nb">export</span> <span class="nv">INTERFACE</span><span class="o">=</span>eth0
+ctr image pull docker.io/plndr/kube-vip:0.3.1
+mkdir -p /etc/kubernetes/manifests
+ctr run --rm --net-host docker.io/plndr/kube-vip:0.3.1 vip <span class="se">\
+</span><span class="se"></span>/kube-vip manifest pod <span class="se">\
+</span><span class="se"></span>--interface <span class="nv">$INTERFACE</span> <span class="se">\
+</span><span class="se"></span>--vip <span class="nv">$VIP</span> <span class="se">\
+</span><span class="se"></span>--controlplane <span class="se">\
+</span><span class="se"></span>--services <span class="se">\
+</span><span class="se"></span>--arp <span class="se">\
+</span><span class="se"></span>--leaderElection <span class="p">|</span> tee  /etc/kubernetes/manifests/kube-vip.yaml
+</code></pre></td></tr></table>
+</div>
+</div><p><img alt="image-20210624142906470" src="https://cdn.treesir.pub/img/image-20210624142906470.png"/></p>
+<p><img alt="image-20210624142917982" src="https://cdn.treesir.pub/img/image-20210624142917982.png"/></p>
+<p><img alt="image-20210624142932603" src="https://cdn.treesir.pub/img/image-20210624142932603.png"/></p>
+<h2 id="安装-cni-网络插件">安装 CNI 网络插件</h2>
+<blockquote>
+<p>初始化集群后，集群还需要安装 一下 <code>网络插件</code>，才能算是正式可用，cni 插件有许多，这里已 <code>cilium</code> 做示例。</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-bash" data-lang="bash">curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 <span class="p">|</span> bash
+helm repo add cilium https://helm.cilium.io/
+helm install cilium cilium/cilium --version 1.9.4 <span class="se">\
+</span><span class="se"></span>--namespace kube-system
+</code></pre></td></tr></table>
+</div>
+</div><p><img alt="image-20210624144753427" src="https://cdn.treesir.pub/img/image-20210624144753427.png"/></p>
+<h2 id="添加-其他两台控制节点">添加 其他两台控制节点</h2>
+<ul>
+<li>
+<p>将初始化生成的证书 copy 至其余的两台控制平面节点</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-bash" data-lang="bash">ssh-keygen  <span class="c1"># 生成公私钥文件 </span>
+
+ssh-copy-id root@<span class="s2">"node_id"</span>  <span class="c1"># 设置免密钥</span>
+
+<span class="nv">USER</span><span class="o">=</span>root <span class="c1"># 可定制</span>
+<span class="nv">CONTROL_PLANE_IPS</span><span class="o">=</span><span class="s2">"192.168.8.82 192.168.8.83"</span>
+
+<span class="k">for</span> host in <span class="si">${</span><span class="nv">CONTROL_PLANE_IPS</span><span class="si">}</span><span class="p">;</span> <span class="k">do</span>
+		ssh <span class="s2">"</span><span class="si">${</span><span class="nv">USER</span><span class="si">}</span><span class="s2">"</span>@<span class="nv">$host</span> <span class="s2">"mkdir -p /etc/kubernetes/pki/ /etc/kubernetes/pki/etcd/"</span>
+    scp /etc/kubernetes/pki/ca.crt <span class="s2">"</span><span class="si">${</span><span class="nv">USER</span><span class="si">}</span><span class="s2">"</span>@<span class="nv">$host</span>:/etc/kubernetes/pki/
+    scp /etc/kubernetes/pki/ca.key <span class="s2">"</span><span class="si">${</span><span class="nv">USER</span><span class="si">}</span><span class="s2">"</span>@<span class="nv">$host</span>:/etc/kubernetes/pki/
+    scp /etc/kubernetes/pki/sa.key <span class="s2">"</span><span class="si">${</span><span class="nv">USER</span><span class="si">}</span><span class="s2">"</span>@<span class="nv">$host</span>:/etc/kubernetes/pki/
+    scp /etc/kubernetes/pki/sa.pub <span class="s2">"</span><span class="si">${</span><span class="nv">USER</span><span class="si">}</span><span class="s2">"</span>@<span class="nv">$host</span>:/etc/kubernetes/pki/
+    scp /etc/kubernetes/pki/front-proxy-ca.crt <span class="s2">"</span><span class="si">${</span><span class="nv">USER</span><span class="si">}</span><span class="s2">"</span>@<span class="nv">$host</span>:/etc/kubernetes/pki/
+    scp /etc/kubernetes/pki/front-proxy-ca.key <span class="s2">"</span><span class="si">${</span><span class="nv">USER</span><span class="si">}</span><span class="s2">"</span>@<span class="nv">$host</span>:/etc/kubernetes/pki/
+    scp /etc/kubernetes/pki/etcd/ca.crt <span class="s2">"</span><span class="si">${</span><span class="nv">USER</span><span class="si">}</span><span class="s2">"</span>@<span class="nv">$host</span>:/etc/kubernetes/pki/etcd/
+    scp /etc/kubernetes/pki/etcd/ca.key <span class="s2">"</span><span class="si">${</span><span class="nv">USER</span><span class="si">}</span><span class="s2">"</span>@<span class="nv">$host</span>:/etc/kubernetes/pki/etcd/
+<span class="k">done</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><img alt="image-20210624145312992" src="https://cdn.treesir.pub/img/image-20210624145312992.png"/></p>
+<p><img alt="image-20210624145345436" src="https://cdn.treesir.pub/img/image-20210624145345436.png"/></p>
+</li>
+<li>
+<p>控制平面节点，执行加入集群操作</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-bash" data-lang="bash">kubeadm join 192.168.8.100:6443 --token hash.hash<span class="se">\
+</span><span class="se"></span>     --discovery-token-ca-cert-hash sha256:hash <span class="se">\
+</span><span class="se"></span>     --control-plane --certificate-key key
+</code></pre></td></tr></table>
+</div>
+</div><p><code>master-02 加入集群</code></p>
+<p><img alt="image-20210624145645907" src="https://cdn.treesir.pub/img/image-20210624145645907.png"/></p>
+<p><code>master-03 加入集群</code></p>
+<p><img alt="image-20210624145724332" src="https://cdn.treesir.pub/img/image-20210624145724332.png"/></p>
+</li>
+</ul>
+<blockquote>
+<p>刚才加入集群的 master 节点，不要忘记将 <code>kube-vip</code> 的静态 pod 进行创建，这样才能确保集群拥有了 <code>HA</code> 属性 。执行上面的 kube-vip 部署步骤</p>
+</blockquote>
+<p>​	<img alt="image-20210624150202416" src="https://cdn.treesir.pub/img/image-20210624150202416.png"/></p>
+<p><img alt="image-20210624150219305" src="https://cdn.treesir.pub/img/image-20210624150219305.png"/></p>
+<p><img alt="image-20210624150310623" src="https://cdn.treesir.pub/img/image-20210624150310623.png"/></p>
+<h2 id="添加-worker-节点">添加 worker 节点</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-bash" data-lang="bash">kubeadm join 192.168.8.100:6443 --token hash.hash<span class="se">\
+</span><span class="se"></span>    --discovery-token-ca-cert-hash sha256:hash
+</code></pre></td></tr></table>
+</div>
+</div><p><img alt="image-20210624150546402" src="https://cdn.treesir.pub/img/image-20210624150546402.png"/></p>
+<p><img alt="image-20210624150607013" src="https://cdn.treesir.pub/img/image-20210624150607013.png"/></p>
+<h2 id="可选优化">可选优化</h2>
+<h3 id="去掉-master-节点的污点">去掉 master 节点的污点</h3>
+<blockquote>
+<p>如在生产环境时，请进行斟酌后再进行相关的操作。</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma" tabindex="0"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma" tabindex="0"><code class="language-bash" data-lang="bash">kubectl taint nodes --all node-role.kubernetes.io/master-
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="参考文档">参考文档</h1>
+<p><a href="https://zhuanlan.zhihu.com/p/359719736">https://zhuanlan.zhihu.com/p/359719736</a></p>
+<p><a href="https://www.qikqiak.com/post/use-kube-vip-ha-k8s-lb/">https://www.qikqiak.com/post/use-kube-vip-ha-k8s-lb/</a></p>
+<p><a href="https://inductor.medium.com/say-good-bye-to-haproxy-and-keepalived-with-kube-vip-on-your-ha-k8s-control-plane-bb7237eca9fc">https://inductor.medium.com/say-good-bye-to-haproxy-and-keepalived-with-kube-vip-on-your-ha-k8s-control-plane-bb7237eca9fc</a></p>
+<h1 id="todo">ToDo</h1>
+</div>
+<div class="post-copyright">
+<p class="copyright-item">
+<span class="item-title">文章作者</span>
+<span class="item-content">Leafy'John</span>
+</p>
+<p class="copyright-item">
+<span class="item-title">上次更新</span>
+<span class="item-content">
+        2021-06-24
+        
+    </span>
+</p>
+<p class="copyright-item">
+<span class="item-title">许可协议</span>
+<span class="item-content"><a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license noopener" target="_blank">CC BY-NC-ND 4.0</a></span>
+</p>
+</div>
+<footer class="post-footer">
+<div class="post-tags">
+<a href="/tags/kube-vip/">kube-vip</a>
+<a href="/tags/containerd/">containerd</a>
+<a href="/tags/kubeadm/">kubeadm</a>
+</div>
+<nav class="post-nav">
+<a class="prev" href="/post/2021-knowledge/">
+<i class="iconfont icon-left"></i>
+<span class="prev-text nav-default">2021 下半年知识点整理</span>
+<span class="prev-text nav-mobile">上一篇</span>
+</a>
+<a class="next" href="/post/kaniko-image-build/">
+<span class="next-text nav-default">Kaniko Docker 镜像构建 初体验</span>
+<span class="next-text nav-mobile">下一篇</span>
+<i class="iconfont icon-right"></i>
+</a>
+</nav>
+</footer>
+</article>
+</div>
+<div id="vcomments"></div>
+<script src="https://cdn.jsdelivr.net/npm/leancloud-storage@3/dist/av-min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js"></script>
+<script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'wS5tU9o2RILlBpQiEfIDgPwI-gzGzoHsz',
+        appKey: 'siSAWI3rzA6Ow8Tmiv7V4GO4',
+        notify:  true ,
+        verify:  true ,
+        avatar:'',
+        placeholder: '来留下点什么吧~',
+        visitor:  false 
+    });
+  </script>
+</div>
+</main>
+<footer class="footer" id="footer">
+<div class="social-links">
+<a class="iconfont icon-email" href="mailto:yangzun@treesir.pub" title="email"></a>
+<a class="iconfont icon-github" href="https://github.com/cdryzun" title="github"></a>
+<a class="iconfont icon-rss" href="https://cdryzun.github.io/index.xml" title="rss" type="application/rss+xml"></a>
+</div>
+<div class="copyright">
+<span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+</span>
+<span class="division">|</span>
+<span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+</span>
+<span class="copyright-year">
+<a class="busuanzi-footer" href="https://beian.miit.gov.cn/">湘ICP备2021002157号-1</a> <img alt="upai" class="ls-is-cached lazyloaded" height="28" src="https://cdn.treesir.pub/img/icp.png" style="margin: -25px 2px" width="23"/> <a href="https://www.upyun.com/?utm_source=lianmeng&amp;utm_medium=referral" rel="nofollow" target="_blank"><img alt="upai" class="ls-is-cached lazyloaded" height="28" src="https://cdn.treesir.pub/img/upyun.png" style="margin: -25px 2px" width="56"/></a>
+    © 
+    2019 - 
+    2023<span class="heart"><i class="iconfont icon-heart"></i></span><span>Leafy'John </span>
+</span>
+</div>
+</footer>
+<div class="back-to-top" id="back-to-top">
+<i class="iconfont icon-up"></i>
+</div>
+</div>
+<script crossorigin="anonymous" src="https://cdn.treesir.pub/blog-js/jquery.min.js"></script>
+<script crossorigin="anonymous" src="https://cdn.treesir.pub/blog-js/slideout.min.js"></script>
+<script crossorigin="anonymous" src="https://cdn.treesir.pub/blog-js/jquery.fancybox.min.js"></script>
+<script src="/js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js" type="text/javascript"></script>
+<script src="/js/copy-to-clipboard.js"></script>
+<script src="https://cdn.treesir.pub/blog-js/docsearch.min.js"></script>
+<script>
+    docsearch({
+    apiKey: "17388eec628e676a77d6235068b458df",
+    indexName: "blog",
+    appId: "KEECS2XKBV",
+    inputSelector: '.docsearch-input',
+    debug: false,
+    });
+</script>
+</body>
+</html>

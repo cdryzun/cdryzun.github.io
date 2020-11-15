@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Slimtoolkit/slim on 「Leafy&#39;John」PlayGround</title>
+    <link>https://cdryzun.github.io/tags/slimtoolkit/slim/</link>
+    <description>Recent content in Slimtoolkit/slim on 「Leafy&#39;John」PlayGround</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language><atom:link href="https://cdryzun.github.io/tags/slimtoolkit/slim/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Slimtoolkit/Slim 与 Gitlab 集成体验</title>
+      <link>https://cdryzun.github.io/post/slimtoolkit-slim-study-1/</link>
+      <pubDate>Thu, 05 Oct 2023 16:53:53 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/slimtoolkit-slim-study-1/</guid>
+      <description>说明 SlimToolkit/Slim 是一个开源工具，用于优化 Docker 容器的大小、速度和安全性。它可以将容器的大小缩减多达 30 倍，并提高容器的启动速度和安全性。 SlimToolkit/Slim 使用了一种称为 ptrace 的</description>
+    </item>
+    
+  </channel>
+</rss>

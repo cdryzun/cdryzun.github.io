@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>argocd on 「Leafy&#39;John」PlayGround</title>
+    <link>https://cdryzun.github.io/tags/argocd/</link>
+    <description>Recent content in argocd on 「Leafy&#39;John」PlayGround</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 24 Jul 2023 14:19:17 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/tags/argocd/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Argocd Cli Usage Tips</title>
+      <link>https://cdryzun.github.io/post/argocd-cli-usage-tips/</link>
+      <pubDate>Mon, 24 Jul 2023 14:19:17 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/argocd-cli-usage-tips/</guid>
+      <description>说明 此篇文档，用于记录在使用 ArgoCD CLi 的过程中，所使用到的一些常用命令，且供参考。 使用记录 ArgoCD cli 安装文档，使用前，配置登录 1 argocd login xxx.argocd.xx 一键 关闭 ArgoCD 下某个 Project</description>
+    </item>
+    
+  </channel>
+</rss>

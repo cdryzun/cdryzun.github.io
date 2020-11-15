@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible"/>
+<title>Python Fro DevOps 笔记 - 「Leafy'John」PlayGround</title>
+<meta content="webkit" name="renderer"/>
+<meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport"/>
+<meta content="no-transform" http-equiv="Cache-Control"/>
+<meta content="no-siteapp" http-equiv="Cache-Control"/>
+<meta content="#f8f5ec" name="theme-color"/>
+<meta content="#f8f5ec" name="msapplication-navbutton-color"/>
+<meta content="yes" name="apple-mobile-web-app-capable"/>
+<meta content="#f8f5ec" name="apple-mobile-web-app-status-bar-style"/>
+<meta content="Leafy'John" name="author"/><meta content="Python Fro DevOps 读书笔记" name="description"/><meta content="Python Fro DevOps, Python, DevOps" name="keywords"/>
+<meta content="Hugo 0.92.0 with theme even" name="generator"/>
+<link href="https://cdryzun.github.io/post/python-fro-devops-notes/" rel="canonical"/>
+<link href="/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/>
+<link href="/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png"/>
+<link href="/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png"/>
+<link href="/manifest.json" rel="manifest"/>
+<link color="#5bbad5" href="/safari-pinned-tab.svg" rel="mask-icon"/>
+<link href="/sass/main.min.404b35997075abed13fc31198c48ccfa115c0855fc6e525128eac767d84fdcd2.css" rel="stylesheet"/>
+<link crossorigin="anonymous" href="https://cdn.treesir.pub/blog-css/jquery.fancybox.min.css" rel="stylesheet"/>
+<link href="/css/custom.css" rel="stylesheet"/>
+<meta content="Python Fro DevOps 笔记" property="og:title"/>
+<meta content="Python Fro DevOps 读书笔记" property="og:description"/>
+<meta content="article" property="og:type"/>
+<meta content="https://cdryzun.github.io/post/python-fro-devops-notes/" property="og:url"/><meta content="post" property="article:section"/>
+<meta content="2023-10-05T20:40:24+08:00" property="article:published_time"/>
+<meta content="2023-10-05T20:40:24+08:00" property="article:modified_time"/>
+<meta content="Python Fro DevOps 笔记" itemprop="name"/>
+<meta content="Python Fro DevOps 读书笔记" itemprop="description"/><meta content="2023-10-05T20:40:24+08:00" itemprop="datePublished"/>
+<meta content="2023-10-05T20:40:24+08:00" itemprop="dateModified"/>
+<meta content="1660" itemprop="wordCount"/>
+<meta content="DevOps," itemprop="keywords"/><meta content="summary" name="twitter:card"/>
+<meta content="Python Fro DevOps 笔记" name="twitter:title"/>
+<meta content="Python Fro DevOps 读书笔记" name="twitter:description"/>
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+<!--[if lt IE 9]>
+  <script src="https://cdn.treesir.pub/blog-js/html5shiv.min.js"></script>
+  <script src="https://cdn.treesir.pub/blog-js/respond.min.js"></script>
+<![endif]-->
+<link href="https://cdn.treesir.pub/blog-css/docsearch.min.css" rel="stylesheet"/>
+</head>
+<body>
+<header class="header" id="header">
+<div class="logo-wrapper">
+<a class="logo" href="/">Leafy'John」PlayGround</a>
+</div>
+<nav class="site-navbar">
+<ul class="menu" id="menu">
+<li class="menu-item">
+<a class="menu-item-link" href="/">主页</a>
+</li><li class="menu-item">
+<a class="menu-item-link" href="/post/">归档</a>
+</li><li class="menu-item">
+<a class="menu-item-link" href="/tags/">标签</a>
+</li><li class="menu-item">
+<a class="menu-item-link" href="/categories/">分类</a>
+</li>
+</ul><li style="display:inline-block;margin-right:10px;">
+<input class="docsearch-input" placeholder="Search" type="search"/>
+</li></nav>
+</header>
+<div class="mobile-navbar" id="mobile-navbar">
+<div class="mobile-header-logo">
+<a class="logo" href="/">Leafy'John」PlayGround</a>
+</div>
+<div class="mobile-navbar-icon">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+<nav class="mobile-menu slideout-menu" id="mobile-menu">
+<ul class="mobile-menu-list">
+<a href="/">
+<li class="mobile-menu-item">主页</li>
+</a><a href="/post/">
+<li class="mobile-menu-item">归档</li>
+</a><a href="/tags/">
+<li class="mobile-menu-item">标签</li>
+</a><a href="/categories/">
+<li class="mobile-menu-item">分类</li>
+</a>
+</ul>
+</nav>
+<div class="container" id="mobile-panel">
+<main class="main" id="main">
+<div class="content-wrapper">
+<div class="content" id="content">
+<article class="post">
+<header class="post-header">
+<h1 class="post-title">Python Fro DevOps 笔记</h1>
+<div class="post-meta">
+<span class="post-time"> 2023-10-05 </span>
+<div class="post-category">
+<a href="/categories/devops/"> DevOps </a>
+</div>
+<span class="more-meta"> 约 1660 字 </span>
+<span class="more-meta"> 预计阅读 4 分钟 </span>
+</div>
+</header>
+<div class="post-toc" id="post-toc">
+<h2 class="post-toc-title">文章目录</h2>
+<div class="post-toc-content always-active">
+<nav id="TableOfContents">
+<ul>
+<li><a href="#笔记">笔记</a></li>
+</ul>
+</nav>
+</div>
+</div>
+<div class="post-content">
+<p><img alt="Python for DevOps: Learn Ruthlessly Effective Automation: Gift, Noah,  Behrman, Kennedy, Deza, Alfredo, Gheorghiu, Grig: 9781492057697:  Amazon.com: Books" src="https://cdn.treesir.pub/images/2023/10/05/20231005204456.jpg"/></p>
+<h1 id="笔记">笔记</h1>
+<ul>
+<li>
+<p>2019 年，70%的开发者认为自己高于平均水平，而 10%的人认为自己低于平均水平。</p>
+</li>
+<li>
+<p>相信自动化优于等级制度的信念正是 DevOps 的核心。</p>
+</li>
+<li>
+<p><code>Windows</code> 操作系统会临时关闭整个网络堆栈。如果在短时间内生成了太多的网络连接，操作系统会保护自己。</p>
+</li>
+<li>
+<p>构建服务器是一个基础设施，<code>必须确保其正常运行</code>，以便能够可靠地交付软件。</p>
+</li>
+<li>
+<p>自动化的每个工作都是你的工作。没有比确保事情自动化更重要或更有价值的任务了</p>
+</li>
+<li>
+<p>如果组织中的领导 <code>比其他人更好(更多资源)/更高</code>，你将永远无法实施真正的 DevOps 原则。你将应用最高薪酬人员的意见（HIPO）原则。虽然 DevOps 可以真正挽救生命并拯救你的公司，但 HIPO 是凶猛的动物，可以并且确实会摧毁它们所经之处的一切。</p>
+</li>
+<li>
+<p><code>工作博弈论</code>：</p>
+<p>在武术馆里，让学生帮忙拖地是司空见惯的事情。这样做有很多明显的原因。它向教练表达了尊重，并教会学生自律。</p>
+<ul>
+<li>这里涉及到一个 <code>博弈论问题</code> 。接触到葡萄球菌感染可能会引发严重的健康问题。如果你有机会在你训练的健身房里拖地，要仔细考虑你的回应。人们会观察你清洁地板的能力，如果你做得好，他们会因为尊重你而也做得好。如果你把这个任务看作是“低人一等” 的事情，没有做好，可能会引发两个问题。一是你没有清洁好地板，可能导致健身房的其他会员生病。二是你“感染”了其他人的心态，他们反过来也不会清洁地板。你的行为在现在和未来都会产生影响。</li>
+</ul>
+</li>
+<li>
+<p>确保你用愉快的表情做出出色的工作。你的生命可能取决于此。</p>
+</li>
+<li>
+<p>一个好的团队的特征</p>
+<ul>
+<li>
+<p>一个明确、令人振奋的目标</p>
+</li>
+<li>
+<p>一个以结果为导向的结构
+<code>许多公司使用的工具和流程如果不能直接归因于结果，那么它们就是值得质疑的：Skype、电子邮件、漫长的会议、加班。</code></p>
+</li>
+<li>
+<p>能干的团队成员</p>
+</li>
+<li>
+<p>统一承诺</p>
+</li>
+<li>
+<p>合作的氛围</p>
+<ul>
+<li>
+<p>需要创造一种尊重的环境，人们能够坦诚开放并期待反馈。如果偏向任何一方的程度过高，就注定会失败。</p>
+</li>
+<li>
+<p><code>招聘流程</code>。许多公司抱怨无法招聘、无法实现多样化招聘，以及无法找到优秀的候选人。</p>
+<ol>
+<li>首先，公司鼓励候选人申请。</li>
+<li>接下来，他们浪费时间进行定制的无关测试。</li>
+<li>然后他们用一轮比随机还没有预测价值的面试来“雾化”他们。</li>
+<li>然后他们就对候选人置之不理，不给任何反馈。</li>
+<li>他们撒谎说他们正在努力招聘人才，但实际上他们的流程有问题</li>
+<li>然后他们在社交媒体上大声抱怨多样化候选人或任何候选人的参与有多么困难。</li>
+</ol>
+<p><code>以尊重的态度对待人，你就会得到尊重</code></p>
+</li>
+</ul>
+</li>
+<li>
+<p>卓越的标准</p>
+<ul>
+<li>另一种表达方式是说需要更高程度的 <code>自律</code> 。<code>编写软件、测试和部署需要更高的标准</code>。在部署之前，需要更严格的措施来阅读有关新技术的文档。</li>
+<li>要发布没有经过 <code>适当 </code>的 DevOps 生命周期的代码。</li>
+<li>在基础设施方面，需要在许多步骤上遵循最佳实践，无论是 Zookeeper 配置、EC2 存储配置，还是 Mongo 或无服务器。</li>
+<li>管理层需要高标准。公司中的每个人都能看到，<code>决策时使用的是数据而不是观点、等级、攻击性或渴望佣金的欲望</code>。</li>
+</ul>
+</li>
+<li>
+<p>外部支持和认可</p>
+<ul>
+<li>当领导者表现出低于平均水平的承诺和诚信时，要求超常贡献是具有挑战性的。</li>
+<li>一个部门把困难的任务推给另一个部门。甩锅、逃避/推脱 责任</li>
+</ul>
+</li>
+<li>
+<p>原则性领导</p>
+</li>
+</ul>
+</li>
+</ul>
+<hr/>
+<p><strong>发掘技术点</strong></p>
+<ul>
+<li>
+<p><a href="https://github.com/pytest-dev/pytest-testinfra">GitHub - pytest-dev/pytest-testinfra: Testinfra test your infrastructures</a></p>
+<ul>
+<li>
+<p><a href="https://testinfra.readthedocs.io/en/latest/backends.html#lxc-lxd">文档地址</a></p>
+<blockquote>
+<p>查了一下资料，这类工具还有很多如：</p>
+<ul>
+<li><strong>Serverspec:</strong> Serverspec 是一个 Ruby DSL（领域特定语言），用于编写基础设施测试。它可以用于测试服务器的状态、配置和软件包。</li>
+<li><strong>Goss:</strong> Goss（Golang Server Spec）是一个用 Go 编写的服务器测试工具。它使用 YAML 文件来定义测试，并支持检查文件、包、用户、端口等。</li>
+<li><strong>Molecule:</strong> Molecule 是一个用于测试 Ansible 角色的工具。它可以自动化测试 Ansible 配置的正确性。</li>
+<li><strong>KitchenCI:</strong> Test Kitchen 是一个基于 Ruby 的工具，用于测试基础设施即代码（Infrastructure as Code）。它可以测试使用 Chef、Puppet、Ansible 等配置管理工具创建的基础设施。</li>
+<li><strong>Bats:</strong> Bats（Bash Automated Testing System）是一个基于 Bash 的测试框架，用于编写和运行 shell 脚本测试。</li>
+<li><strong>Terratest:</strong> Terratest 是一个 Go 语言库，用于编写自动化基础设施测试的代码。它可以与 Terraform 一起使用，测试基础设施即代码的正确性。</li>
+<li><strong>Kitchen-Terraform:</strong> Kitchen-Terraform 是 Test Kitchen 的插件，用于测试 Terraform 配置的正确性。</li>
+<li><strong>Pester:</strong> Pester 是一个用于测试 PowerShell 脚本的工具，适用于 Windows 环境。</li>
+<li><strong>Cucumber:</strong> Cucumber 是一个行为驱动开发（BDD）工具，用于编写可执行的规范和测试。它支持多种编程语言，并用于测试各种应用程序类型，而不仅仅是基础设施。</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="post-copyright">
+<p class="copyright-item">
+<span class="item-title">文章作者</span>
+<span class="item-content">Leafy'John</span>
+</p>
+<p class="copyright-item">
+<span class="item-title">上次更新</span>
+<span class="item-content">
+        2023-10-05
+        
+    </span>
+</p>
+<p class="copyright-item">
+<span class="item-title">许可协议</span>
+<span class="item-content"><a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license noopener" target="_blank">CC BY-NC-ND 4.0</a></span>
+</p>
+</div>
+<footer class="post-footer">
+<div class="post-tags">
+<a href="/tags/devops/">DevOps</a>
+</div>
+<nav class="post-nav">
+<a class="next" href="/post/slimtoolkit-slim-study-1/">
+<span class="next-text nav-default">Slimtoolkit/Slim 与 Gitlab 集成体验</span>
+<span class="next-text nav-mobile">下一篇</span>
+<i class="iconfont icon-right"></i>
+</a>
+</nav>
+</footer>
+</article>
+</div>
+<div id="vcomments"></div>
+<script src="https://cdn.jsdelivr.net/npm/leancloud-storage@3/dist/av-min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js"></script>
+<script type="text/javascript">
+    new Valine({
+        el: '#vcomments' ,
+        appId: 'wS5tU9o2RILlBpQiEfIDgPwI-gzGzoHsz',
+        appKey: 'siSAWI3rzA6Ow8Tmiv7V4GO4',
+        notify:  true ,
+        verify:  true ,
+        avatar:'',
+        placeholder: '来留下点什么吧~',
+        visitor:  false 
+    });
+  </script>
+</div>
+</main>
+<footer class="footer" id="footer">
+<div class="social-links">
+<a class="iconfont icon-email" href="mailto:yangzun@treesir.pub" title="email"></a>
+<a class="iconfont icon-github" href="https://github.com/cdryzun" title="github"></a>
+<a class="iconfont icon-rss" href="https://cdryzun.github.io/index.xml" title="rss" type="application/rss+xml"></a>
+</div>
+<div class="copyright">
+<span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+</span>
+<span class="division">|</span>
+<span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+</span>
+<span class="copyright-year">
+<a class="busuanzi-footer" href="https://beian.miit.gov.cn/">湘ICP备2021002157号-1</a> <img alt="upai" class="ls-is-cached lazyloaded" height="28" src="https://cdn.treesir.pub/img/icp.png" style="margin: -25px 2px" width="23"/> <a href="https://www.upyun.com/?utm_source=lianmeng&amp;utm_medium=referral" rel="nofollow" target="_blank"><img alt="upai" class="ls-is-cached lazyloaded" height="28" src="https://cdn.treesir.pub/img/upyun.png" style="margin: -25px 2px" width="56"/></a>
+    © 
+    2019 - 
+    2023<span class="heart"><i class="iconfont icon-heart"></i></span><span>Leafy'John </span>
+</span>
+</div>
+</footer>
+<div class="back-to-top" id="back-to-top">
+<i class="iconfont icon-up"></i>
+</div>
+</div>
+<script crossorigin="anonymous" src="https://cdn.treesir.pub/blog-js/jquery.min.js"></script>
+<script crossorigin="anonymous" src="https://cdn.treesir.pub/blog-js/slideout.min.js"></script>
+<script crossorigin="anonymous" src="https://cdn.treesir.pub/blog-js/jquery.fancybox.min.js"></script>
+<script src="/js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js" type="text/javascript"></script>
+<script src="/js/copy-to-clipboard.js"></script>
+<script src="https://cdn.treesir.pub/blog-js/docsearch.min.js"></script>
+<script>
+    docsearch({
+    apiKey: "17388eec628e676a77d6235068b458df",
+    indexName: "blog",
+    appId: "KEECS2XKBV",
+    inputSelector: '.docsearch-input',
+    debug: false,
+    });
+</script>
+</body>
+</html>

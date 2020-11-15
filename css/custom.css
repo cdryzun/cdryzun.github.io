@@ -1,0 +1,265 @@
+body {
+	border-top: 0;
+	/* font-family: Arial, sans-serif; */
+	font-family: "MesloLGS NF";
+	src: url("https://raw.githubusercontent.com/romkatv/powerlevel10k-media/master/MesloLGS%20NF%20Regular.ttf");
+	font-weight: normal;
+	font-style: normal;
+}
+
+#TableOfContents ::marker {
+    unicode-bidi: isolate;
+    font-variant-numeric: tabular-nums;
+    /* text-transform: none;
+    text-indent: 1px !important;
+    text-align: start !important;
+    text-align-last: start !important; */
+}
+
+.container {
+	margin: 0 auto
+}
+
+/* .headerlink .anchor {
+	color: #69adc4;
+} */
+
+.post .post-content a {
+    color: #69adc4;
+    word-break: break-all;
+}
+
+/* a.headerlink anchor {
+	color: #69adc4
+} */
+
+a {
+	color: rgba(66,66,88,0.86)
+}
+
+a.logo {
+    color: #69adc4;
+	text-align: center;
+	display: block;
+	width: 100%;
+	margin-left: 28px;
+}
+
+a.item-content {
+	color: #69adc4
+}
+
+.toc-link {
+	display: inline-block;
+	width: 100%;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis
+}
+
+.slideout-panel {
+	min-height: calc(100vh - 10px)
+}
+
+.main {
+	min-height: 453px
+}
+
+.header {
+	padding: 10px;
+	background: -webkit-linear-gradient(200deg,#fff 0,#ebebeb 80%);
+	background: -o-linear-gradient(200deg,#fff 0,#ebebeb 80%);
+	background: -moz-linear-gradient(200deg,#fff 0,#ebebeb 80%);
+	background: linear-gradient(200deg,#fff 0,#ebebeb 80%);
+	background-color: #fff;
+	width: 100%;
+	z-index: 999;
+	display: flex;
+	justify-content: center
+}
+
+.header .site-navbar .menu .menu-item:hover {
+	background-color: #ccc;
+	border-radius: 6px
+}
+
+.header .logo-wrapper .logo {
+	position: relative;
+	font-size: 36px;
+	top: 8px;
+	line-height: 72px;
+}
+
+.header .logo-wrapper .logo::before {
+	content: '';
+	position: absolute;
+	top: -5px;
+	left: 5px;
+	width: 500px;
+	height: 2px;
+	background-color: #69adc4
+}
+
+.header .logo-wrapper .logo::after {
+	content: '';
+	position: absolute;
+	bottom: -12px;
+	left: 5px;
+	width: 500px;
+	height: 2px;
+	background-color: #69adc4
+}
+
+.menu-item {
+	padding: 0 10px
+}
+
+.menu-item-link .iconfont::before {
+	padding-right: 8px
+}
+
+.post .post-content .read-more .read-more-link {
+	border: 2px solid #909a9b;
+	padding: .5em 1em;
+	background-color: #909a9b;
+	color: #fff
+}
+
+.post .post-content .read-more .read-more-link:hover {
+	border-bottom: 2px solid #909a9b;
+	color: #909a9b;
+	background: #69adc4
+}
+
+.posts {
+	border-bottom: 0
+}
+
+.post {
+	padding: 1em 1em;
+	margin: 1.5em 0;
+	box-shadow: 0 8px 8px rgba(10,16,20,.24),0 0 8px rgba(10,16,20,.12);
+	-webkit-box-shadow: 0 8px 8px rgba(10,16,20,.24),0 0 8px rgba(10,16,20,.12)
+}
+
+.post .post-toc .post-toc-content ul {
+	list-style: none;
+}
+
+.post .post-header .post-link:hover {
+	background-color: #ccc;
+	padding: 1px 10px;
+	border-radius: 6px
+}
+
+.post-header {
+	text-align: center
+}
+
+.post .post-content code,.post .post-content pre {
+	background: 0
+}
+
+.read-more {
+	text-align: center;
+	padding: 0 0 20px
+}
+
+.back-to-top {
+	right: 30px;
+	bottom: 45px;
+	font-size: 2em
+}
+
+.terms .terms-tags .terms-link {
+	margin: 10px 10px;
+	border-radius: 50em;
+	padding: 5px 10px;
+	background-color: #cacfd1
+}
+
+.terms .terms-tags .terms-link .terms-count {
+	top: -2px;
+	right: -1px;
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	background-color: #7884a5;
+	color: #fff
+}
+
+.footer .copyright .copyright-year .heart {
+	color: #ADD8E6;
+	display: inline-block;
+	animation: heartAnimate 1.33s ease-in-out infinite
+}
+
+@keyframes heartAnimate {
+	0%,100% {
+		transform: scale(1)
+	}
+
+	10%,30% {
+		transform: scale(.9)
+	}
+
+	20%,40%,60%,80% {
+		transform: scale(1.1)
+	}
+
+	50%,70% {
+		transform: scale(1.1)
+	}
+}
+
+/* .logo {
+    font-size: 36px;
+    line-height: 68px
+    color: #69adc4;
+} */
+
+hr {
+    border-top: 1px solid #aaa;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.highlight {
+position: relative;
+}
+
+.highlight pre {
+background-color:#f8f8f8 !important;
+}
+
+p> strong {
+    text-align: center !important;
+}
+
+.highlight .lnt {
+    /* display: block;
+    float: left; */
+    user-select: none;
+    /* padding-right: 8px;
+    text-align: right; */
+}
+
+.highlight-copy-btn {
+position: absolute;
+top: 0px;
+right: 0px;
+border: 0;
+border-radius: 4px;
+padding: 1px;
+font-size: 0.8em;
+line-height: 1.8;
+color: #fff;
+background-color: #aaa;
+min-width: 55px;
+text-align: center;
+}
+
+.highlight-copy-btn:hover {
+background-color: #69adc4;
+}

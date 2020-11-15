@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible"/>
+<title>「Leafy'John」PlayGround</title>
+<meta content="webkit" name="renderer"/>
+<meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport"/>
+<meta content="no-transform" http-equiv="Cache-Control"/>
+<meta content="no-siteapp" http-equiv="Cache-Control"/>
+<meta content="#f8f5ec" name="theme-color"/>
+<meta content="#f8f5ec" name="msapplication-navbutton-color"/>
+<meta content="yes" name="apple-mobile-web-app-capable"/>
+<meta content="#f8f5ec" name="apple-mobile-web-app-status-bar-style"/>
+<meta content="Leafy'John" name="author"/><meta content="个人网志博客, 主要记录一下自己职业发展过程中的成长经历" name="description"/><meta content="github action, pipeline, gitlab, nexus3, 技术分享, 前端技术, 计算机网络, devops, kubernetes, jenkins, centos, 技术积累, 个人文档, 个人总结, mysql, 运维, 自动化, python, hugo, k3s, kafka, go lang, helm, traefik, kubeadm, rancher, redis, rke, nginx, apache, 网络安全" name="keywords"/>
+<meta content="Hugo 0.92.0 with theme even" name="generator"/>
+<link href="https://cdryzun.github.io/" rel="canonical"/>
+<link href="https://cdryzun.github.io/index.xml" rel="alternate" title="「Leafy'John」PlayGround" type="application/rss+xml"/>
+<link href="https://cdryzun.github.io/index.xml" rel="feed" title="「Leafy'John」PlayGround" type="application/rss+xml"/>
+<link href="/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/>
+<link href="/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png"/>
+<link href="/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png"/>
+<link href="/manifest.json" rel="manifest"/>
+<link color="#5bbad5" href="/safari-pinned-tab.svg" rel="mask-icon"/>
+<link href="/sass/main.min.404b35997075abed13fc31198c48ccfa115c0855fc6e525128eac767d84fdcd2.css" rel="stylesheet"/>
+<link crossorigin="anonymous" href="https://cdn.treesir.pub/blog-css/jquery.fancybox.min.css" rel="stylesheet"/>
+<link href="/css/custom.css" rel="stylesheet"/>
+<meta content="「Leafy'John」PlayGround" property="og:title"/>
+<meta content="个人网志博客, 主要记录一下自己职业发展过程中的成长经历" property="og:description"/>
+<meta content="website" property="og:type"/>
+<meta content="https://cdryzun.github.io/" property="og:url"/>
+<meta content="「Leafy'John」PlayGround" itemprop="name"/>
+<meta content="个人网志博客, 主要记录一下自己职业发展过程中的成长经历" itemprop="description"/><meta content="summary" name="twitter:card"/>
+<meta content="「Leafy'John」PlayGround" name="twitter:title"/>
+<meta content="个人网志博客, 主要记录一下自己职业发展过程中的成长经历" name="twitter:description"/>
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+<!--[if lt IE 9]>
+  <script src="https://cdn.treesir.pub/blog-js/html5shiv.min.js"></script>
+  <script src="https://cdn.treesir.pub/blog-js/respond.min.js"></script>
+<![endif]-->
+<link href="https://cdn.treesir.pub/blog-css/docsearch.min.css" rel="stylesheet"/>
+</head>
+<body>
+<header class="header" id="header">
+<div class="logo-wrapper">
+<a class="logo" href="/">Leafy'John」PlayGround</a>
+</div>
+<nav class="site-navbar">
+<ul class="menu" id="menu">
+<li class="menu-item">
+<a class="menu-item-link" href="/">主页</a>
+</li><li class="menu-item">
+<a class="menu-item-link" href="/post/">归档</a>
+</li><li class="menu-item">
+<a class="menu-item-link" href="/tags/">标签</a>
+</li><li class="menu-item">
+<a class="menu-item-link" href="/categories/">分类</a>
+</li>
+</ul><li style="display:inline-block;margin-right:10px;">
+<input class="docsearch-input" placeholder="Search" type="search"/>
+</li></nav>
+</header>
+<div class="mobile-navbar" id="mobile-navbar">
+<div class="mobile-header-logo">
+<a class="logo" href="/">Leafy'John」PlayGround</a>
+</div>
+<div class="mobile-navbar-icon">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+<nav class="mobile-menu slideout-menu" id="mobile-menu">
+<ul class="mobile-menu-list">
+<a href="/">
+<li class="mobile-menu-item">主页</li>
+</a><a href="/post/">
+<li class="mobile-menu-item">归档</li>
+</a><a href="/tags/">
+<li class="mobile-menu-item">标签</li>
+</a><a href="/categories/">
+<li class="mobile-menu-item">分类</li>
+</a>
+</ul>
+</nav>
+<div class="container" id="mobile-panel">
+<main class="main" id="main">
+<div class="content-wrapper">
+<div class="content" id="content">
+<section class="posts" id="posts">
+<article class="post">
+<header class="post-header">
+<h1 class="post-title"><a class="post-link" href="/post/coredns-deployment/">以二进制形式部署 CoreDNS 服务器</a></h1>
+<div class="post-meta">
+<span class="post-time"> 2021-09-25 </span>
+<div class="post-category">
+<a href="/categories/dns/"> DNS </a>
+</div>
+<span class="more-meta"> 约 572 字 </span>
+<span class="more-meta"> 预计阅读 2 分钟 </span>
+</div>
+</header>
+<div class="post-content">
+<div class="post-summary">
+      背景 CoreDNS 是 Golang 编写的一个插件式 DNS 服务器，Kubernetes 1.13 后内置的默认 DNS 服务器。特点如下: 插件化：基于 Caddy 框架，实现了一个插件链的架构，将不同
+    </div>
+<div class="read-more">
+<a class="read-more-link" href="/post/coredns-deployment/">阅读更多</a>
+</div>
+</div>
+</article>
+<article class="post">
+<header class="post-header">
+<h1 class="post-title"><a class="post-link" href="/post/go-lang-struct/">GoLang Struct</a></h1>
+<div class="post-meta">
+<span class="post-time"> 2021-08-15 </span>
+<div class="post-category">
+<a href="/categories/golang/"> GoLang </a>
+</div>
+<span class="more-meta"> 约 256 字 </span>
+<span class="more-meta"> 预计阅读 1 分钟 </span>
+</div>
+</header>
+<div class="post-content">
+<div class="post-summary">
+      Struct 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69
+    </div>
+<div class="read-more">
+<a class="read-more-link" href="/post/go-lang-struct/">阅读更多</a>
+</div>
+</div>
+</article>
+<article class="post">
+<header class="post-header">
+<h1 class="post-title"><a class="post-link" href="/post/docker-deploy-mailserver/">使用 Docker Compose 5分钟 部署 一台邮件服务器</a></h1>
+<div class="post-meta">
+<span class="post-time"> 2021-08-03 </span>
+<div class="post-category">
+<a href="/categories/docker/"> docker </a>
+</div>
+<span class="more-meta"> 约 2765 字 </span>
+<span class="more-meta"> 预计阅读 6 分钟 </span>
+</div>
+</header>
+<div class="post-content">
+<div class="post-summary">
+      背景 由于 Gmail 邮箱在国内无法使用 且 国内手机 号码无法继续注册账号原因，最近想着折腾一下 自建一台 邮件服务器 玩玩。正好在国外有台 vps (搬瓦工的)，比较空
+    </div>
+<div class="read-more">
+<a class="read-more-link" href="/post/docker-deploy-mailserver/">阅读更多</a>
+</div>
+</div>
+</article>
+<article class="post">
+<header class="post-header">
+<h1 class="post-title"><a class="post-link" href="/post/k3s-change-flannel-cni-model/">K3s 集群修改 Flannel CNI 插件网络模式</a></h1>
+<div class="post-meta">
+<span class="post-time"> 2021-07-29 </span>
+<div class="post-category">
+<a href="/categories/k3s/"> k3s </a>
+<a href="/categories/openwrt/"> openwrt </a>
+<a href="/categories/network/"> network </a>
+</div>
+<span class="more-meta"> 约 1208 字 </span>
+<span class="more-meta"> 预计阅读 3 分钟 </span>
+</div>
+</header>
+<div class="post-content">
+<div class="post-summary">
+      背景说明 在 之前搭建 的 k3s 集群中因为某些原因我将 openwrt 节点，进行了系统重装，更改固件为了 esir 高大全的 op 固件，由于其 固件中没有将 vxlan 模块编译进内核当中，而
+    </div>
+<div class="read-more">
+<a class="read-more-link" href="/post/k3s-change-flannel-cni-model/">阅读更多</a>
+</div>
+</div>
+</article>
+<article class="post">
+<header class="post-header">
+<h1 class="post-title"><a class="post-link" href="/post/nexus3-pypi-blob-storage-fix/">记录一次 Nexus3 Pypi 私服 Blob Storage 异常的修复</a></h1>
+<div class="post-meta">
+<span class="post-time"> 2021-07-22 </span>
+<div class="post-category">
+<a href="/categories/devops/"> devops </a>
+</div>
+<span class="more-meta"> 约 1284 字 </span>
+<span class="more-meta"> 预计阅读 3 分钟 </span>
+</div>
+</header>
+<div class="post-content">
+<div class="post-summary">
+      说明 在 devops 集成环境中的 测试环境 中，今天发现有几条 pipeline 一直是在构建超时状态。初步查看了一下，以为是哪个 依赖版本的兼容性有些问题, 导致 pip 一直是找不到
+    </div>
+<div class="read-more">
+<a class="read-more-link" href="/post/nexus3-pypi-blob-storage-fix/">阅读更多</a>
+</div>
+</div>
+</article>
+<article class="post">
+<header class="post-header">
+<h1 class="post-title"><a class="post-link" href="/post/pipeline-jupyter-labextension-build-fix/">记录一次 JupyterLab 插件打包问题的修复</a></h1>
+<div class="post-meta">
+<span class="post-time"> 2021-07-20 </span>
+<div class="post-category">
+<a href="/categories/k8s/"> k8s </a>
+<a href="/categories/devops/"> devops </a>
+</div>
+<span class="more-meta"> 约 1699 字 </span>
+<span class="more-meta"> 预计阅读 4 分钟 </span>
+</div>
+</header>
+<div class="post-content">
+<div class="post-summary">
+      背景 在所关联项目 的 jenkins pipeline ci 流水线中，开发告诉我 生成的 pip 包中未有生成相关的 labextension 依赖文件夹，导致 pip 包虽然是安装成功了，但仍是一个不可用的状态。开发人
+    </div>
+<div class="read-more">
+<a class="read-more-link" href="/post/pipeline-jupyter-labextension-build-fix/">阅读更多</a>
+</div>
+</div>
+</article>
+<article class="post">
+<header class="post-header">
+<h1 class="post-title"><a class="post-link" href="/post/cronjob-clean-es-index/">使用 Cronjob 定时清理 ElasticSearch 中的日志索引</a></h1>
+<div class="post-meta">
+<span class="post-time"> 2021-07-13 </span>
+<div class="post-category">
+<a href="/categories/efk/"> efk </a>
+<a href="/categories/k8s/"> k8s </a>
+</div>
+<span class="more-meta"> 约 489 字 </span>
+<span class="more-meta"> 预计阅读 1 分钟 </span>
+</div>
+</header>
+<div class="post-content">
+<div class="post-summary">
+      背景 在日常使用 efk 日志系统的过程中，每天造成的日志索引量是巨大的，需要进行对相关的索引进行定期清理，来缓解后端储存的占用。如何实现在 kubernetes 中进行优
+    </div>
+<div class="read-more">
+<a class="read-more-link" href="/post/cronjob-clean-es-index/">阅读更多</a>
+</div>
+</div>
+</article>
+<article class="post">
+<header class="post-header">
+<h1 class="post-title"><a class="post-link" href="/post/macos-html-to-pdf/">Macos 一键 使用 wkhtmltopdf 将 html 转换为 pdf</a></h1>
+<div class="post-meta">
+<span class="post-time"> 2021-07-12 </span>
+<div class="post-category">
+<a href="/categories/unix/"> unix </a>
+</div>
+<span class="more-meta"> 约 53 字 </span>
+<span class="more-meta"> 预计阅读 1 分钟 </span>
+</div>
+</header>
+<div class="post-content">
+<div class="post-summary">
+      安装 wkhtmltopdf 使用 brew 进行安装 1 brew install --cask wkhtmltopdf 将目录下的所有 html 文件一键转换为 pdf 格式 1 for f in *.html; do wkhtmltopdf --load-error-handling ignore -n --enable-local-file-access $f "$f.pdf"; done 参考文档 https://segmentfault.com/a/1190000018988358 https://github.com/wkhtmltopdf/wkhtmltopdf
+    </div>
+<div class="read-more">
+<a class="read-more-link" href="/post/macos-html-to-pdf/">阅读更多</a>
+</div>
+</div>
+</article>
+</section>
+<nav class="pagination">
+<a class="prev" href="/page/2/">
+<i class="iconfont icon-left"></i>
+<span class="prev-text">上一页</span>
+</a>
+<a class="next" href="/page/4/">
+<span class="next-text">下一页</span>
+<i class="iconfont icon-right"></i>
+</a>
+</nav>
+</div>
+</div>
+</main>
+<footer class="footer" id="footer">
+<div class="social-links">
+<a class="iconfont icon-email" href="mailto:yangzun@treesir.pub" title="email"></a>
+<a class="iconfont icon-github" href="https://github.com/cdryzun" title="github"></a>
+<a class="iconfont icon-rss" href="https://cdryzun.github.io/index.xml" title="rss" type="application/rss+xml"></a>
+</div>
+<div class="copyright">
+<span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+</span>
+<span class="division">|</span>
+<span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+</span>
+<span class="copyright-year">
+<a class="busuanzi-footer" href="https://beian.miit.gov.cn/">湘ICP备2021002157号-1</a> <img alt="upai" class="ls-is-cached lazyloaded" height="28" src="https://cdn.treesir.pub/img/icp.png" style="margin: -25px 2px" width="23"/> <a href="https://www.upyun.com/?utm_source=lianmeng&amp;utm_medium=referral" rel="nofollow" target="_blank"><img alt="upai" class="ls-is-cached lazyloaded" height="28" src="https://cdn.treesir.pub/img/upyun.png" style="margin: -25px 2px" width="56"/></a>
+    © 
+    2019 - 
+    2023<span class="heart"><i class="iconfont icon-heart"></i></span><span>Leafy'John </span>
+</span>
+</div>
+</footer>
+<div class="back-to-top" id="back-to-top">
+<i class="iconfont icon-up"></i>
+</div>
+</div>
+<script crossorigin="anonymous" src="https://cdn.treesir.pub/blog-js/jquery.min.js"></script>
+<script crossorigin="anonymous" src="https://cdn.treesir.pub/blog-js/slideout.min.js"></script>
+<script crossorigin="anonymous" src="https://cdn.treesir.pub/blog-js/jquery.fancybox.min.js"></script>
+<script src="/js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js" type="text/javascript"></script>
+<script src="/js/copy-to-clipboard.js"></script>
+<script src="https://cdn.treesir.pub/blog-js/docsearch.min.js"></script>
+<script>
+    docsearch({
+    apiKey: "17388eec628e676a77d6235068b458df",
+    indexName: "blog",
+    appId: "KEECS2XKBV",
+    inputSelector: '.docsearch-input',
+    debug: false,
+    });
+</script>
+</body>
+</html>

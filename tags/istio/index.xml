@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Istio on 「Leafy&#39;John」PlayGround</title>
+    <link>https://cdryzun.github.io/tags/istio/</link>
+    <description>Recent content in Istio on 「Leafy&#39;John」PlayGround</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 05 Oct 2023 16:13:32 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/tags/istio/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Istio in Action 学习笔记</title>
+      <link>https://cdryzun.github.io/post/istio-in-action-study/</link>
+      <pubDate>Thu, 05 Oct 2023 16:13:32 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/istio-in-action-study/</guid>
+      <description>Istio 解决的问题 技术介绍 安装使用 使用 istioctl 部署 Istio 控制平面 istiod 部署应用 istioctl 使用记录 更新 Envoy proxy 笔记 Envoy 的核心功能 Envoy 功能体验 Envoy 的管理 API Envoy Ingress VirtualService 网关 TLS HTTP 重定向到 HTTPS 具有</description>
+    </item>
+    
+  </channel>
+</rss>

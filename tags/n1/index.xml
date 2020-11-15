@@ -1,19 +1,37 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>n1 on 「Yang&#39;zun」的网志博客</title>
-    <link>https://coderyzun.github.io/tags/n1/</link>
-    <description>Recent content in n1 on 「Yang&#39;zun」的网志博客</description>
+    <title>n1 on 「Leafy&#39;John」PlayGround</title>
+    <link>https://cdryzun.github.io/tags/n1/</link>
+    <description>Recent content in n1 on 「Leafy&#39;John」PlayGround</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 15 Nov 2020 16:09:10 +0800</lastBuildDate><atom:link href="https://coderyzun.github.io/tags/n1/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 29 Jul 2021 08:56:04 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/tags/n1/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>斐讯N1 docker部署 openwrt系统的使用记录</title>
-      <link>https://coderyzun.github.io/post/n1-docker/</link>
+      <title>K3s 集群修改 Flannel CNI 插件网络模式</title>
+      <link>https://cdryzun.github.io/post/k3s-change-flannel-cni-model/</link>
+      <pubDate>Thu, 29 Jul 2021 08:56:04 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/k3s-change-flannel-cni-model/</guid>
+      <description>背景说明 在 之前搭建 的 k3s 集群中因为某些原因我将 openwrt 节点，进行了系统重装，更改固件为了 esir 高大全的 op 固件，由于其 固件中没有将 vxlan 模块编译进内核当中，而</description>
+    </item>
+    
+    <item>
+      <title>使用 斐讯n1 &amp; openWrt 搭建 k3s 集群</title>
+      <link>https://cdryzun.github.io/post/n1-openwrt-k3s-deploy/</link>
+      <pubDate>Tue, 26 Jan 2021 09:26:39 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/n1-openwrt-k3s-deploy/</guid>
+      <description>环境说明 软件说明 K3s version : v1.19.7+k3s1 Docker version: 19.03.13 (n1)，19.03.12 (openwrt) 写盘工具: balenaEtcher 机器说明 IP 地址 机型 配置 操作系统 角色 192.168.8.1 占美 (机型不详) 4c 2g ( cpu N2940 ) ope</description>
+    </item>
+    
+    <item>
+      <title>Docker 部署的 openWrt 软路由, 并解决无法与宿主机通信问题</title>
+      <link>https://cdryzun.github.io/post/n1-docker/</link>
       <pubDate>Sun, 15 Nov 2020 16:09:10 +0800</pubDate>
       
-      <guid>https://coderyzun.github.io/post/n1-docker/</guid>
-      <description>openWRT 系统无法与宿主机通信问题解决 参考文档 环境说明 小钢炮宿主机 IP：192.168.8.102 Docker 内 openWRT macvlan ip: 192.168.8.111 主路由网关：192.168.8.1 机器</description>
+      <guid>https://cdryzun.github.io/post/n1-docker/</guid>
+      <description>环境说明 宿主机 IP：192.168.8.102 Docker 内 openWrt macvlan ip: 192.168.8.111 主路由网关：192.168.8.1 机器网段为: 192.168.8.0/24 docker 使用容器: raymondwong/openwrt_r9:21.2.1-arm64 操作系统: ARMBIAN docker 部署 openWrt</description>
     </item>
     
   </channel>

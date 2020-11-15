@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible"/>
+<title>「Leafy'John」PlayGround</title>
+<meta content="webkit" name="renderer"/>
+<meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport"/>
+<meta content="no-transform" http-equiv="Cache-Control"/>
+<meta content="no-siteapp" http-equiv="Cache-Control"/>
+<meta content="#f8f5ec" name="theme-color"/>
+<meta content="#f8f5ec" name="msapplication-navbutton-color"/>
+<meta content="yes" name="apple-mobile-web-app-capable"/>
+<meta content="#f8f5ec" name="apple-mobile-web-app-status-bar-style"/>
+<meta content="Leafy'John" name="author"/><meta content="个人网志博客, 主要记录一下自己职业发展过程中的成长经历" name="description"/><meta content="github action, pipeline, gitlab, nexus3, 技术分享, 前端技术, 计算机网络, devops, kubernetes, jenkins, centos, 技术积累, 个人文档, 个人总结, mysql, 运维, 自动化, python, hugo, k3s, kafka, go lang, helm, traefik, kubeadm, rancher, redis, rke, nginx, apache, 网络安全" name="keywords"/>
+<meta content="Hugo 0.92.0 with theme even" name="generator"/>
+<link href="https://cdryzun.github.io/" rel="canonical"/>
+<link href="https://cdryzun.github.io/index.xml" rel="alternate" title="「Leafy'John」PlayGround" type="application/rss+xml"/>
+<link href="https://cdryzun.github.io/index.xml" rel="feed" title="「Leafy'John」PlayGround" type="application/rss+xml"/>
+<link href="/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/>
+<link href="/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png"/>
+<link href="/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png"/>
+<link href="/manifest.json" rel="manifest"/>
+<link color="#5bbad5" href="/safari-pinned-tab.svg" rel="mask-icon"/>
+<link href="/sass/main.min.404b35997075abed13fc31198c48ccfa115c0855fc6e525128eac767d84fdcd2.css" rel="stylesheet"/>
+<link crossorigin="anonymous" href="https://cdn.treesir.pub/blog-css/jquery.fancybox.min.css" rel="stylesheet"/>
+<link href="/css/custom.css" rel="stylesheet"/>
+<meta content="「Leafy'John」PlayGround" property="og:title"/>
+<meta content="个人网志博客, 主要记录一下自己职业发展过程中的成长经历" property="og:description"/>
+<meta content="website" property="og:type"/>
+<meta content="https://cdryzun.github.io/" property="og:url"/>
+<meta content="「Leafy'John」PlayGround" itemprop="name"/>
+<meta content="个人网志博客, 主要记录一下自己职业发展过程中的成长经历" itemprop="description"/><meta content="summary" name="twitter:card"/>
+<meta content="「Leafy'John」PlayGround" name="twitter:title"/>
+<meta content="个人网志博客, 主要记录一下自己职业发展过程中的成长经历" name="twitter:description"/>
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+<!--[if lt IE 9]>
+  <script src="https://cdn.treesir.pub/blog-js/html5shiv.min.js"></script>
+  <script src="https://cdn.treesir.pub/blog-js/respond.min.js"></script>
+<![endif]-->
+<link href="https://cdn.treesir.pub/blog-css/docsearch.min.css" rel="stylesheet"/>
+</head>
+<body>
+<header class="header" id="header">
+<div class="logo-wrapper">
+<a class="logo" href="/">Leafy'John」PlayGround</a>
+</div>
+<nav class="site-navbar">
+<ul class="menu" id="menu">
+<li class="menu-item">
+<a class="menu-item-link" href="/">主页</a>
+</li><li class="menu-item">
+<a class="menu-item-link" href="/post/">归档</a>
+</li><li class="menu-item">
+<a class="menu-item-link" href="/tags/">标签</a>
+</li><li class="menu-item">
+<a class="menu-item-link" href="/categories/">分类</a>
+</li>
+</ul><li style="display:inline-block;margin-right:10px;">
+<input class="docsearch-input" placeholder="Search" type="search"/>
+</li></nav>
+</header>
+<div class="mobile-navbar" id="mobile-navbar">
+<div class="mobile-header-logo">
+<a class="logo" href="/">Leafy'John」PlayGround</a>
+</div>
+<div class="mobile-navbar-icon">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+<nav class="mobile-menu slideout-menu" id="mobile-menu">
+<ul class="mobile-menu-list">
+<a href="/">
+<li class="mobile-menu-item">主页</li>
+</a><a href="/post/">
+<li class="mobile-menu-item">归档</li>
+</a><a href="/tags/">
+<li class="mobile-menu-item">标签</li>
+</a><a href="/categories/">
+<li class="mobile-menu-item">分类</li>
+</a>
+</ul>
+</nav>
+<div class="container" id="mobile-panel">
+<main class="main" id="main">
+<div class="content-wrapper">
+<div class="content" id="content">
+<section class="posts" id="posts">
+<article class="post">
+<header class="post-header">
+<h1 class="post-title"><a class="post-link" href="/post/gitlab-pre-receive-webhook/">Gitlab pre-receive WebHook 的添加与使用</a></h1>
+<div class="post-meta">
+<span class="post-time"> 2021-04-12 </span>
+<div class="post-category">
+<a href="/categories/devops/"> devops </a>
+</div>
+<span class="more-meta"> 约 2434 字 </span>
+<span class="more-meta"> 预计阅读 5 分钟 </span>
+</div>
+</header>
+<div class="post-content">
+<div class="post-summary">
+      环境说明 版本使用说明 Gitlab version: 13.10.2 gitlab 服务器安装教程请参考 文档，本文档将示例在 gitlab 中如何添加和配置 pre-receive 钩子，并演示针对 git push 操作做相关的限制操作。 文档参考 gitlab
+    </div>
+<div class="read-more">
+<a class="read-more-link" href="/post/gitlab-pre-receive-webhook/">阅读更多</a>
+</div>
+</div>
+</article>
+<article class="post">
+<header class="post-header">
+<h1 class="post-title"><a class="post-link" href="/post/gitlab-integration-jira/">Gitlab 和 jira 之间的集成</a></h1>
+<div class="post-meta">
+<span class="post-time"> 2021-04-09 </span>
+<div class="post-category">
+<a href="/categories/devops/"> devops </a>
+</div>
+<span class="more-meta"> 约 250 字 </span>
+<span class="more-meta"> 预计阅读 1 分钟 </span>
+</div>
+</header>
+<div class="post-content">
+<div class="post-summary">
+      环境说明 Gitlab-ce 版本： 13.10.2 Jira 版本：v8.13.4 Jira 获取 工作流结束 id 获取到工作流 结束 id 21 Gitlab 设置全局与 jira 集成 测试效果 找到需要关联 issue id 编辑 文件 commit
+    </div>
+<div class="read-more">
+<a class="read-more-link" href="/post/gitlab-integration-jira/">阅读更多</a>
+</div>
+</div>
+</article>
+<article class="post">
+<header class="post-header">
+<h1 class="post-title"><a class="post-link" href="/post/docker-centosoffline-install/">Docker 在 Centos7 中离线安装</a></h1>
+<div class="post-meta">
+<span class="post-time"> 2021-03-25 </span>
+<div class="post-category">
+<a href="/categories/docker/"> docker </a>
+</div>
+<span class="more-meta"> 约 246 字 </span>
+<span class="more-meta"> 预计阅读 1 分钟 </span>
+</div>
+</header>
+<div class="post-content">
+<div class="post-summary">
+      环境说明 操作系统: Centos Docker 版本: 19.03.8 离线版本安装 Docker-ce 版本 YUM源 配置 - 参考文档 docker_rpm.tar.gz 离线文件准备 1 sudo yum install --downloadonly --downloaddir=./docker_rpm docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin # 下载离线包，如已机器已安装 docker 可以
+    </div>
+<div class="read-more">
+<a class="read-more-link" href="/post/docker-centosoffline-install/">阅读更多</a>
+</div>
+</div>
+</article>
+<article class="post">
+<header class="post-header">
+<h1 class="post-title"><a class="post-link" href="/post/jira-webhook-integration-jenkins/">Jira Webhook Integration Jenkins</a></h1>
+<div class="post-meta">
+<span class="post-time"> 2021-03-16 </span>
+<span class="more-meta"> 约 57 字 </span>
+<span class="more-meta"> 预计阅读 1 分钟 </span>
+</div>
+</header>
+<div class="post-content">
+<div class="post-summary">
+      Jira Webhook 与 Jenkins 集成 此文档为归档数据，暂不具备参考意义 Jira 创建项目 并新建模块 关联 Gitlab 中对应仓库 Jenkins 创建 jira webhook manage pipeline jira 添加 网络钩子 1 http://jenkins.xxx.net/generic-webhook-trigger/invoke?token=jira-trigger-manage&amp;runOpts=JiraPush&amp;issueTypeName=null&amp;issueTypeStatus=null&amp;projectName=${project.key}
+    </div>
+<div class="read-more">
+<a class="read-more-link" href="/post/jira-webhook-integration-jenkins/">阅读更多</a>
+</div>
+</div>
+</article>
+<article class="post">
+<header class="post-header">
+<h1 class="post-title"><a class="post-link" href="/post/prometheus/">Centos 单机部署 Prometheus</a></h1>
+<div class="post-meta">
+<span class="post-time"> 2021-03-09 </span>
+<span class="more-meta"> 约 2481 字 </span>
+<span class="more-meta"> 预计阅读 5 分钟 </span>
+</div>
+</header>
+<div class="post-content">
+<div class="post-summary">
+      此文档为归档文件，不保证有效，且供参考 环境说明 操作系统: CentOS Linux release 7.9.2009 (Core) Prometheus Version: 2.25.0 Prometheus 软件包下载 1 2 3 4 5 6 7 8 wget https://github.com/prometheus/prometheus/releases/download/v2.25.0/prometheus-2.25.0.linux-amd64.tar.gz tar xf prometheus-2.25.0.linux-amd64.tar.gz mkdir -p /usr/local/prometheus cp -a prometheus-2.25.0.linux-amd64/* /usr/local/prometheus # 复制文件到，刚
+    </div>
+<div class="read-more">
+<a class="read-more-link" href="/post/prometheus/">阅读更多</a>
+</div>
+</div>
+</article>
+<article class="post">
+<header class="post-header">
+<h1 class="post-title"><a class="post-link" href="/post/gitlab-deploy/">使用 Docker 部署 Gitlab，及常用优化项的说明</a></h1>
+<div class="post-meta">
+<span class="post-time"> 2021-03-04 </span>
+<div class="post-category">
+<a href="/categories/docker/"> docker </a>
+<a href="/categories/docker-compose/"> docker-compose </a>
+<a href="/categories/devops/"> devops </a>
+</div>
+<span class="more-meta"> 约 1498 字 </span>
+<span class="more-meta"> 预计阅读 3 分钟 </span>
+</div>
+</header>
+<div class="post-content">
+<div class="post-summary">
+      环境说明及准备工作 部署 Gitlab 版本说明: 1 docker pull gitlab/gitlab-ce:13.10.2-ce.0 提前拉取好镜像。 docker-compose 版本说明: 1 2 docker-compose --version docker-compose version 1.18.0, build 8dd22a9 docker version: 19.03.9 创建 Docker-Compose 部署文件 Gitlab docker-compose.yaml 部署文件如下所示 1 2 3 4 5 6
+    </div>
+<div class="read-more">
+<a class="read-more-link" href="/post/gitlab-deploy/">阅读更多</a>
+</div>
+</div>
+</article>
+<article class="post">
+<header class="post-header">
+<h1 class="post-title"><a class="post-link" href="/post/jenkins-install/">Centos 7 Yum 安装 Jenkins 及常用配置的说明</a></h1>
+<div class="post-meta">
+<span class="post-time"> 2021-03-02 </span>
+<div class="post-category">
+<a href="/categories/devops/"> devops </a>
+</div>
+<span class="more-meta"> 约 1459 字 </span>
+<span class="more-meta"> 预计阅读 3 分钟 </span>
+</div>
+</header>
+<div class="post-content">
+<div class="post-summary">
+      环境说明 操作系统: CentOS Linux release 7.9.2009 (Core) jdk 使用说明: openjdk 1.8.0_282 jenkins 版本： 最新 长期支持版本 Jenkins 安装 这里 Jenkins 的安装方式为使用 yum 包管理进行安装，文档参考。 安装 jdk 1 2 3 4 5
+    </div>
+<div class="read-more">
+<a class="read-more-link" href="/post/jenkins-install/">阅读更多</a>
+</div>
+</div>
+</article>
+<article class="post">
+<header class="post-header">
+<h1 class="post-title"><a class="post-link" href="/post/qume-libvirt-install/">Centos7 编译安装 Qemu 及安装 libvirt 管理工具</a></h1>
+<div class="post-meta">
+<span class="post-time"> 2021-02-25 </span>
+<div class="post-category">
+<a href="/categories/vm/"> vm </a>
+</div>
+<span class="more-meta"> 约 1150 字 </span>
+<span class="more-meta"> 预计阅读 3 分钟 </span>
+</div>
+</header>
+<div class="post-content">
+<div class="post-summary">
+      环境说明 操作系统: CentOS 7.9.2009 Qumu 版本: 5.2.0 Libvirt 版本: 5.4.0 Libvirt 高版本 没有尝试安装成功，如对高版本安装感兴趣的话可以参考这篇 文档 编译安装 Qemu ⚠️ 注意下面操作的命令
+    </div>
+<div class="read-more">
+<a class="read-more-link" href="/post/qume-libvirt-install/">阅读更多</a>
+</div>
+</div>
+</article>
+</section>
+<nav class="pagination">
+<a class="prev" href="/page/6/">
+<i class="iconfont icon-left"></i>
+<span class="prev-text">上一页</span>
+</a>
+<a class="next" href="/page/8/">
+<span class="next-text">下一页</span>
+<i class="iconfont icon-right"></i>
+</a>
+</nav>
+</div>
+</div>
+</main>
+<footer class="footer" id="footer">
+<div class="social-links">
+<a class="iconfont icon-email" href="mailto:yangzun@treesir.pub" title="email"></a>
+<a class="iconfont icon-github" href="https://github.com/cdryzun" title="github"></a>
+<a class="iconfont icon-rss" href="https://cdryzun.github.io/index.xml" title="rss" type="application/rss+xml"></a>
+</div>
+<div class="copyright">
+<span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+</span>
+<span class="division">|</span>
+<span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+</span>
+<span class="copyright-year">
+<a class="busuanzi-footer" href="https://beian.miit.gov.cn/">湘ICP备2021002157号-1</a> <img alt="upai" class="ls-is-cached lazyloaded" height="28" src="https://cdn.treesir.pub/img/icp.png" style="margin: -25px 2px" width="23"/> <a href="https://www.upyun.com/?utm_source=lianmeng&amp;utm_medium=referral" rel="nofollow" target="_blank"><img alt="upai" class="ls-is-cached lazyloaded" height="28" src="https://cdn.treesir.pub/img/upyun.png" style="margin: -25px 2px" width="56"/></a>
+    © 
+    2019 - 
+    2023<span class="heart"><i class="iconfont icon-heart"></i></span><span>Leafy'John </span>
+</span>
+</div>
+</footer>
+<div class="back-to-top" id="back-to-top">
+<i class="iconfont icon-up"></i>
+</div>
+</div>
+<script crossorigin="anonymous" src="https://cdn.treesir.pub/blog-js/jquery.min.js"></script>
+<script crossorigin="anonymous" src="https://cdn.treesir.pub/blog-js/slideout.min.js"></script>
+<script crossorigin="anonymous" src="https://cdn.treesir.pub/blog-js/jquery.fancybox.min.js"></script>
+<script src="/js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js" type="text/javascript"></script>
+<script src="/js/copy-to-clipboard.js"></script>
+<script src="https://cdn.treesir.pub/blog-js/docsearch.min.js"></script>
+<script>
+    docsearch({
+    apiKey: "17388eec628e676a77d6235068b458df",
+    indexName: "blog",
+    appId: "KEECS2XKBV",
+    inputSelector: '.docsearch-input',
+    debug: false,
+    });
+</script>
+</body>
+</html>

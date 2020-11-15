@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>spinnaker on 「Leafy&#39;John」PlayGround</title>
+    <link>https://cdryzun.github.io/tags/spinnaker/</link>
+    <description>Recent content in spinnaker on 「Leafy&#39;John」PlayGround</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 24 May 2021 16:33:49 +0800</lastBuildDate><atom:link href="https://cdryzun.github.io/tags/spinnaker/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>使用 Helm 部署 Spinnaker 持续部署(CD)平台</title>
+      <link>https://cdryzun.github.io/post/spinnaker-helm-installd/</link>
+      <pubDate>Mon, 24 May 2021 16:33:49 +0800</pubDate>
+      
+      <guid>https://cdryzun.github.io/post/spinnaker-helm-installd/</guid>
+      <description>环境说明 Kubernetes Version: v1.17.9 操作系统: CentOS 7.8.2003 Helm Version: v3.2.1 Spinnaker Version: 1.26.3 spinnaker 版本说明 spinnaker 组件说明 Deck：前端web页面 端口9000 Gate：API网关，所有程序通过gate与</description>
+    </item>
+    
+  </channel>
+</rss>
