@@ -95,7 +95,7 @@ a.item-content {
 	position: absolute;
 	top: -5px;
 	left: 5px;
-	width: 500px;
+	width: 460px;
 	height: 2px;
 	background-color: #69adc4
 }
@@ -105,7 +105,7 @@ a.item-content {
 	position: absolute;
 	bottom: -12px;
 	left: 5px;
-	width: 500px;
+	width: 460px;
 	height: 2px;
 	background-color: #69adc4
 }
@@ -262,4 +262,8 @@ text-align: center;
 
 .highlight-copy-btn:hover {
 background-color: #69adc4;
+}
+
+.docsearch-input.ds-input{
+	clear: both;
 }
